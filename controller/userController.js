@@ -26,7 +26,7 @@ const sendVerifyMail = async (name, email, userid) => {
       requireTLS: true,
       auth: {
         user: "aswinak1o1@gmail.com",
-        pass: "olka nsve obaw hktg",
+        pass: "",
       },
     });
     const encodedUserId = encodeURIComponent(userid);
