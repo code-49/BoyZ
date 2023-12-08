@@ -71,7 +71,7 @@ const sendOpt = async (email, otpNum) => {
       requireTLS: true,
       auth: {
         user: "aswinak1o1@gmail.com",
-        pass: "olka nsve obaw hktg",
+        pass: "",
       },
     });
     const mailOption = {
