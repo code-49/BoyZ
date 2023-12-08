@@ -1,9 +1,9 @@
 <%- include("../partials/head.ejs") %>
 <%- include("../partials/menu.ejs") %>
 
-<div class="flex">
+<div class="container">
 
-        <% include("../partials/filter.ejs") %>
+        <%- include("../partials/filter.ejs") %>
     <div class="top-container">
         <% for (let i = 0; i < products.length; i++) {%>
         <div class="product-card">
@@ -14,7 +14,7 @@
             </a>
             
             <h3 class="product-name"><%= products[i].name %></h3>
-            <h3 class="product-name"><%= products[i].price %></h3>
+            <h3 class="product-name">&#8377;<%= products[i].price %> <span class="offer-style"><%= products[i].discount %>%</span></h3>
         </div>
         <%} %>
     </div>

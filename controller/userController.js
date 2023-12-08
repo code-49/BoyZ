@@ -318,14 +318,11 @@ const load_products = async (req, res) => {
   try {
     let userData = await get_user(req.session.user_id);
     const category = await CategorySchema.find({}, { name: 1 });
-    const products = await ProductSchema.find(
-      {
-        category: {
-          $in: [req.query.cat],
-        },
+    const products = await ProductSchema.find({
+      category: {
+        $in: [req.query.cat],
       },
-      { name: 1, price: 1, images: 1 }
-    );
+    });
     res.render("products", {
       user: userData,
       category: category,

@@ -1,3 +1,12 @@
 <div class="filter-table">
 <h2>Filter</h2>
+<hr>
+<form action="">
+    <% for (let i = 0; i < category.length; i++) { %>
+        <div>
+            <a href="/products"><label ><input type="radio" name="category"><%= category[i].name %></label></a> 
+        </div>
+    <% } %> 
+</form>
+    
 </div>

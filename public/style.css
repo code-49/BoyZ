@@ -802,9 +802,19 @@ background-color: #8B909A;
 }
 
 .filter-table{
-    position: fixed;
+    width:270px;
     border:1px solid black;
     border-radius: 10px;
     padding: 10px;
+    left: 20px;
+    margin-left:20px;
+}
+
+.offer-style{
+    background-color: rgb(255, 160, 160);
+    color: white;
+    border-radius:50px ;
+    padding: 6px 11px;
+    font-size: 12px;
 }
 
