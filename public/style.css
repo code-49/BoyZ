@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Aclonica&family=Poppins:wght@300&family=Roboto:wght@100&display=swap');
+
+body{
+margin: 0;
+background-color: #fafafa;
+height: 100vh;
+font-family: sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+.header{
+    border-bottom:1px solid rgb(182, 182, 182) ;
+}
+
+.black-box{
+    height: 25px;
+    background-color: black;
+}
+
+.menu-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu-item-container{
+    display: flex;
+    margin-right: 30px;
+}
+
+.brand-name{
+    font-family: 'aclonica';
+    padding-left: 20px;
+}
+
+.icon-link{
+
+    color:black;
+    margin-right: 10px;
+}
+
+.container{
+    display: flex;
+    margin-top: 30px;
+}
+
+.side-bar{
+    background-color: white;
+    height: 800px;
+    padding: 20px;
+    /* box-shadow: 0 0 3px 1px black; */
+}
+
+.side-bar-button{
+    display: flex;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 6px;    
+}
+
+.side-bar-button:hover{
+    background-color: #F3F4F8;
+}
+
+.side-bar-link{
+    color: #8B909A;
+    font-family: sans-serif;
+    font-size: 15px;
+}
+
+.side-bar-title{
+    color: #8B909A;
+    margin-left: 15px;
+    font-family: sans-serif;
+}
+
+.side-bar-icon{
+    margin-right: 10px;
+}
+
+.management-content{
+    height: 800px;
+    width:75%;
+    margin-left: 30px;
+    background-color: white;
+}
+
+form{
+    margin: 30px;
+}
+
+label{
+    display: block;
+    margin-top: 20px;
+}
+
+table{
+    margin:20;
+}
+
+th,td{
+    padding: 10px;
+}
+
+

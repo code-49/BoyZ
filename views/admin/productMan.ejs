@@ -1,0 +1,37 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/menu.ejs") %>
+    
+<div class="container">
+<%- include("../partials/sidebar.ejs") %>
+<div class="management-content">
+    <%if(products.length>0){%>
+    
+        <table>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Stock</th>
+                <th>action</th>
+            </tr>
+    <% for (let i = 0; i < products.length; i++) {%>
+       
+       
+            <tr>
+                <td><img src="/productImages/<%= products[i].images %>" alt="img" width="30px" height="30px" ></td>
+                <td><h5><%= products[i].name%></h5></td>
+                <td><p><%= products[i].description%></p></td>
+                <td><p><%= products[i].stock%></p></td>
+                <td><a href="/admin/edit?id=<%= products[i]._id%>">edit</a>
+                <a href="/admin/delete?id=<%= products[i]._id%>">delete</a></td>
+            </tr>
+       
+    <%}%>
+        </table> 
+    <%}else{%>
+        <p>No products exits!</p>
+    <%}%>
+</div>
+</div>
+ 
+<%- include("../partials/footer.ejs") %>
