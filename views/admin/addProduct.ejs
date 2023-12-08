@@ -4,43 +4,154 @@
 <div class="container">
 <%- include("../partials/sidebar.ejs") %>
 
-<div class="management-content">
+<div class="management-content" id="content">
+    
     <form action="/admin/add-product" method="POST" enctype="multipart/form-data">
-        <label for="name">Product Name</label>
-        <input type="text" id="name" name="name" required>
-
-        <label for="description">Description</label>
-        <textarea type="text" id="description" name="description"  rows="10" cols="50" required></textarea>
-
-        <label for="color">Color</label>
-        <input type="color" id="color" name="color" required>
         
-        <label for="size">Size</label>
-        <select id="size" name="size" required>
-            <option value="s">S</option>
-            <option value="m">M</option>
-            <option value="l">L</option>
-            <option value="xl">XL</option>
-            <option value="xxl">XXL</option>
-            <option value="xxxl">XXXL</option>
-        </select>
+        <div class="flex space-btw">
+            <div class="product-details">
+                <h3 class="product-head">Product Details</h3>
+                <table>
+                    <tr>
+                        <td><label for="name">name </label></td>
+                        <td><input type="text" id="name" name="name" class="form-control" required></td>
+                        <td>
+                            <label for="size">Size</label>
+                            <select id="size" name="size" required class="form-control-select" required>
+                                <option value="s">S</option>
+                                <option value="m">M</option>
+                                <option value="l">L</option>
+                                <option value="xl">XL</option>
+                                <option value="xxl">XXL</option>
+                                <option value="xxxl">XXXL</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="desc">description </label></td>
+                        <td><textarea id="desc" name="description" cols="30" rows="10" class="form-control-textarea" required></textarea></td>
+                        <td><label for="colorPicker">color</label><input type="color" id="colorPicker" name="colors[]" class="form-control-color" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="price">price </label></td>
+                        <td><input type="number" id="price" name="price" class="form-control" required></td>
+                        <td>
+                            <label for="category">category</label>
+                            <select id="category" name="category[]" required class="form-control-select" >
+                                <% for (let i = 0; i < category.length; i++) {%>
+                                    <option value="<%= category[i].name %>"><%= category[i].name %></option>                                    
+                                <%} %>
+                                
+                                
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="disc">discount </label></td>
+                        <td><input type="number" id="disc" name="discount" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="stock">Stock </label></td>
+                        <td><input type="number" id="stock" name="stock" class="form-control" required></td>
+                        <td><input type="submit" value="Add New Product" class="loginButton"></td>
+                    </tr>
+                </table>
+                
+            </div>
+            <div class="side-images">
+                        <input type="file" name="image1" id="img1" required>
+                        <input type="file" name="image2" id="img2" >
+                        <input type="file" name="image3" id="img3" >
+                        <input type="file" name="image4" id="img4" >
+                    <img src="http://via.placeholder.com/150x150" alt="img" class="product-img" id="ph1">
+                
+                    <div class="image-box-2">
+                        <div class="side-img-box"><img src="http://via.placeholder.com/100x100" alt="img" class="extra-img" id="ph3" width="100px" height="100px"> </div>
+                        <div class="side-img-box"><img src="http://via.placeholder.com/100x100" alt="img" class="extra-img" id="ph2" width="100px" height="100px"></div>
+                        
+                    </div>
+                    <div class="image-box-2">
+                        <div class="side-img-box"><img src="http://via.placeholder.com/100x100" alt="img" class="extra-img" id="ph4" width="100px" height="100px"></div>
+                        <div class="side-img-box"><img src="http://via.placeholder.com/100x100" alt="img" class="extra-img" id="ph5" width="100px" height="100px"></div>
 
-        <label for="price">Price (INR)</label>
-        <input type="number" id="price" name="price" required>
-
-        <label for="discount">Discount</label>
-        <input type="number" id="discount" name="discount">
-
-        <label for="stock">Stock</label>
-        <input type="number" id="stock" name="stock" required>
-
-        <label for="image">images</label>
-        <input type="file" id="image" name="image" required>
-        <br>
-        <br>
-        <input type="submit" value="Add Product">
+                    </div>
+            </div>
+        </div>
+        
+        
     </form>
+    
 </div>
 </div>
- 
+ <script>
+    // image upload
+
+let input1 = document.getElementById("img1");
+let input2 = document.getElementById("img2");
+let input3 = document.getElementById("img3");
+let input4 = document.getElementById("img4");
+
+let ph1 = document.getElementById("ph1");
+let ph2 = document.getElementById("ph2");
+let ph3 = document.getElementById("ph3");
+let ph4 = document.getElementById("ph4");
+
+input1.style.display = "none";
+input2.style.display = "none";
+input3.style.display = "none";
+input4.style.display = "none";
+
+input1.addEventListener("change", function () {
+  const file = input1.files[0];
+
+  if (file) {
+    const imageURL = URL.createObjectURL(file);
+    ph1.src = imageURL;
+  }
+});
+input2.addEventListener("change", function () {
+  const file = input2.files[0];
+
+  if (file) {
+    const imageURL = URL.createObjectURL(file);
+    ph2.src = imageURL;
+  }
+});
+input3.addEventListener("change", function () {
+  const file = input3.files[0];
+
+  if (file) {
+    const imageURL = URL.createObjectURL(file);
+    ph3.src = imageURL;
+  }
+});
+input4.addEventListener("change", function () {
+  const file = input4.files[0];
+
+  if (file) {
+    const imageURL = URL.createObjectURL(file);
+    ph4.src = imageURL;
+  }
+});
+
+ph1.addEventListener("click", function () {
+  input1.click();
+  console.log("worked");
+});
+ph2.addEventListener("click", function () {
+  input2.click();
+});
+ph3.addEventListener("click", function () {
+  input3.click();
+});
+ph4.addEventListener("click", function () {
+  input4.click();
+});
+ </script>
 <%- include("../partials/footer.ejs") %>
+
+
+    
+
+
+ 

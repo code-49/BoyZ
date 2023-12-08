@@ -3,35 +3,201 @@
     
 <div class="container">
 <%- include("../partials/sidebar.ejs") %>
-<div class="management-content">
-    <%if(products.length>0){%>
+
+<div class="management-content" id="content">
     
-        <table>
-            <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Stock</th>
-                <th>action</th>
-            </tr>
-    <% for (let i = 0; i < products.length; i++) {%>
-       
-       
-            <tr>
-                <td><img src="/productImages/<%= products[i].images %>" alt="img" width="30px" height="30px" ></td>
-                <td><h5><%= products[i].name%></h5></td>
-                <td><p><%= products[i].description%></p></td>
-                <td><p><%= products[i].stock%></p></td>
-                <td><a href="/admin/edit?id=<%= products[i]._id%>">edit</a>
-                <a href="/admin/delete?id=<%= products[i]._id%>">delete</a></td>
-            </tr>
-       
-    <%}%>
-        </table> 
-    <%}else{%>
-        <p>No products exits!</p>
-    <%}%>
+    <div class="category-lists">
+        <table class="product-table">
+        
+            <% for (let i = 0; i < products.length; i++) {%>
+                <tr>
+                <td><img src="/productImages/<%= products[i].images[0] %>" alt="img" width="300px" height="auto"></td>
+                <td>
+                    <table>
+                        <tr><h3><span>Name: </span><%= products[i].name %> </h3></tr>
+                    <tr><p><span>Description: </span><%= products[i].description %> </p></tr>
+                    <tr><div class="flex">
+                        <span>colors: </span>
+                        <% for (let j = 0; j < products[i].color.length; j++) {%>
+                           <div class="product-color" style="background-color:<%= products[i].color[j] %>;"></div>                            
+                       <% } %>
+                        
+                    </div></tr>
+                    <tr><p><span>size: </span><%= products[i].size %> </p></tr>
+                    <tr><p><span>Price: </span><%= products[i].price %> </p></tr>
+                        <tr><p><span>Discount: </span><%= products[i].discount %> </p></tr>
+                        <tr><p><span>Stock: </span><%= products[i].stock %> </p></tr>
+                        <tr>
+                            <button type="button" class="material-symbols-outlined icon-btn bg-green" onclick="openModalPro(`<%= JSON.stringify(products[i]) %>`)">edit</button>
+                    <a href="/admin/delete-product?id=<%= products[i]._id%>" class="material-symbols-outlined icon-btn bg-red">delete</a>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <p>categories</p>
+                    <div class="category-box">
+                        <% for (let j = 0; j < products[i].category.length; j++) {%>
+                            <span class="category-property"><%= products[i].category[j] %></span>
+                         <%} %>
+                    </div> 
+                    
+                </td>
+                </tr>
+            <%} %>
+            
+        </table>
+        
+    </div>
+
+    
+
 </div>
 </div>
- 
+<div class="modal-container" id="productModal" onclick="closeModalPro(event)">
+
+<div class="management-content" >
+    
+    <form action="/admin/edit-product" method="POST" enctype="multipart/form-data">
+        
+        <div class="flex space-btw">
+            <div class="product-details">
+                <h3 class="product-head">Product Details</h3>
+                <table>
+                    <tr>
+                        <td><label for="name">name </label></td>
+                        <td><input type="text" id="name" name="name" class="form-control" required></td>
+                        <td>
+                            <label for="size">Size</label>
+                            <select id="size" name="size" required class="form-control-select" required>
+                                <option value="s">S</option>
+                                <option value="m">M</option>
+                                <option value="l">L</option>
+                                <option value="xl">XL</option>
+                                <option value="xxl">XXL</option>
+                                <option value="xxxl">XXXL</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="desc">description </label></td>
+                        <td><textarea id="desc" name="description" cols="30" rows="10" class="form-control-textarea" required></textarea></td>
+                        <td><label for="colorPicker">color</label><input type="color" id="colorPicker" name="colors[]" class="form-control-color" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="price">price </label></td>
+                        <td><input type="number" id="price" name="price" class="form-control" required></td>
+                        <td>
+                            <label for="category">category</label>
+                            <select id="category" name="category[]" required class="form-control-select" >
+                                <% for (let i = 0; i < category.length; i++) {%>
+                                    <option value="<%= category[i].name %>"><%= category[i].name %></option>                                    
+                                <%} %>
+                                
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="disc">discount </label></td>
+                        <td><input type="number" id="disc" name="discount" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <input type="hidden" name="user_id" id="id">
+                        <td><label for="stock">Stock </label></td>
+                        <td><input type="number" id="stock" name="stock" class="form-control" required></td>
+                        <td><input type="submit" value="Update" class="loginButton"></td>
+                    </tr>
+                </table>
+                
+            </div>
+            <div class="side-images-2">
+                        <input type="file" name="image1" id="img1" >
+                        <input type="file" name="image2" id="img2" >
+                        <input type="file" name="image3" id="img3" >
+                        <input type="file" name="image4" id="img4" >
+                    <img src="http://via.placeholder.com/150x150" alt="img" class="product-img" id="ph1">
+                
+                    <div class="image-box-2">
+                        <div class="side-img-box"><img src="http://via.placeholder.com/100x100" alt="img" class="extra-img" id="ph3" width="100px" height="100px"> </div>
+                        <div class="side-img-box"><img src="http://via.placeholder.com/100x100" alt="img" class="extra-img" id="ph2" width="100px" height="100px"></div>
+                        
+                    </div>
+                    <div class="image-box-2">
+                        <div class="side-img-box"><img src="http://via.placeholder.com/100x100" alt="img" class="extra-img" id="ph4" width="100px" height="100px"></div>
+
+                    </div>
+            </div>
+        </div>
+        
+        
+    </form>
+    
+</div>
+</div>
+ <script>
+    // image upload
+
+let input1 = document.getElementById("img1");
+let input2 = document.getElementById("img2");
+let input3 = document.getElementById("img3");
+let input4 = document.getElementById("img4");
+
+let ph1 = document.getElementById("ph1");
+let ph2 = document.getElementById("ph2");
+let ph3 = document.getElementById("ph3");
+let ph4 = document.getElementById("ph4");
+
+input1.style.display = "none";
+input2.style.display = "none";
+input3.style.display = "none";
+input4.style.display = "none";
+
+input1.addEventListener("change", function () {
+  const file = input1.files[0];
+
+  if (file) {
+    const imageURL = URL.createObjectURL(file);
+    ph1.src = imageURL;
+  }
+});
+input2.addEventListener("change", function () {
+  const file = input2.files[0];
+
+  if (file) {
+    const imageURL = URL.createObjectURL(file);
+    ph2.src = imageURL;
+  }
+});
+input3.addEventListener("change", function () {
+  const file = input3.files[0];
+
+  if (file) {
+    const imageURL = URL.createObjectURL(file);
+    ph3.src = imageURL;
+  }
+});
+input4.addEventListener("change", function () {
+  const file = input4.files[0];
+
+  if (file) {
+    const imageURL = URL.createObjectURL(file);
+    ph4.src = imageURL;
+  }
+});
+
+ph1.addEventListener("click", function () {
+  input1.click();
+  console.log("worked");
+});
+ph2.addEventListener("click", function () {
+  input2.click();
+});
+ph3.addEventListener("click", function () {
+  input3.click();
+});
+ph4.addEventListener("click", function () {
+  input4.click();
+});
+ </script>
+ <script src="proEdit.js"></script>
 <%- include("../partials/footer.ejs") %>
+   

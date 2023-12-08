@@ -1,0 +1,159 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/menu.ejs") %>
+    
+<%- include("../partials/banner.ejs") %>
+
+<p class="product-heading">TOP PRODUCTS</p>
+
+
+
+    <div class="top-container">
+        <div class="product-card">
+            <a href="#">
+                <div class="image-container">
+                <img src="./img/cloth1.webp" alt="product-img" width="100%" height="100%">
+                </div>
+            </a>
+            
+            <h3 class="product-name">Black Shirt</h3>
+            <h3 class="product-name">$120</h3>
+        </div>
+        <div class="product-card">
+            <div class="image-container">
+                <img src="./img/cloth2.jpg" alt="product-img" width="100%" height="100%">
+            </div>
+            <h3 class="product-name">Lined Shirt</h3>
+            <h3 class="product-name">$230</h3>
+        </div>
+        <div class="product-card">
+            <div class="image-container">
+                <img src="./img/cloth3.webp" alt="product-img" width="100%" height="100%">
+            </div>
+            <h3 class="product-name">Blue Jeans</h3>
+            <h3 class="product-name">$120</h3>
+        </div>
+        <div class="product-card">
+            <div class="image-container">
+                <img src="./img/cloth1.webp" alt="product-img" width="100%" height="100%">
+            </div>
+            <h3 class="product-name">Black Shirt</h3>
+            <h3 class="product-name">$120</h3>
+        </div>
+        <div class="product-card">
+            <div class="image-container">
+                <img src="./img/cloth3.webp" alt="product-img" width="100%" height="100%">
+            </div>
+            <h3 class="product-name">Blue Jeans</h3>
+            <h3 class="product-name">$120</h3>
+        </div>
+        
+        
+    </div>
+    <p class="product-heading">Explore</p>
+    <div class="division"></div>
+    
+    <div class="category-heading">
+        <h3>Shirts</h3> 
+        <a href="/products?cat=shirts">VIEW ALL</a>
+    </div>
+    <div class="product-container">
+        <% for (let i = 0; i < shirts.length; i++) {%>
+            <div class="product-card">
+                <a href="/product?id=<%= shirts[i]._id %>">
+                    <div class="image-container-2">
+                        <img src="/productImages/<%= shirts[i].images[0] %>" alt="product-img" width="100%" height="100%">
+                    </div>
+                </a>
+                <h3 class="product-name"><%= shirts[i].name %></h3>
+                <h3 class="product-name">$<%= shirts[i].price %></h3>
+            </div>
+            
+        <%} %>
+        
+    </div>
+    <div class="division"></div>
+
+    <div class="category-heading">
+        <h3>Pants</h3> 
+        <a href="/products?cat=pants">VIEW ALL</a>
+    </div>
+    <div class="product-container">
+        <% for (let i = 0; i < pants.length; i++) {%>
+            <div class="product-card">
+                <a href="/product?id=<%= pants[i]._id %>">
+                    <div class="image-container-2">
+                        <img src="/productImages/<%= pants[i].images[0] %>" alt="product-img" width="100%" height="100%">
+                    </div>
+                </a>
+                <h3 class="product-name"><%= pants[i].name %></h3>
+                <h3 class="product-name">$<%= pants[i].price %></h3>
+            </div>
+            
+        <%} %>
+        
+    </div>
+    <div class="division"></div>
+
+    <div class="category-heading">
+        <h3>Footwear</h3> 
+        <a href="/products?cat=footwear">VIEW ALL</a>
+    </div>
+    <div class="product-container">
+        <% for (let i = 0; i < footwear.length; i++) {%>
+            <div class="product-card">
+                <a href="/product?id=<%= footwear[i]._id %>">
+                    <div class="image-container-2">
+                        <img src="/productImages/<%= footwear[i].images[0] %>" alt="product-img" width="100%" height="100%">
+                    </div>
+                </a>
+                <h3 class="product-name"><%= footwear[i].name %></h3>
+                <h3 class="product-name">$<%= footwear[i].price %></h3>
+            </div>
+            
+        <%} %>
+        
+    </div>
+    <div class="division"></div>
+    <div class="category-heading">
+        <h3>Watches</h3> 
+        <a href="/products?cat=watch">VIEW ALL</a>
+    </div>
+    <div class="product-container">
+        <% for (let i = 0; i < watch.length; i++) {%>
+            <div class="product-card">
+                <a href="/product?id=<%= watch[i]._id %>">
+                    <div class="image-container-2">
+                        <img src="/productImages/<%= watch[i].images[0] %>" alt="product-img" width="100%" height="100%">
+                    </div>
+                </a>
+                <h3 class="product-name"><%= watch[i].name %></h3>
+                <h3 class="product-name">$<%= watch[i].price %></h3>
+            </div>
+            
+        <%} %>
+        
+    </div>
+    <div class="division"></div>
+    <div class="category-heading">
+        <h3>Accessories</h3> 
+        <a href="/products?cat=accessories">VIEW ALL</a>
+    </div>
+    <div class="product-container">
+        <% for (let i = 0; i < accessories.length; i++) {%>
+            <div class="product-card">
+                <a href="/product?id=<%= accessories[i]._id %>">
+                    <div class="image-container-2">
+                        <img src="/productImages/<%= accessories[i].images[0] %>" alt="product-img" width="100%" height="100%">
+                    </div>
+                </a>
+                <h3 class="product-name"><%= accessories[i].name %></h3>
+                <h3 class="product-name">$<%= accessories[i].price %></h3>
+            </div>
+            
+        <%} %>
+        
+    </div>
+    
+
+
+<%- include("../partials/footer.ejs") %>

@@ -1,11 +1,70 @@
 <header class="header">
     <div class="black-box"></div>
     <div class="menu-container">
-        <div class="brand-container"><a href="#" class="icon-link"><h2 class="brand-name ">BoyZ</h2></a></div>
-        <div><h3><%= pageName %></h3></div>
+        <a href="/" class="icon-link"><h2 class="brand-name ">BoyZ</h2></a>
+        
+        
         <div class="menu-item-container">
-            <a href="#" class="material-symbols-outlined icon-link"> account_circle</a>
-            <a href="#">signout</a>
+            <% if( !user  ||(user && user.is_admin === false)){
+            %>
+            <div class="dropdown">
+                    <p class="category-dropdown">shop <span class="symbol-format">></span></p>
+                    <div class="category-list"> 
+                       <div class="flex ">
+
+                            
+                              <% for (let i = 0; i < category.length; i++) { %>
+                                <% if (i % 5 === 0) { %>
+                                  <% if (i !== 0) { %></div><% } %>
+                                  <div>
+                                <% } %>
+                                <a href="/products?cat=<%= category[i].name %>"><%= category[i].name %></a>
+                              <% } %>
+                            </div>
+
+                        </div>
+                    </div>
+                   
+            </div>
+            <div class="search-container">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Search for product..." class="query-style">
+            </div>
+            <div><a href="#" class="material-symbols-outlined icon-link"> favorite</a></div>
+            <div><a href="#" class="material-symbols-outlined icon-link"> shopping_cart</a></div>
+
+                
+                
+                
+            <%} %>
+            <div><a href="#" class="material-symbols-outlined icon-link"> account_circle</a></div>
+
+            
+            <%if (!user) {%> 
+                <div><button type="button" onclick="openLoginModal()" class="btn">Login</button></div>
+                /
+                <div><button type="button" onclick="openSignupModal()" class="btn">Signup</a></div>
+                
+                
+            <%}else{%>
+                <%if (user.is_admin) {%>
+                    <a href="/admin/logout">Signout</a>
+                    <%} else {%>
+                        <a href="/logout">Signout</a>
+               <% }%>
+                
+            <%}%>
+            
         </div>
     </div>
 </header> 
+
+<% if (!user  ||(user && user.is_admin === false)) {%>
+    <div class="modalContainer" id="loginModal" onclick="closeModal(event)">
+    <%- include("./signup.ejs") %>
+    <%- include("./login.ejs") %> 
+</div>
+<%}%>
+
+
+
