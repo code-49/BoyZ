@@ -1,2 +1,2 @@
 # BoyZ
-An e-commerce website project.
+An e-commerce website for selling men's cloths and accessories.
