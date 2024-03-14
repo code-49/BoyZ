@@ -1,0 +1,18 @@
+<%- include("../partials/head.ejs") %>
+<header class="header">
+    <div class="black-box"></div>
+    <div class="menu-container">
+        <a href="/" class="icon-link"><h2 class="brand-name ">BoyZ</h2></a>
+    </div>
+</header> 
+<br>
+<br>
+<% if(verify){ %>
+    <h1>Email is verified you can go back and login</h1>
+    
+<% }else{ %>
+    <h1>please verify the email</h1>
+<% } %>
+
+</body>
+</html>

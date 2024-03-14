@@ -1,0 +1,61 @@
+<div id="orders" class="profile-content-2">
+    <h2>Order History</h2>
+
+            <% orders.forEach((element,index) => {%>
+                <div class="font-family order-container">
+                    <div class="flex justify-between">
+                        <div><h4><span class="label-simple">Order No:</span> <%=element.orderNo%></h4>
+                        <h4><span class="label-simple">Status:</span> <%=element.status%></h4></div>
+                        <div><h4><span class="label-simple">Payment Method:</span> <%=element.paymentMethode%> </h4>
+                        <h4><span class="label-simple">Total Price:</span> &#8377;<%=element.totalAmount%></h4></div>
+                        
+                        <% switch (element.status) {
+                            case "Delivered":%>
+                            <h4><button type="button" class="text-red cancel-btn" onclick="returnOrder('<%=element._id%>')">return</button></h4>
+                        <%
+                            break;
+                            case "Cancelled":%>
+                            <h4></h4> 
+                        <%
+                            break;
+                            case "Returned":%>
+                            <h4></h4> 
+                        <%
+                            break;
+                            default:%>
+                            <h4><button type="button" class="text-red cancel-btn" onclick="cancelOrder('<%=element._id%>')">cancell</button></h4>
+                              <%  break;
+                        } %>
+                    </div>
+                    <% element.products.forEach(product => {%>
+                        <hr>
+                    <div class="flex">
+                        <div><img src="/productImages/<%= product.image  %>" alt="img" class="img-size"></div>
+                        <div>
+                            <table class="order-table">
+                                <tr>
+                                    <td><p class="label-simple">product:</p></td>
+                                    <td><h4><%= product.name  %></h4></td>
+                                </tr>
+                                <tr>
+                                    <td><p class="label-simple">price:</p></td>
+                                    <td><h4>&#8377;<%= product.soldPrice  %></h4></td>
+                                </tr>
+                                <tr>
+                                    <td><p class="label-simple">Quantity:</p></td>
+                                    <td><h4><%= product.quantity  %></h4></td>
+                                </tr>
+                            </table>            
+                        </div>  
+                    </div>
+                    <%}); %>
+                    <div><h4><span class="label-simple">shipping Address: </span><%= element.shippingAddress %></h4></div>
+                </div>
+            <% }); %>
+    
+</div>
+<div class="center-container" id="cancelResponse" onclick="closeOrderResponse(event)">
+    <div class="box">
+        <p id="cancelMessage" class="text-success"></p>
+    </div>
+</div>

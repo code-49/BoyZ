@@ -1,0 +1,57 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/menu.ejs") %>
+
+<div class="flex">
+    <div class="profile-contaner">
+        <div class="profile-menu">
+            <button type="button" class="profile-menu-button" onclick="changeContent('profile')">profile</button>
+            <button type="button" class="profile-menu-button" onclick="changeContent('orders')">orders</button>
+        </div>
+        <%- include("../partials/profile.ejs") %>
+        <%- include("../partials/order.ejs") %>
+    </div>
+    
+</div>
+<script>
+    let cancelResponse = document.getElementById("cancelResponse");
+    let cancelMessage = document.getElementById("cancelMessage");
+
+    function cancelOrder(id){
+         fetch(`/profile/cancellOrder/${id}`)
+         .then(async(result)=>{
+            result = await result.json();
+            if(result.success){
+                cancelResponse.style.display = "grid";
+                cancelMessage.innerHTML = result.message;
+            }else{
+                cancelResponse.style.display = "grid";
+                cancelMessage.innerHTML = "Unable to cancel order!";
+            }
+         })     
+    }
+
+    function returnOrder(id){
+        fetch(`/profile/returnOrder/${id}`)
+         .then(async(result)=>{
+            result = await result.json();
+            if(result.success){
+                cancelResponse.style.display = "grid";
+                cancelMessage.innerHTML = result.message;
+            }else{
+                cancelResponse.style.display = "grid";
+                cancelMessage.innerHTML = "Unable to cancel order!";
+            }
+         })
+    }
+
+    function closeOrderResponse(event) {
+        let target = event.target;
+        if (target == cancelResponse) {
+            cancelResponse.style.display = "none";
+        }
+    }
+</script>
+<script src="profile.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

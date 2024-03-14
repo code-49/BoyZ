@@ -1,0 +1,27 @@
+<div class="filter-table">
+<h2>Filter</h2>
+<hr>
+<form >
+    <% for (let i = 0; i < category.length; i++) { %>
+        <div>
+        <label ><input type="radio" name="cat" value="<%= category[i].name %>"><%= category[i].name %></label> 
+        </div>
+    <% } %> 
+    <hr>
+        <p>Max</p>
+        <input type="number" id="max" name="max" value="10000">
+        <p>Min</p>
+        <input type="number" id="min" name="min" value="0">
+    <hr>
+    <div>
+        <label><input type="radio" name="size" value="s">sm</label>
+        <label><input type="radio" name="size" value="m">m</label>
+        <label><input type="radio" name="size" value="l">l</label>
+        <label><input type="radio" name="size" value="xl">xl</label>
+        <label><input type="radio" name="size" value="xxl">xxl</label>
+    
+    </div>
+    <input type="submit" value="apply" onclick="sendUrl(event,0)">
+</form>
+    
+</div>

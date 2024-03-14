@@ -1,0 +1,33 @@
+<%- include("../partials/head.ejs") %>
+<header class="header">
+    <div class="black-box"></div>
+    <div class="menu-container">
+        <a href="/" class="icon-link"><h2 class="brand-name ">BoyZ</h2></a>
+    </div>
+</header> 
+<br>
+<br>
+
+<div class="loginCenter">
+    <div id="loginContainer" class="formContainer">
+        <h4 class="login-title">Enter the otp</h4>
+        <form action="" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="input-group">
+                <input type="password" id="otp" name="otp" class="form-control" required>
+            </div>
+            <h4 class="login-title">Enter new password</h4>
+             <div class="input-group">
+                <label for="login-password">password</label>
+                <input type="password" id="login-password" name="password" class="form-control" required>
+            </div>
+            <input type="submit" value="enter" class="loginButton">
+               <% if(!(typeof message == "undefined")){ %>
+                <p><%= message %></p>
+                <% }%>
+        </form>
+    </div>
+    
+</div>
+
+</body>
+</html>

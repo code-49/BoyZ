@@ -1,0 +1,94 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/menu.ejs") %>
+    
+<div class="container">
+<%- include("../partials/sidebar.ejs") %>
+
+<div class="management-content" id="content">
+    
+         
+    <div class="category-content">
+
+    <div class="category-lists">
+        <form>
+            <input type="text" placeholder="search" name="search">
+            <input type="submit" value="search">
+        </form>
+
+        
+        <table class="category-table">
+            <tr class="category-row">
+                <th>Name</th>
+                <th>Description</th>
+                <th>Verified</th>
+                <th>Action</th>
+            </tr>
+            <% for (let i = 0; i < categorys.length; i++) {%>
+                <tr>
+                <td><%=categorys[i].name%></td>
+                <td><%=categorys[i].description%></td>
+                <td><%=categorys[i].verified%></td>
+                <td> 
+                    
+                    <button type="button" class="material-symbols-outlined icon-btn bg-green" onclick="openModal(`<%= JSON.stringify(categorys[i]) %>`)">edit</button>
+                    <a href="/admin/delete-category?id=<%= categorys[i]._id%>" class="material-symbols-outlined icon-btn bg-red">delete</a>
+                </td>
+                </tr>
+            <%} %>
+            
+        </table>
+        <div class="pagination">
+            <% for (let j = 1; j <= totalPages; j++) {%>
+                <a href="?page=<%= j %>&search=<%= search %>" 
+                    <% if(j==currentPage) {%>
+                        class="active"
+                    <% } %>
+                    ><%= j %></a>                    
+            <%} %>
+        </div>
+    </div>
+    <div class="vertical-division"></div>
+    <div class="form-container">
+        <h3 class="bg-blue">Add Category</h3>
+        <form action="" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="input-group-2">
+                <label for="cname">Category Name</label>
+                <input type="text" id="cname" name="name" class="form-control" required>
+            </div>
+            <div class="input-group-2">
+                <label for="cdesc">Description</label>
+                <textarea name="description" id="cdesc" cols="30" rows="10"></textarea>
+            </div>
+            
+            <input type="submit" value="Add New" class="loginButton">
+
+        </form>
+        <% if(typeof categoryAddMessage !== "undefined"){ %>
+        <p><%=categoryAddMessage%></p>
+        <% } %>
+    </div>
+</div>
+</div>
+</div>
+<div class="modal-container" id="categoryModal" onclick="closeModal(event)">
+    <div class="cat-container">
+        <h3 >Edit Category</h3>
+        <form action="/admin/edit-category" method="post" enctype="application/x-www-form-urlencoded">
+            <div class="input-group-2">
+                <label for="name">Category Name</label>
+                <input type="text" id="name" name="name" class="form-control" value="<%= categorys[0].name %>">
+            </div>
+            <div class="input-group-2">
+                <label for="desc">Description</label>
+                <textarea name="description" id="desc" cols="30" rows="8" ></textarea>
+            </div>
+            <label for="verified">verified<input type="checkbox" name="verified" id="verified"></label>
+
+            <input type="hidden" name="user_id" id="id">
+        <input type="submit" value="Edit Category" class="loginButton">
+
+        </form>
+    </div>
+</div>
+<script src="catEdit.js"></script>
+<%- include("../partials/footer.ejs") %>

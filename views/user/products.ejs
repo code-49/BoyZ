@@ -1,0 +1,103 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/menu.ejs") %>
+
+<div class="container">
+
+        <%- include("../partials/filter.ejs") %>
+        <div>
+            
+           
+            <div class="top-container">
+                <% for (let i = 0; i < products.length; i++) {%>
+                <div class="product-card">
+                    <a href="/product/<%= products[i]._id %>">
+                        <div class="image-container">
+                        <img src="/productImages/<%= products[i].images[0] %>" alt="product-img" width="100%" height="100%">
+                        </div>
+                    </a>
+                    
+                    <h3 class="product-name"><%= products[i].name %></h3>
+                    <h3 class="product-name">&#8377;<%= products[i].price %> <span class="offer-style"><%= products[i].discount %>%</span></h3>
+                    <p><%= products[i].size %></p>
+                </div>
+                <%} %>
+                <% if(products.length == 0){ %>
+                    <h2>No results</h2>
+                <% } %>
+            </div>
+            <div class="page-container">
+                <% for (let j = 1; j <= totalPages; j++) {%>
+                    <% if (j == currentPage) {%>
+                        <button type="button" class="pagination-item page-active" ><%= j %></button>
+                    <%} else{%>
+                        <button type="button" class="pagination-item" onclick="sendUrl(event,`<%= j %>`)"><%= j %></button>
+                    <%  }%>
+                                        
+                <%} %>
+            </div>
+        </div>
+    
+
+</div>
+
+
+<script>
+
+function sendUrl(e,page){
+    e.preventDefault();
+    console.log(page)
+    let baseUrl = "http://localhost:3000/products";
+    let radioButtons = document.querySelectorAll('input[name="cat"]');
+    let sizeButtons = document.querySelectorAll('input[name="size"]');   
+    // Iterate through radio buttons to find the selected one
+    let selectedSizeButton;
+    let selectedRadioButton;
+    for (let i = 0; i < sizeButtons.length; i++) {
+        if (sizeButtons[i].checked) {
+            selectedSizeButton = sizeButtons[i];
+            break;
+        }
+    }
+    for (let i = 0; i < radioButtons.length; i++) {
+        if (radioButtons[i].checked) {
+            selectedRadioButton = radioButtons[i];
+            break;
+        }
+    }
+    let min = document.getElementById("min");
+    let max = document.getElementById("max");
+    let category;
+    let size;
+    
+    let pageNum;
+    if(page == 0){
+        pageNum = 1;
+    }else{
+        pageNum = page;
+    }
+    let params = {
+        max: max.value,
+        min: min.value,
+        page:pageNum,
+
+    };
+    if(selectedRadioButton){
+        params.cat = selectedRadioButton.value;
+    }
+    if(selectedSizeButton){
+        params.size = selectedSizeButton.value;
+    }
+
+    let queryString = Object.keys(params)
+        .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(params[key]))
+        .join("&");
+
+    let finalUrl = baseUrl + "?" + queryString;
+console.log(finalUrl)
+    // Redirect to the final URL, triggering a page refresh
+     window.location.href = finalUrl;
+}
+
+
+</script>
+<%- include("../partials/footer.ejs") %>

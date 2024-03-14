@@ -1,0 +1,57 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/menu.ejs") %>
+    
+<div class="container">
+<%- include("../partials/sidebar.ejs") %>
+
+    <div class="management-content" id="content">
+
+        <div class="category-content">
+            
+            <div class="category-lists">
+                <form>
+                    <input type="text" placeholder="search" name="search">
+                    <input type="submit" value="search">
+                </form>
+                
+                <table class="order-list">
+                    <tr class="category-row">
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Verified</th>
+                        <th>Block</th>
+                    </tr>
+                    <% for (let i = 0; i < userList.length; i++) {%>
+                        <tr>
+                        <td><%=userList[i].name%></td>
+                        <td><%=userList[i].email%></td>
+                        <td><%=userList[i].is_verified%></td>
+                        <td> 
+                           <% if(userList[i].blocked == true){%>
+                            <a href="/admin/unblock?id=<%= userList[i]._id%>" class=" icon-btn bg-green">unblock</a>
+                            <% }else{ %>
+                            <a href="/admin/block?id=<%= userList[i]._id%>" class=" icon-btn bg-red">block</a>
+                            <% } %>
+                                
+                                
+                        </td>
+                        </tr>
+                    <%} %>
+                    
+                </table>
+                <div class="pagination">
+                    <% for (let j = 1; j <= totalPages; j++) {%>
+                        <a href="?page=<%= j %>&search=<%= search %>" 
+                            <% if(j==currentPage) {%>
+                                class="active"
+                            <% } %>
+                            ><%= j %></a>                    
+                    <%} %>
+                </div>
+                
+                
+            </div>
+    </div>
+</div>
+ 
+<%- include("../partials/footer.ejs") %>

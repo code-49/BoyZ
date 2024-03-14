@@ -1,0 +1,110 @@
+<header class="header">
+    <div class="black-box"></div>
+    <div class="menu-container">
+        <a href="/" class="icon-link"><h2 class="brand-name ">BoyZ</h2></a>
+        
+        
+        <div class="menu-item-container">
+            <% if( !user  || user.is_admin == false){
+            %>
+            <div class="dropdown">
+                    <p class="category-dropdown">shop <span class="symbol-format">></span></p>
+                    <div class="category-list"> 
+                       <div class="flex ">
+
+                            
+                              <% for (let i = 0; i < category.length; i++) { %>
+                                <% if (i % 5 === 0) { %>
+                                  <% if (i !== 0) { %></div><% } %>
+                                  <div>
+                                <% } %>
+                                <a href="/products?cat=<%= category[i].name %>"><%= category[i].name %></a>
+                              <% } %>
+                            </div>
+
+                        </div> 
+                    </div>
+                   
+            </div>
+            <div class="search-container">
+               <form action="/products">
+                <span class="material-symbols-outlined search-icon">search</span>
+                <input type="text" placeholder="Search for product..." class="query-style" id="searchInput" name="cat">
+                </form>
+                
+          
+                <div class="search-result" id="searchResult"></div>
+            </div>
+            <div class="dropdown">
+                <a href="/wishlist" class="material-symbols-outlined icon-link"> favorite</a>
+                <p id="whishResponse"></p>
+            </div>
+            <div class="dropdown">
+                <a href="/cart" class="material-symbols-outlined icon-link"> shopping_cart</a>
+                <p id="cartMessage"></p>
+            </div>
+
+                
+                
+                
+            <%}%>
+            <%if (user) {%> 
+            <%if (user.is_admin) {%>
+                <div><a href="/admin/profile" class="material-symbols-outlined icon-link"> account_circle</a></div>
+            <%} else {%>
+                <div><a href="/profile" class="material-symbols-outlined icon-link"> account_circle</a></div>
+            <%}%>
+            <%}%>
+
+            
+            <%if (!user) {%> 
+                <div><button type="button" onclick="openLoginModal()" class="btn">Login</button></div>
+                /
+                <div><button type="button" onclick="openSignupModal()" class="btn">Signup</a></div>               
+            <%}else{%>
+                <%if (user.is_admin) {%>
+                        <a href="/admin/logout">Signout</a>
+                    <%} else {%>
+                        <a href="/account/logout">Signout</a>
+                <%}%>             
+            <%}%>
+            
+        </div>
+    </div>
+</header> 
+
+<% if (!user  ||(user && user.is_admin === false)) {%>
+    <div class="modalContainer" id="loginModal" onclick="closeModal(event)">
+    <%- include("./signup.ejs") %>
+    <%- include("./login.ejs") %> 
+    </div>
+<%}%>
+
+<script>
+    const loginURL = "/account/login";
+    const loginForm = document.getElementById("loginForm");
+    const loginMessage = document.getElementById("loginMessage");
+
+    loginMessage.style.display = "none";
+
+    loginForm.addEventListener("submit", async (evnt) => {
+        evnt.preventDefault();
+
+        const formData = new FormData(loginForm);
+        const reqData = new URLSearchParams(formData);
+
+        const response = await fetch(loginURL, {
+            method: "POST",
+            body: reqData,
+        });
+        let data = await response.json();
+        if (data.redirect) {
+            window.location.href = data.redirect;
+        } else {
+            loginMessage.innerHTML = data.message;
+            loginMessage.style.display = "block";
+        }
+        loginForm.reset();
+    });
+</script>
+

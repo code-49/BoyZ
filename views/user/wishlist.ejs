@@ -1,0 +1,29 @@
+<%- include("../partials/head.ejs") %>
+<%- include("../partials/menu.ejs") %>
+
+
+    <div class="flex ml-3 flex-wrap">
+        <%if (!user) {%> 
+            <p>please login to add products to whishlist</p>        
+        <%}else{%>
+        <% if(!products.length ){%>
+                <p>No Products in wishlist</p>
+       <% } else{for (let i = 0; i < products.length; i++) {%>
+            <div class="product-card">
+                <a href="/product/<%= products[i]._id %>">
+                    <div class="image-container">
+                    <img src="/productImages/<%= products[i].images[0] %>" alt="product-img" width="100%" height="100%">
+                    </div>
+                </a>
+                
+                <h3 class="product-name"><%= products[i].name %></h3>
+                <h3 class="product-name">&#8377;<%= products[i].price %> <span class="offer-style"><%= products[i].discount %>%</span></h3>
+                <p><%= products[i].size %></p>
+            </div>
+            <%}} %>
+            <%}%>
+    </div>         
+
+
+
+<%- include("../partials/footer.ejs") %>

@@ -1,0 +1,24 @@
+<% if(user == null || user.is_admin == false){
+    %>
+<footer class="footer">
+    <div>
+        <a href="#" class="icon-link"><h2 class="brand-name ">BoyZ</h2></a>
+        <p class="footer-desc">We have clothes that suits your style and which you're proud to wear.</p>
+        <div class="social-links"></div>
+    </div>
+</footer>
+<%} %>
+<%
+if(user == null || user.is_admin == false){
+%>
+<script src="/script.js"></script>
+
+<%
+}else{
+%>
+<script src="/adminScript.js"></script>
+
+<%}%>
+<script src="/cropperjs/dist/cropper.min.js"></script>
+</body>
+</html>
