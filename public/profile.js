@@ -60,8 +60,9 @@ function openAddress() {
 }
 
 function closeAddress(event) {
-  let target = event.target;
-  if (target == formContainer) {
-    formContainer.style.display = "none";
-  }
+  // let target = event.target;
+  // console.log("this worked", target);
+  // if (target == formContainer) {
+  formContainer.style.display = "none";
+  // }
 }
