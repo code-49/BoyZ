@@ -67,33 +67,30 @@
     </div>
     <button onclick="openAddress()" class="btn-2">add address</button>
 </div>
-<div class="address-form" id="formContainer" onclick="closeAddress(event)">
-    <form id="addressForm" action="/profile/add-address" enctype="application/x-www-form-urlencoded" method="post">
-        <table>
-            <tr>
-                <td><label for="building">building</label></td>
-                <td><input type="text" id="building" name="building" required></td>
-            </tr>
-            <tr>
-                <td><label for="locality">locality</label></td>
-                <td><input type="text" id="locality" name="locality" required></td>
-            </tr>
-            <tr>
-                <td><label for="city">city</label></td>
-                <td><input type="text" id="city" name="city" required></td>
-            </tr>
-            <tr>
-                <td><label for="state">state</label></td>
-                <td><input type="text" id="state" name="state" required></td>
-            </tr>
-            <tr>
-                <td><label for="pin">pin</label></td>
-                <td><input type="text" id="pin" name="pin" required></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="submit" required></td>
-            </tr>
-        </table>
+<div class="newAddress temp" id="formContainer" onclick="closeAddress(event)">
+    <form action="/profile/add-address" enctype="application/x-www-form-urlencoded" method="post">
+        <div class="input-group">
+            <label for="building">building</label>
+            <input type="text" id="building" name="building" class="form-control" required>
+        </div>
+        <div class="input-group">
+            <label for="locality">locality</label></td>
+            <input type="text" id="locality" name="locality" class="form-control" required>
+        </div>
+        <div class="input-group">
+            <label for="city">city</label></td>
+            <input type="text" id="city" name="city" class="form-control" required>
+        </div>
+        <div class="input-group">
+            <label for="state">state</label></td>
+            <input type="text" id="state" name="state" class="form-control" required>
+        </div>
+        <div class="input-group">
+            <label for="pin">pin</label></td>
+            <input type="text" id="pin" name="pin" class="form-control" required>
+        </div>
+        <input type="submit" value="submit" class="btn-2 bggreen" required>
+        <button type="button" onclick="closeAddress()" class="btn-2 bgred">CANCEL</button>
 
     </form>
 </div>
