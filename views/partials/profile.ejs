@@ -1,71 +1,72 @@
-<div id="profile" class="profile-content">
-    <h2>Profile</h2>
-    <hr>
+<div class="profile-content">
     <div class="flex">
-        <table>
-            <tr>
-                <td>
-                    <p>name:&nbsp; </p>
-                </td>
-                <td>
-                    <p id="profileName">
-                        <%= user.name %>
-                    </p>
-                    <input id="profileNameInput" type="text" value="<%= user.name %>" placeholder="name" name="name">
-                </td>
-                <!-- <td><button type="button" onclick="changeDetails('name')">edit</button></td> -->
-            </tr>
-            <tr>
-                <td>
-                    <p>email:&nbsp;</p>
-                </td>
-                <td>
-                    <p id="profileEmail">
-                        <%= user.email %>
-                    </p>
-                    <input id="profileEmailInput" type="email" value="<%= user.email %>" placeholder="email"
-                        name="email">
-                </td>
-                <!-- <td><button type="button" onclick="changeDetails('age')">edit</button></td> -->
+        <div>
+            <h2>Profile</h2>
+            <hr>
 
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <a href="/profile/changePassword" class="link-normal">Change Password</a>
-                </td>
-            </tr>
-        </table>
-        <div class="border-normal border-radius-5 p-1 w-200px text-align">
+            <table>
+                <tr>
+                    <td>
+                        <p>name:&nbsp; </p>
+                    </td>
+                    <td>
+                        <p id="profileName">
+                            <%= user.name %>
+                        </p>
+                        <!-- <input id="profileNameInput" type="text" value="<%= user.name %>" placeholder="name" name="name"> -->
+                    </td>
+                    <!-- <td><button type="button" onclick="changeDetails('name')">edit</button></td> -->
+                </tr>
+                <tr>
+                    <td>
+                        <p>email:&nbsp;</p>
+                    </td>
+                    <td>
+                        <p id="profileEmail">
+                            <%= user.email %>
+                        </p>
+                        <!-- <input id="profileEmailInput" type="email" value="<%= user.email %>" placeholder="email" name="email"> -->
+                    </td>
+                    <!-- <td><button type="button" onclick="changeDetails('age')">edit</button></td> -->
+
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <a href="/profile/changePassword" class="link-normal">Change Password</a>
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            <h4>address</h4>
+            <div class="flex">
+                <% if(user.address.length>0){
+                    user.address.forEach((element,index) => {%>
+                    <div class="address-box">
+                        <p>
+                            <%= element.building %>,<%= element.locality %>
+                        </p>
+                        <p>
+                            <%= element.city %>
+                        </p>
+                        <p>
+                            <%= element.state %>
+                        </p>
+                        <p>
+                            <%= element.pin %>
+                        </p>
+                        <a href="/profile/delete-address/<%=element._id%>" class="material-symbols-outlined">delete</a>
+                    </div>
+                    <%});}%>
+            </div>
+            <button onclick="openAddress()" class="btn-2">add address</button>
+        </div>
+        <div class="border-normal border-radius-5 p-1 w-200px text-align m-20 h-content">
             <h1>Wallet</h1>
             <hr>
-            <h2> &#8377;<%= user.wallet %>
+            <h2 class="font-green"> &#8377;<%= user.wallet %>
             </h2>
         </div>
-
     </div>
-    <hr>
-    <h4>address</h4>
-    <div class="flex">
-        <% if(user.address.length>0){
-            user.address.forEach((element,index) => {%>
-            <div class="address-box">
-                <p>
-                    <%= element.building %>,<%= element.locality %>
-                </p>
-                <p>
-                    <%= element.city %>
-                </p>
-                <p>
-                    <%= element.state %>
-                </p>
-                <p>
-                    <%= element.pin %>
-                </p>
-                <a href="/profile/delete-address/<%=element._id%>" class="material-symbols-outlined">delete</a>
-            </div>
-            <%});}%>
-    </div>
-    <button onclick="openAddress()" class="btn-2">add address</button>
 </div>
 <div class="newAddress temp" id="formContainer" onclick="closeAddress(event)">
     <form action="/profile/add-address" enctype="application/x-www-form-urlencoded" method="post">
