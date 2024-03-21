@@ -17,6 +17,7 @@ const cartRoutes = require("./routes/user/cartRoutes");
 const profileRoutes = require("./routes/user/profileRoutes");
 const accountRoutes = require("./routes/user/accountRoutes");
 const couponRoutes = require("./routes/user/couponRoutes");
+const orderHistory = require("./routes/user/orderHistoryRoutes");
 ////utils
 const CustomError = require("./utils/customError");
 
@@ -48,6 +49,7 @@ app.use("/profile", profileRoutes);
 app.use("/cart", cartRoutes);
 app.use("/account", accountRoutes);
 app.use("/coupon", couponRoutes);
+app.use("/order-history", orderHistory);
 
 //if no other route doesnt exist
 app.all("*", (req, res, next) => {

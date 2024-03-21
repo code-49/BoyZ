@@ -890,16 +890,19 @@ background-color: #8B909A;
     width: 250px;
     padding: 10px;
 }
-.profile-menu button{
+.profile-menu a{
     display: block;
     width: 100%;
     margin-top: 15px;
-    height: 40px;
+    padding: 15px;
     border: none;
     color: rgb(116, 116, 116);
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 5px;
 }
 
-.profile-menu button:hover{
+.profile-menu a:hover{
     background-color: rgb(204, 204, 204);
 }
 
@@ -1394,4 +1397,13 @@ background-color: #8B909A;
 
   .w-200px{
     width:200px;
+  }
+
+  .font-green{
+    color:#00bd03;
+  }
+
+  .h-content{
+    height: fit-content;
+    margin-top: 50px;
   }
