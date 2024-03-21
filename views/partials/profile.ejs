@@ -1,37 +1,49 @@
 <div id="profile" class="profile-content">
     <h2>Profile</h2>
     <hr>
-    <table>
-        <tr>
-            <td>
-                <p>name:&nbsp; </p>
-            </td>
-            <td>
-                <p id="profileName">
-                    <%= user.name %>
-                </p>
-                <input id="profileNameInput" type="text" value="<%= user.name %>" placeholder="name" name="name">
-            </td>
-            <td><button type="button" onclick="changeDetails('name')">edit</button></td>
-        </tr>
-        <tr>
-            <td>
-                <p>email:&nbsp;</p>
-            </td>
-            <td>
-                <p id="profileEmail">
-                    <%= user.email %>
-                </p>
-                <input id="profileEmailInput" type="email" value="<%= user.email %>" placeholder="email" name="email">
-            </td>
-            <td><button type="button" onclick="changeDetails('age')">edit</button></td>
+    <div class="flex">
+        <table>
+            <tr>
+                <td>
+                    <p>name:&nbsp; </p>
+                </td>
+                <td>
+                    <p id="profileName">
+                        <%= user.name %>
+                    </p>
+                    <input id="profileNameInput" type="text" value="<%= user.name %>" placeholder="name" name="name">
+                </td>
+                <!-- <td><button type="button" onclick="changeDetails('name')">edit</button></td> -->
+            </tr>
+            <tr>
+                <td>
+                    <p>email:&nbsp;</p>
+                </td>
+                <td>
+                    <p id="profileEmail">
+                        <%= user.email %>
+                    </p>
+                    <input id="profileEmailInput" type="email" value="<%= user.email %>" placeholder="email"
+                        name="email">
+                </td>
+                <!-- <td><button type="button" onclick="changeDetails('age')">edit</button></td> -->
 
-        </tr>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a href="/profile/changePassword" class="link-normal">Change Password</a>
+                </td>
+            </tr>
+        </table>
+        <div class="border-normal border-radius-5 p-1 w-200px text-align">
+            <h1>Wallet</h1>
+            <hr>
+            <h2> &#8377;<%= user.wallet %>
+            </h2>
+        </div>
 
-    </table>
-    <h2>Wallet: &#8377;<%= user.wallet %>
-    </h2>
-    <a href="/profile/changePassword" class="forgot-pass bg-pass">Change Password</a>
+    </div>
+    <hr>
     <h4>address</h4>
     <div class="flex">
         <% if(user.address.length>0){
@@ -54,7 +66,10 @@
             <%});}%>
     </div>
 
-    <button onclick="openAddress()">add address</button>
+    <<<<<<< HEAD <button onclick="openAddress()">add address</button>
+        =======
+        <button onclick="openAddress()" class="btn-2">add address</button>
+        >>>>>>> 9613d5891b60f1cb00f39c23b562c1fa51d6f755
 </div>
 <div class="address-form" id="formContainer" onclick="closeAddress(event)">
     <form id="addressForm" action="/profile/add-address" enctype="application/x-www-form-urlencoded" method="post">
