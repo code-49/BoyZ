@@ -1361,3 +1361,31 @@ background-color: #8B909A;
     color:green;
     font-weight: bold;
   }
+
+  .link-normal{
+    color: #0000ff;
+    text-decoration: underline;
+  }
+  .link-normal:hover{
+    color: #7d7dff;
+  }
+
+  .border-normal{
+    border: 1px solid black;
+  }
+
+  .border-radius-5{
+    border-radius: 5px;
+  }
+
+  .p-1{
+    padding: 10px;
+  }
+
+  .text-align{
+    text-align: center;
+  }
+
+  .w-200px{
+    width:200px;
+  }
