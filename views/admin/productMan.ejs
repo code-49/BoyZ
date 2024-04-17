@@ -1,159 +1,211 @@
 <%- include("../partials/head.ejs") %>
-<%- include("../partials/menu.ejs") %>
-    
-<div class="container">
-<%- include("../partials/sidebar.ejs") %>
+    <%- include("../partials/menu.ejs") %>
 
-<div class="management-content" id="content">
-    
-    <div class="category-lists">
-        <table class="product-table">
-            <form>
-                <input type="text" placeholder="search" name="search">
-                <input type="submit" value="search">
-            </form>
-            <% for (let i = 0; i < products.length; i++) {%>
-                <tr>
-                <td>
-                    <table>
-                        <tr>
-                            <td><img src="/productImages/<%= products[i].images[0] %>" alt="img" width="100px" height="auto"></td>
-                            <td><img src="/productImages/<%= products[i].images[1] %>" alt="img" width="100px" height="auto"></td>
-                        </tr>
-                        <tr>
-                            <td><img src="/productImages/<%= products[i].images[2] %>" alt="img" width="100px" height="auto"></td>
-                            <td><img src="/productImages/<%= products[i].images[3] %>" alt="img" width="100px" height="auto"></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table>
-                        <tr><h3><span>Name: </span><%= products[i].name %> </h3></tr>
-                    <tr><p><span>Description: </span><%= products[i].description %> </p></tr>
-                    <tr><div class="flex">
-                        <span>colors: </span>
-                        <% for (let j = 0; j < products[i].color.length; j++) {%>
-                           <div class="product-color" style="background-color:<%= products[i].color[j] %>;"></div>                            
-                       <% } %>
-                        
-                    </div></tr>
-                    <tr><p><span>size: </span><%= products[i].size %> </p></tr>
-                    <tr><p><span>Price: </span><%= products[i].price %> </p></tr>
-                        <tr><p><span>Discount: </span><%= products[i].discount %> </p></tr>
-                        <tr><p><span>Stock: </span><%= products[i].stock %> </p></tr>
-                        <tr>
-                            <button type="button" class="material-symbols-outlined icon-btn bg-green" onclick="openModalPro(`<%= JSON.stringify(products[i]) %>`)">edit</button>
-                    <a href="/admin/delete-product?id=<%= products[i]._id%>" class="material-symbols-outlined icon-btn bg-red">delete</a>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <p>categories</p>
-                    <div class="category-box">
-                        <% for (let j = 0; j < products[i].category.length; j++) {%>
-                            <span class="category-property"><%= products[i].category[j] %></span>
-                         <%} %>
-                    </div> 
-                    
-                </td>
-                </tr>
-            <%} %>
-            
-        </table>
-        <div class="pagination">
-            <% for (let j = 1; j <= totalPages; j++) {%>
-                <a href="?page=<%= j %>&search=<%= search %>" 
-                    <% if(j==currentPage) {%>
-                        class="active"
-                    <% } %>
-                    ><%= j %></a>                    
-            <%} %>
-        </div>
-    </div>
+        <div class="container">
+            <%- include("../partials/sidebar.ejs") %>
 
-    
+                <div class="management-content" id="content">
 
-</div>
-</div>
-<div class="modal-container" id="productModal" onclick="closeModalPro(event)">
+                    <div class="category-lists">
+                        <table class="product-table">
+                            <form>
+                                <input type="text" placeholder="search" name="search">
+                                <input type="submit" value="search">
+                            </form>
+                            <% for (let i=0; i < products.length; i++) {%>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td><img src="/productImages/<%= products[i].images[0] %>" alt="img"
+                                                        width="100px" height="auto"></td>
+                                                <td><img src="/productImages/<%= products[i].images[1] %>" alt="img"
+                                                        width="100px" height="auto"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><img src="/productImages/<%= products[i].images[2] %>" alt="img"
+                                                        width="100px" height="auto"></td>
+                                                <td><img src="/productImages/<%= products[i].images[3] %>" alt="img"
+                                                        width="100px" height="auto"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <h3><span>Name: </span>
+                                                    <%= products[i].name %>
+                                                </h3>
+                                            </tr>
+                                            <tr>
+                                                <p><span>Description: </span>
+                                                    <%= products[i].description %>
+                                                </p>
+                                            </tr>
+                                            <tr>
+                                                <div class="flex">
+                                                    <span>colors: </span>
+                                                    <% for (let j=0; j < products[i].color.length; j++) {%>
+                                                        <div class="product-color"
+                                                            style="background-color:<%= products[i].color[j] %>;"></div>
+                                                        <% } %>
 
-<div class="management-content" >
-    
-    <form action="/admin/edit-product" method="POST" enctype="multipart/form-data">
-        
-        <div class="flex space-btw">
-            <div class="product-details">
-                <h3 class="product-head">Product Details</h3>
-                <table>
-                    <tr>
-                        <td><label for="name">name </label></td>
-                        <td><input type="text" id="productName" name="name" class="form-control" required></td>
-                        <td>
-                            <label for="size">Size</label>
-                            <select id="size" name="size" required class="form-control-select" required>
-                                <option value="s">S</option>
-                                <option value="m">M</option>
-                                <option value="l">L</option>
-                                <option value="xl">XL</option>
-                                <option value="xxl">XXL</option>
-                                <option value="xxxl">XXXL</option>
-                            </select>
-                        </td>
-                        <td><img src="" id="img1" width="50px" height="auto"></td>
-                        <td><button type="button" id="delete1" class="material-symbols-outlined icon-btn bg-red">delete</button></td>
-                        <td><p id="del1mess"></p></td>
-                    </tr>
-                    <tr>
-                        <td><label for="desc">description </label></td>
-                        <td><textarea id="desc" name="description" cols="30" rows="10" class="form-control-textarea" required></textarea></td>
-                        <td><label for="colorPicker">color</label><input type="color" id="colorPicker" name="colors[]" class="form-control-color" required></td>
-                        <td><img src="" id="img2" width="50px" height="auto"></td>
-                        <td><button type="button" id="delete2" class="material-symbols-outlined icon-btn bg-red">delete</button></td>
-                        <td><p id="del2mess"></p></td>
-                    </tr>
-                    <tr>
-                        <td><label for="price">price </label></td>
-                        <td><input type="number" id="price" name="price" class="form-control" required></td>
-                        <td>
-                            <label for="category">category</label>
-                            <select id="category" name="category[]" required class="form-control-select" >
-                                <% for (let i = 0; i < category.length; i++) {%>
-                                    <option value="<%= category[i].name %>"><%= category[i].name %></option>                                    
+                                                </div>
+                                            </tr>
+                                            <tr>
+                                                <p><span>size: </span>
+                                                    <%= products[i].size %>
+                                                </p>
+                                            </tr>
+                                            <tr>
+                                                <p><span>Price: </span>
+                                                    <%= products[i].price %>
+                                                </p>
+                                            </tr>
+                                            <tr>
+                                                <p><span>Discount: </span>
+                                                    <%= products[i].discount %>
+                                                </p>
+                                            </tr>
+                                            <tr>
+                                                <p><span>Stock: </span>
+                                                    <%= products[i].stock %>
+                                                </p>
+                                            </tr>
+                                            <tr>
+                                                <a class="material-symbols-outlined icon-btn bg-green"
+                                                    href="/admin/edit-product/<%= products[i]._id%>">edit</button>
+                                                    <a href="/admin/delete-product?id=<%= products[i]._id%>"
+                                                        class="material-symbols-outlined icon-btn bg-red">delete</a>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <p>categories</p>
+                                        <div class="category-box">
+                                            <% for (let j=0; j < products[i].category.length; j++) {%>
+                                                <span class="category-property">
+                                                    <%= products[i].category[j] %>
+                                                </span>
+                                                <%} %>
+                                        </div>
+
+                                    </td>
+                                </tr>
                                 <%} %>
-                                
-                            </select>
-                        </td>
-                        <td><img src="" id="img3" width="50px" height="auto"></td>
-                        <td><button type="button" id="delete3" class="material-symbols-outlined icon-btn bg-red">delete</button></td>
-                        <td><p id="del3mess"></p></td>
-                    </tr>
-                    <tr>
-                        <td><label for="disc">discount </label></td>
-                        <td><input type="number" id="disc" name="discount" class="form-control"></td>
-                        <td></td>
-                        <td><img src="" id="img4" width="50px" height="auto"></td>
-                        <td><button type="button" id="delete4" class="material-symbols-outlined icon-btn bg-red">delete</button></td>
-                        <td><p id="del4mess"></p></td>
-                    </tr>
-                    <tr>
-                        <input type="hidden" name="user_id" id="id">
-                        <td><label for="stock">Stock </label></td>
-                        <td><input type="number" id="stock" name="stock" class="form-control" required></td>
-                        <td><input type="submit" value="Update" class="loginButton"></td>
-                        
-                    </tr> 
-                </table>
-                
-            </div>
-            
-        </div>
-        
-        
-    </form>
-    
-</div>
-</div>
 
- <script src="proEdit.js"></script>
-<%- include("../partials/footer.ejs") %>
-   
+                        </table>
+                        <div class="pagination">
+                            <% for (let j=1; j <=totalPages; j++) {%>
+                                <a href="?page=<%= j %>&search=<%= search %>" <% if(j==currentPage) {%>
+                                    class="active"
+                                    <% } %>
+                                        ><%= j %>
+                                </a>
+                                <%} %>
+                        </div>
+                    </div>
+
+
+
+                </div>
+        </div>
+        <div class="modal-container" id="productModal" onclick="closeModalPro(event)">
+
+            <div class="management-content">
+
+                <form action="/admin/edit-product" method="POST" enctype="multipart/form-data">
+
+                    <div class="flex space-btw">
+                        <div class="product-details">
+                            <h3 class="product-head">Product Details</h3>
+                            <table>
+                                <tr>
+                                    <td><label for="name">name </label></td>
+                                    <td><input type="text" id="productName" name="name" class="form-control" required>
+                                    </td>
+                                    <td>
+                                        <label for="size">Size</label>
+                                        <select id="size" name="size" required class="form-control-select" required>
+                                            <option value="s">S</option>
+                                            <option value="m">M</option>
+                                            <option value="l">L</option>
+                                            <option value="xl">XL</option>
+                                            <option value="xxl">XXL</option>
+                                            <option value="xxxl">XXXL</option>
+                                        </select>
+                                    </td>
+                                    <td><img src="" id="img1" width="50px" height="auto"></td>
+                                    <td><button type="button" id="delete1"
+                                            class="material-symbols-outlined icon-btn bg-red">delete</button></td>
+                                    <td>
+                                        <p id="del1mess"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="desc">description </label></td>
+                                    <td><textarea id="desc" name="description" cols="30" rows="10"
+                                            class="form-control-textarea" required></textarea></td>
+                                    <td>
+                                        <label for="category">category</label>
+                                        <select id="category" name="category[]" required class="form-control-select">
+                                            <% for (let i=0; i < category.length; i++) {%>
+                                                <option value="<%= category[i].name %>">
+                                                    <%= category[i].name %>
+                                                </option>
+                                                <%} %>
+
+                                        </select>
+                                    </td>
+                                    <td><img src="" id="img2" width="50px" height="auto"></td>
+                                    <td><button type="button" id="delete2"
+                                            class="material-symbols-outlined icon-btn bg-red">delete</button></td>
+                                    <td>
+                                        <p id="del2mess"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="price">price </label></td>
+                                    <td><input type="number" id="price" name="price" class="form-control" required></td>
+                                    <td><label for="colorPicker">color</label><input type="color" id="colorPicker"
+                                            name="colors[]" class="form-control-color" required></td>
+
+                                    <td><img src="" id="img3" width="50px" height="auto"></td>
+                                    <td><button type="button" id="delete3"
+                                            class="material-symbols-outlined icon-btn bg-red">delete</button></td>
+                                    <td>
+                                        <p id="del3mess"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="disc">discount </label></td>
+                                    <td><input type="number" id="disc" name="discount" class="form-control"></td>
+                                    <td></td>
+                                    <td><img src="" id="img4" width="50px" height="auto"></td>
+                                    <td><button type="button" id="delete4"
+                                            class="material-symbols-outlined icon-btn bg-red">delete</button></td>
+                                    <td>
+                                        <p id="del4mess"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <input type="hidden" name="user_id" id="id">
+                                    <td><label for="stock">Stock </label></td>
+                                    <td><input type="number" id="stock" name="stock" class="form-control" required></td>
+                                    <td><input type="submit" value="Update" class="loginButton"></td>
+
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+        </div>
+
+        <script src="proEdit.js"></script>
+        <%- include("../partials/footer.ejs") %>

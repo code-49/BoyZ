@@ -82,14 +82,20 @@ function numIncrement(num, id, request, index) {
   } else if (num > 0 && value < 10) {
     value += num;
   }
-  items.value = value;
   request = request || false;
   if (request) {
     let pid = document.getElementById(`productID-${index}`);
     fetch(
       `/cart/change-quantity?quantity=${value}&productId=${pid.value}`
     ).then(async (result) => {
-      window.location.href = await result.text();
+      const data = await result.text();
+      if (data == "/cart") {
+        items.value = value;
+        window.location.href = data;
+        document.getElementById("stock").innerText = "";
+      } else {
+        document.getElementById("stock").innerText = data;
+      }
     });
   }
 }

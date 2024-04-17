@@ -117,10 +117,14 @@ const change_quantity = tryCatch(async (req, res) => {
   const productIndex = user.cart.findIndex((cartItem) =>
     cartItem.product.equals(req.query.productId)
   );
-
-  user.cart[productIndex].quantity = req.query.quantity;
-  await user.save();
-  res.send("/cart");
+  const product = await ProductModel.findOne({ _id: req.query.productId });
+  if (parseInt(req.query.quantity) < product.stock) {
+    user.cart[productIndex].quantity = req.query.quantity;
+    await user.save();
+    res.send("/cart");
+  } else {
+    res.send("Product limit reached!");
+  }
 });
 
 //delete product from cart
@@ -145,6 +149,7 @@ const place_order = tryCatch(async (req, res) => {
   const id = req.session.userID;
   const user = await UserModel.findOne({ _id: id });
   const products = await getCartProduct(user.cart);
+  await changeStock(user.cart);
   const orderNo = `#${generateOTP(4)}`;
   const orderProducts = products.map((element) => {
     const sold = element.price * (1 - element.discount / 100);
@@ -179,6 +184,7 @@ const create_order = tryCatch(async (req, res) => {
   const id = req.session.userID;
   const user = await UserModel.findOne({ _id: id });
   const products = await getCartProduct(user.cart);
+  await changeStock(user.cart);
   const orderNo = `#${generateOTP(4)}`;
   const orderProducts = products.map((element) => {
     const sold = element.price * (1 - element.discount / 100);
@@ -270,6 +276,8 @@ async function getCartProduct(productId) {
       productId.map(async (element) => {
         let product = await ProductModel.findOne({ _id: element.product });
         product = { ...product.toObject(), quantity: element.quantity };
+        if (element.quantity > product.stock)
+          product.message = "Product stock limit!";
         return product;
       })
     );
@@ -277,4 +285,16 @@ async function getCartProduct(productId) {
   } catch (error) {
     return error.message;
   }
+}
+
+async function changeStock(productId) {
+  const products = await Promise.all(
+    productId.map(async (element) => {
+      let product = await ProductModel.updateOne(
+        { _id: element.product },
+        { $inc: { stock: -element.quantity } }
+      );
+    })
+  );
+  return products;
 }
