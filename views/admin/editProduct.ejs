@@ -1,0 +1,353 @@
+<%- include("../partials/head.ejs") %>
+    <%- include("../partials/menu.ejs") %>
+
+        <div class="container">
+            <%- include("../partials/sidebar.ejs") %>
+
+                <div class="management-content" id="content">
+
+                    <form action="/admin/edit-product" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="user_id" id="id" value="<%= product._id %>">
+                        <div class="flex space-btw">
+                            <div class="product-details">
+                                <h3 class="product-head">Edit Product</h3>
+                                <table>
+                                    <tr>
+                                        <td><label for="name">name </label></td>
+                                        <td><input type="text" id="name" name="name" class="form-control"
+                                                value="<%= product.name %>" required></td>
+                                        <td>
+                                            <label for="size">Size</label>
+                                            <select id="size" name=" size" required class="form-control-select"
+                                                required>
+                                                <option value="s">S</option>
+                                                <option value="m">M</option>
+                                                <option value="l">L</option>
+                                                <option value="xl">XL</option>
+                                                <option value="xxl">XXL</option>
+                                                <option value="xxxl">XXXL</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="desc">description </label></td>
+                                        <td><textarea id="desc" name="description" cols="30" rows="10"
+                                                class="form-control-textarea"
+                                                required><%= product.description %></textarea></td>
+                                        <td><label for="colorPicker">color</label><input type="color" id="colorPicker"
+                                                name="colors[]" value="<%= product.color %>" class="form-control-color"
+                                                required></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="price">price </label></td>
+                                        <td><input type="number" id="price" name="price" class="form-control"
+                                                value="<%= product.price %>" required>
+                                        </td>
+                                        <td>
+                                            <label for="category">category</label>
+                                            <select id="category" name="category[]" required
+                                                class="form-control-select">
+                                                <% for (let i=0; i < category.length; i++) {%>
+                                                    <option value="<%= category[i].name %>">
+                                                        <%= category[i].name %>
+                                                    </option>
+                                                    <%} %>
+
+
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="disc">discount </label></td>
+                                        <td><input type="number" id="disc" name="discount"
+                                                value="<%= product.discount %>" class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="stock">Stock </label></td>
+                                        <td><input type="number" id="stock" name="stock" class="form-control"
+                                                value="<%= product.stock %>" required>
+                                        </td>
+                                        <td><input type="submit" value="Edit Product" class="loginButton"></td>
+                                    </tr>
+                                    <% if(!(typeof add_product_message=="undefined" )){ %>
+                                        <tr>
+                                            <p class="error-message">
+                                                <%= add_product_message %>
+                                            </p>
+                                        </tr>
+                                        <% } %>
+
+                                </table>
+
+                            </div>
+                            <div class="side-images">
+                                <input type="file" name="image1" id="img1">
+                                <input type="file" name="image2" id="img2">
+                                <input type="file" name="image3" id="img3">
+                                <input type="file" name="image4" id="img4">
+                                <img src="/productImages/<%= product.images[0] %>" alt="img" class="product-img"
+                                    id="ph1">
+
+                                <div class="image-box-2">
+                                    <div class="side-img-box"><img src="/productImages/<%= product.images[1] %>"
+                                            alt="img" class="extra-img" id="ph3" width="100px" height="100px"> </div>
+                                    <div class="side-img-box"><img src="/productImages/<%= product.images[2] %>"
+                                            alt="img" class="extra-img" id="ph2" width="100px" height="100px"></div>
+
+                                </div>
+                                <div class="image-box-2">
+                                    <div class="side-img-box"><img src="/productImages/<%= product.images[3] %>"
+                                            alt="img" class="extra-img" id="ph4" width="100px" height="100px"></div>
+                                    <!-- <div class="side-img-box"><img src="/productImages/<%= product.images[4] %>"
+                                            alt="img" class="extra-img" id="ph5" width="100px" height="100px"></div> -->
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                    <div class="photo-edit" id="imageBox1">
+                        <div class="photo-container">
+                            <img src="" id="cropImg1">
+                        </div>
+                        <button type="button" id="cropit1">Crop</button>
+                    </div>
+                    <div class="photo-edit" id="imageBox2">
+                        <div class="photo-container">
+                            <img src="" id="cropImg2">
+                        </div>
+                        <button type="button" id="cropit2">Crop</button>
+                    </div>
+                    <div class="photo-edit" id="imageBox3">
+                        <div class="photo-container">
+                            <img src="" id="cropImg3">
+                        </div>
+                        <button type="button" id="cropit3">Crop</button>
+                    </div>
+                    <div class="photo-edit" id="imageBox4">
+                        <div class="photo-container">
+                            <img src="" id="cropImg4">
+                        </div>
+                        <button type="button" id="cropit4">Crop</button>
+                    </div>
+                </div>
+        </div>
+
+
+        <script>
+            document.addEventListener( 'DOMContentLoaded', function ()
+            {
+                const sizeSelect = document.getElementById( 'size' );
+                const category = document.getElementById( 'category' );
+                const productSize = '<%= product.size %>';
+                const cat = '<%= product.category[0] %>';
+                if ( productSize )
+                {
+                    sizeSelect.value = productSize;
+                }
+                if ( cat )
+                {
+                    category.value = cat;
+                }
+            } );
+            // image upload
+
+            let input1 = document.getElementById( "img1" );
+            let input2 = document.getElementById( "img2" );
+            let input3 = document.getElementById( "img3" );
+            let input4 = document.getElementById( "img4" );
+
+            let ph1 = document.getElementById( "ph1" );
+            let ph2 = document.getElementById( "ph2" );
+            let ph3 = document.getElementById( "ph3" );
+            let ph4 = document.getElementById( "ph4" );
+
+            let crop1 = document.getElementById( "cropImg1" );
+            let crop2 = document.getElementById( "cropImg2" );
+            let crop3 = document.getElementById( "cropImg3" );
+            let crop4 = document.getElementById( "cropImg4" );
+
+            let croppButton1 = document.getElementById( "cropit1" );
+            let croppButton2 = document.getElementById( "cropit2" )
+            let croppButton3 = document.getElementById( "cropit3" )
+            let croppButton4 = document.getElementById( "cropit4" )
+
+            let imageBox1 = document.getElementById( "imageBox1" );
+            let imageBox2 = document.getElementById( "imageBox2" )
+            let imageBox3 = document.getElementById( "imageBox3" )
+            let imageBox4 = document.getElementById( "imageBox4" )
+
+            imageBox1.style.display = "none";
+            imageBox2.style.display = "none";
+            imageBox3.style.display = "none";
+            imageBox4.style.display = "none";
+
+            input1.style.display = "none";
+            input2.style.display = "none";
+            input3.style.display = "none";
+            input4.style.display = "none";
+
+            input1.addEventListener( "change", function ()
+            {
+                imageBox1.style.display = "block";
+                const file = input1.files[ 0 ];
+
+                if ( file )
+                {
+                    const imageURL = URL.createObjectURL( file );
+                    crop1.src = imageURL;
+
+                    const cropper = new Cropper( crop1, {
+                        aspectRatio: 1,
+                        viewMode: 0
+                    } )
+                    croppButton1.addEventListener( "click", () =>
+                    {
+
+                        const croppedCanvas = cropper.getCroppedCanvas();
+
+                        // Convert the canvas to a Blob (file)
+                        croppedCanvas.toBlob( ( blob ) =>
+                        {
+                            // Create a new File object from the Blob
+                            const croppedFile = new File( [ blob ], "cropped-image.png", { type: "image/png" } );
+
+                            // Replace the original file in the input
+                            input1.files[ 0 ] = croppedFile;
+
+                            // Display the cropped image
+                            ph1.src = URL.createObjectURL( croppedFile );
+                        } );
+                        imageBox1.style.display = "none";
+                    } )
+
+                }
+            } );
+            input2.addEventListener( "change", function ()
+            {
+                imageBox2.style.display = "block";
+                const file = input2.files[ 0 ];
+
+                if ( file )
+                {
+                    const imageURL = URL.createObjectURL( file );
+                    crop2.src = imageURL;
+
+                    const cropper = new Cropper( crop2, {
+                        aspectRatio: 1,
+                        viewMode: 0
+                    } )
+                    croppButton2.addEventListener( "click", () =>
+                    {
+
+                        const croppedCanvas = cropper.getCroppedCanvas();
+
+                        // Convert the canvas to a Blob (file)
+                        croppedCanvas.toBlob( ( blob ) =>
+                        {
+                            // Create a new File object from the Blob
+                            const croppedFile = new File( [ blob ], "cropped-image.png", { type: "image/png" } );
+
+                            // Replace the original file in the input
+                            input2.files[ 0 ] = croppedFile;
+
+                            // Display the cropped image
+                            ph2.src = URL.createObjectURL( croppedFile );
+                        } );
+                        imageBox2.style.display = "none";
+                    } )
+                }
+            } );
+            input3.addEventListener( "change", function ()
+            {
+                imageBox3.style.display = "block";
+                const file = input3.files[ 0 ];
+
+                if ( file )
+                {
+                    const imageURL = URL.createObjectURL( file );
+                    crop3.src = imageURL;
+
+                    const cropper = new Cropper( crop3, {
+                        aspectRatio: 1,
+                        viewMode: 0
+                    } )
+                    croppButton3.addEventListener( "click", () =>
+                    {
+
+                        const croppedCanvas = cropper.getCroppedCanvas();
+
+                        // Convert the canvas to a Blob (file)
+                        croppedCanvas.toBlob( ( blob ) =>
+                        {
+                            // Create a new File object from the Blob
+                            const croppedFile = new File( [ blob ], "cropped-image.png", { type: "image/png" } );
+
+                            // Replace the original file in the input
+                            input3.files[ 0 ] = croppedFile;
+
+                            // Display the cropped image
+                            ph3.src = URL.createObjectURL( croppedFile );
+                        } );
+                        imageBox3.style.display = "none";
+                    } )
+                }
+            } );
+            input4.addEventListener( "change", function ()
+            {
+                imageBox4.style.display = "block";
+                const file = input4.files[ 0 ];
+
+                if ( file )
+                {
+                    const imageURL = URL.createObjectURL( file );
+                    crop4.src = imageURL;
+
+                    const cropper = new Cropper( crop4, {
+                        aspectRatio: 1,
+                        viewMode: 0
+                    } )
+                    croppButton4.addEventListener( "click", () =>
+                    {
+
+                        const croppedCanvas = cropper.getCroppedCanvas();
+
+                        // Convert the canvas to a Blob (file)
+                        croppedCanvas.toBlob( ( blob ) =>
+                        {
+                            // Create a new File object from the Blob
+                            const croppedFile = new File( [ blob ], "cropped-image.png", { type: "image/png" } );
+
+                            // Replace the original file in the input
+                            input4.files[ 0 ] = croppedFile;
+
+                            // Display the cropped image
+                            ph4.src = URL.createObjectURL( croppedFile );
+                        } );
+                        imageBox4.style.display = "none";
+                    } )
+                }
+            } );
+
+
+
+            ph1.addEventListener( "click", function ()
+            {
+                input1.click();
+
+            } );
+            ph2.addEventListener( "click", function ()
+            {
+                input2.click();
+            } );
+            ph3.addEventListener( "click", function ()
+            {
+                input3.click();
+            } );
+            ph4.addEventListener( "click", function ()
+            {
+                input4.click();
+            } );
+        </script>
+        <%- include("../partials/footer.ejs") %>

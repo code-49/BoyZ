@@ -121,7 +121,7 @@
                 </div>
                 <div class="flex justify-between">
                   <p>discount</p>
-                  <p class="text-red">- &#8377;<%= discount %>
+                  <p class="text-red">- &#8377;<%=parseInt(discount) %>
                   </p>
                 </div>
                 <% coupons.forEach(element=> {%>
@@ -135,7 +135,7 @@
                     <hr>
                     <div class="flex justify-between">
                       <p>total</p>
-                      <p id="total" data-total="<%= total %>">&#8377;<%= total %>
+                      <p id="total" data-total="<%= total %>">&#8377;<%=parseInt(total) %>
                       </p>
                     </div>
                     <button type="button" class="cart-btn btn-add" onclick="goToAddress()" id="addressBtn">proceed to

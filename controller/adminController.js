@@ -7,6 +7,8 @@ const CategoryModel = require("../models/categoryModel");
 const UserModel = require("../models/userModel");
 const OrderModel = require("../models/orderModel");
 
+const { productValidation } = require("../utils/validtor");
+
 const get_user = async (id) => {
   let user = await UserModel.findOne({ _id: id });
 
@@ -300,42 +302,57 @@ const edit_category = async (req, res) => {
 const edit_product = async (req, res) => {
   try {
     let objectId = new mongoose.Types.ObjectId(req.body.user_id);
-    const uploadedFileNames = [];
-    Object.keys(req.files).forEach((fieldname) => {
-      const filesForField = req.files[fieldname];
-
-      filesForField.forEach((file) => {
-        const filename = file.filename;
-        uploadedFileNames.push(filename);
+    const user = await get_user(req.session.admin_id);
+    const category = await CategoryModel.find({}, { name: 1 });
+    let product = await ProductModel.findOne({ _id: objectId });
+    const proVal = productValidation(req.body);
+    if (proVal) {
+      return res.render("editProduct", {
+        user,
+        category,
+        product,
+        add_product_message: proVal,
       });
-    });
-    const updateObject = {
-      $set: {
-        name: req.body.name,
-        description: req.body.description,
-        color: req.body.colors,
-        size: req.body.size,
-        price: req.body.price,
-        discount: req.body.discount,
-        stock: req.body.stock,
-      },
-      $addToSet: {
-        category: req.body.category,
-      },
-    };
+    } else {
+      // const uploadedFileNames = [];
 
-    // Conditionally add the images property
-    if (uploadedFileNames && uploadedFileNames.length > 0) {
-      updateObject.$set.images = uploadedFileNames;
+      // Object.keys(req.files).forEach((fieldname) => {
+      //   const filesForField = req.files[fieldname];
+
+      //   filesForField.forEach((file) => {
+      //     const filename = file.filename;
+      //     console.log("Files: ", file.filename);
+      //     uploadedFileNames.push(filename);
+      //   });
+      // });
+      const updateObject = {
+        $set: {
+          name: req.body.name,
+          description: req.body.description,
+          color: req.body.colors,
+          size: req.body.size,
+          price: req.body.price,
+          discount: req.body.discount,
+          stock: req.body.stock,
+        },
+        $addToSet: {
+          category: req.body.category,
+        },
+      };
+
+      // Conditionally add the images property
+      // if (uploadedFileNames && uploadedFileNames.length > 0) {
+      //   updateObject.$set.images = uploadedFileNames;
+      // }
+
+      const updateResponse = await ProductModel.updateOne(
+        { _id: objectId },
+        updateObject
+      );
+      let product = await ProductModel.findOne({ _id: objectId });
+      res.render("editProduct", { user, category, product });
+      console.log(updateResponse);
     }
-
-    const updateResponse = await ProductModel.updateOne(
-      { _id: objectId },
-      updateObject
-    );
-
-    console.log(updateResponse);
-    res.redirect("/admin/product");
   } catch (error) {
     console.error("Error updating category:", error);
     res.status(500).send("Internal Server Error");
@@ -583,6 +600,19 @@ const change_status = async (req, res) => {
   }
 };
 
+const load_edit_product = async (req, res) => {
+  try {
+    const user = await get_user(req.session.admin_id);
+    const category = await CategoryModel.find({}, { name: 1 });
+    const product = await ProductModel.findOne({ _id: req.params.productId });
+
+    res.render("editProduct", { user, category, product });
+  } catch (error) {
+    res.json(error);
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   load_admin_login,
   load_product_list,
@@ -591,6 +621,7 @@ module.exports = {
   load_dashboard,
   load_add_product,
   load_order_list,
+  load_edit_product,
   add_product,
   add_category,
   delete_category,

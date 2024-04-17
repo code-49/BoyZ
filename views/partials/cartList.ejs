@@ -1,30 +1,51 @@
-<% for (let i = 0; i < products.length; i++) { %>
+<% for (let i=0; i < products.length; i++) { %>
     <div class="cart-item">
         <img src="/productImages/<%= products[i].images[0] %>" alt="product-img">
-       <div>
-        <p class="text-size-1 mb-0"><%= products[i].name %></p>
-        <p class="mb-0">size: <span class="uppercase"><%= products[i].size %></span> </p>
-        <h3>Price:
-            <span>&#8377;<%= products[i].price-((products[i].price*products[i].discount)/100) %></span>
-             <span class="text-strike">&#8377;<%= products[i].price %></span> 
-             <span class="offer-style"><%= products[i].discount %>%</span></h3>
+        <div>
+            <p class="text-size-1 mb-0">
+                <%= products[i].name %>
+            </p>
+            <p class="mb-0">size: <span class="uppercase">
+                    <%= products[i].size %>
+                </span> </p>
+            <h3>Price:
+                <span>&#8377;<%=parseInt(products[i].price-((products[i].price*products[i].discount) /100)) %></span>
+                <span class="text-strike">&#8377;<%= products[i].price %></span>
+                <span class="offer-style">
+                    <%= products[i].discount %>%
+                </span>
+            </h3>
         </div>
         <div class="two-box">
-        <% if(products[i].stock <1){%>
-            <a href="/cart/remove-from-cart?productId=<%= products[i]._id %>" class=" remove-cart">out of stock remove from cart</a>
-        <%}else{%>
-            
-                <a href="/cart/remove-from-cart?productId=<%= products[i]._id %>" class="material-symbols-outlined remove-cart">delete</a>
-                <div >
-                    
-                        <button type="button" class="qauntity-change" onclick="numIncrement(-1,'quantity-cart<%= i %>',true,'<%=i%>')">-</button>
+            <% if(products[i].stock <1){%>
+                <a href="/cart/remove-from-cart?productId=<%= products[i]._id %>" class=" remove-cart">out of stock
+                    remove from cart</a>
+                <%}else{%>
+
+                    <a href="/cart/remove-from-cart?productId=<%= products[i]._id %>"
+                        class="material-symbols-outlined remove-cart">delete</a>
+                    <div>
+
+                        <button type="button" class="qauntity-change"
+                            onclick="numIncrement(-1,'quantity-cart<%= i %>',true,'<%=i%>')">-</button>
                         <input type="hidden" value="<%= products[i]._id %>" name="productId" id="productID-<%=i %>">
-                        <input type="number" class="qauntity-input" value="<%= products[i].quantity %>" name="quantity" id="quantity-cart<%= i %>">
-                        <button type="button" class="qauntity-change" onclick="numIncrement(1,'quantity-cart<%= i %>',true,'<%=i%>')">+</button>
-                
-                </div>
-            
-        <%} %>
+                        <input type="number" class="qauntity-input" value="<%= products[i].quantity %>" name="quantity"
+                            id="quantity-cart<%= i %>">
+                        <button type="button" class="qauntity-change"
+                            onclick="numIncrement(1,'quantity-cart<%= i %>',true,'<%=i%>')">+</button>
+                        <% if(products[i].message){ %>
+
+                            <p id="stock">
+                                <%= products[i].message %>
+                            </p>
+
+                            <% }else{%>
+                                <p id="stock"></p>
+                                <%} %>
+
+                    </div>
+
+                    <%} %>
         </div>
     </div>
-<% } %>
+    <% } %>

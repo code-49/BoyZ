@@ -31,6 +31,11 @@ route.get("/forgot", adminController.load_forgot);
 route.get("/newPass", adminController.load_newpass);
 route.get("/deleteImage", auth.isLogin, adminController.delete_image);
 route.get("/changeStatus", auth.isLogin, adminController.change_status);
+route.get(
+  "/edit-product/:productId",
+  auth.isLogin,
+  adminController.load_edit_product
+);
 
 route.post("/forgot", adminController.send_otp);
 route.post("/newPass", adminController.changePass);
