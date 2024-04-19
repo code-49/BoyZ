@@ -114,6 +114,12 @@ const load_products = tryCatch(async (req, res) => {
     products: products,
     totalPages: Math.ceil(count / limit),
     currentPage: req.filterPage,
+    filterData: {
+      cat: req.query.cat,
+      min: req.query.min,
+      max: req.query.max,
+      size: req.query.size,
+    },
   });
 });
 
