@@ -194,10 +194,14 @@
                   }
                   function swapAddress ( element )
                   {
-                    document.getElementById( "addressBox" ).style.display = "none";
                     let address = document.getElementById( "address" );
-                    address.innerHTML = element.innerHTML;
+                    let inStackP = element.querySelector( 'P' );
+                    let originalP = document.getElementById( "addressContent" );
+
+                    originalP.innerHTML = inStackP.innerHTML;
                     address.dataset.shipping = element.dataset.shipping;
+
+                    document.getElementById( "addressBox" ).style.display = "none";
                   }
                   paypal
                     .Buttons( {
@@ -230,7 +234,11 @@
                       },
                       onApprove: function ( data, actions )
                       {
-                        return actions.order.capture()
+
+                        return actions.order.capture().then( () =>
+                        {
+                          window.location.href = "/cart/success";
+                        } )
                       },
                     } )
                     .render( "#paypal" )
