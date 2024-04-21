@@ -51,7 +51,8 @@ const load_cart = tryCatch(async (req, res) => {
       const couponRedux = coupons.reduce((acc, ele) => {
         return acc + parseInt(ele.offer);
       }, 0);
-      const total = subtotal - discount - (subtotal * couponRedux) / 100;
+      const total =
+        subtotal - discount - ((subtotal - discount) * couponRedux) / 100;
 
       res.render("./user/cart", {
         paypalClientId: process.env.PAYPAL_CLIENT_ID,
@@ -95,7 +96,13 @@ const add_to_cart = tryCatch(async (req, res) => {
       }
     });
     if (product_exist) {
-      return res.json({ message: "product already exist in cart" });
+      const productIndex = doc.cart.findIndex((cartItem) =>
+        cartItem.product.equals(req.query.productId)
+      );
+      doc.cart[productIndex].quantity =
+        doc.cart[productIndex].quantity + quantity;
+      await doc.save();
+      return res.json({ message: "added to cart" });
     }
   }
 
@@ -172,7 +179,7 @@ const place_order = tryCatch(async (req, res) => {
   await new_order.save();
 
   await UserModel.updateOne({ _id: id }, { $set: { cart: [] } });
-
+  req.session.coupons = [];
   res.json({
     message: "successful",
     orderNo: orderNo,
@@ -244,6 +251,7 @@ const create_order = tryCatch(async (req, res) => {
   await new_order.save();
 
   await UserModel.updateOne({ _id: id }, { $set: { cart: [] } });
+  req.session.coupons = [];
   res.json({ id: order.result.id });
 });
 

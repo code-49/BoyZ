@@ -613,6 +613,13 @@ const load_edit_product = async (req, res) => {
   }
 };
 
+const load_order_details = async (req, res) => {
+  const id = req.params.orderId;
+  const user = await get_user(req.session.admin_id);
+  const order = await OrderModel.findOne({ _id: id });
+  res.render("orderDetails", { user, order });
+};
+
 module.exports = {
   load_admin_login,
   load_product_list,
@@ -640,4 +647,5 @@ module.exports = {
   changePass,
   delete_image,
   change_status,
+  load_order_details,
 };

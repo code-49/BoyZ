@@ -101,23 +101,24 @@ const change_status = async (req, res) => {
 const apply_coupon = tryCatch(async (req, res) => {
   if (!req.session.coupons) {
     req.session.coupons = [];
-  }
-  const couponCode = req.query.code;
-  const coupon = await CouponModel.findOne({ code: couponCode });
-  if (coupon) {
-    if (coupon.isActive) {
-      req.session.coupons.push({
-        name: coupon.name,
-        offer: coupon.offer,
-      });
-      req.session.couponRes = "";
-      return res.redirect("/cart");
-    } else {
-      req.session.couponRes = "Invalid Coupon!";
-      return res.redirect("/cart");
+
+    const couponCode = req.query.code;
+    const coupon = await CouponModel.findOne({ code: couponCode });
+    if (coupon) {
+      if (coupon.isActive) {
+        req.session.coupons.push({
+          name: coupon.name,
+          offer: coupon.offer,
+        });
+        req.session.couponRes = "";
+        return res.redirect("/cart");
+      } else {
+        req.session.couponRes = "Invalid Coupon!";
+        return res.redirect("/cart");
+      }
     }
   } else {
-    req.session.couponRes = "Invalid Coupon!";
+    req.session.couponRes = "Coupon All Ready Applied!";
     return res.redirect("/cart");
   }
 });

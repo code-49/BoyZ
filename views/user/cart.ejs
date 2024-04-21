@@ -144,14 +144,15 @@
                       Payment</button>
               </div>
               <div class="coupon" id="coupon">
+                <p class="text-red">
+                  <%= couponRes %>
+                </p>
                 <h2>Enter Coupon Code</h2>
                 <form action="/coupon">
                   <input type="text" class="form-control" name="code">
                   <input type="submit" value="Enter" class="form-control">
                 </form>
-                <p class="text-red">
-                  <%= couponRes %>
-                </p>
+
               </div>
             </div>
 
