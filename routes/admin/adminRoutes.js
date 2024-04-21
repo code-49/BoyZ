@@ -36,6 +36,11 @@ route.get(
   auth.isLogin,
   adminController.load_edit_product
 );
+route.get(
+  "/order-details/:orderId",
+  auth.isLogin,
+  adminController.load_order_details
+);
 
 route.post("/forgot", adminController.send_otp);
 route.post("/newPass", adminController.changePass);
