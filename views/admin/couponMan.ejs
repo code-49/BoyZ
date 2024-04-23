@@ -1,80 +1,118 @@
 <%- include("../partials/head.ejs") %>
-<%- include("../partials/menu.ejs") %>
-    
-<div class="container">
-<%- include("../partials/sidebar.ejs") %>
+    <%- include("../partials/menu.ejs") %>
 
-<div class="management-content" id="content">
-    
-         
-    <div class="category-content">
+        <div class="container">
+            <%- include("../partials/sidebar.ejs") %>
 
-    <div class="category-lists">
-        <form>
-            <input type="text" placeholder="search" name="search">
-            <input type="submit" value="search">
-        </form>
+                <div class="management-content" id="content">
 
-        
-        <table class="category-table">
-            <tr class="category-row">
-                <th>Name</th>
-                <th>Code</th>
-                <th>Offer</th>
-                <th>Active</th>
-                <th>Action</th>
-            </tr>
-            <% for (let i = 0; i < coupons.length; i++) {%>
-                <tr>
-                <td><%=coupons[i].name%></td>
-                <td><%=coupons[i].code%></td>
-                <td><%=coupons[i].offer%>%</td>
-                <td><%=coupons[i].isActive%></td>
-                <td> 
-                    <% if(coupons[i].isActive){ %>
-                        <a href="/admin/coupon/active?id=<%= coupons[i]._id%>&value=0">Disable</a>
-                        <% }else{ %>
-                            <a href="/admin/coupon/active?id=<%= coupons[i]._id%>&value=1">Activate</a>
-                            <% } %>
-                    <a href="/admin/coupon/delete?id=<%= coupons[i]._id%>" class="material-symbols-outlined icon-btn bg-red">delete</a>
-                </td>
-                </tr>
-            <%} %>
-            
-        </table>
-        <div class="pagination">
-            <% for (let j = 1; j <= totalPages; j++) {%>
-                <a href="?page=<%= j %>&search=<%= search %>" 
-                    <% if(j==currentPage) {%>
-                        class="active"
-                    <% } %>
-                    ><%= j %></a>                    
-            <%} %>
+
+                    <div class="category-content">
+
+                        <div class="category-lists">
+                            <form>
+                                <input type="text" placeholder="search" name="search">
+                                <input type="submit" value="search">
+                            </form>
+
+
+                            <table class="category-table">
+                                <tr class="category-row">
+                                    <th>Name</th>
+                                    <th>Code</th>
+                                    <th>Offer</th>
+                                    <th>Max Discount</th>
+                                    <th>Min Amount</th>
+                                    <th>Expiry</th>
+                                    <th>Active</th>
+                                    <th>Action</th>
+                                </tr>
+                                <% for (let i=0; i < coupons.length; i++) {%>
+                                    <tr>
+                                        <td>
+                                            <%=coupons[i].name%>
+                                        </td>
+                                        <td>
+                                            <%=coupons[i].code%>
+                                        </td>
+                                        <td>
+                                            <%=coupons[i].offer%>%
+                                        </td>
+                                        <td>
+                                            <%=coupons[i].maxAmount%>
+                                        </td>
+                                        <td>
+                                            <%=coupons[i].minAmount%>
+                                        </td>
+                                        <td>
+                                            <%=coupons[i].expiry.getDate()%>- <%=coupons[i].expiry.getMonth()%>-
+                                                    <%=coupons[i].expiry.getYear()%>
+                                        </td>
+                                        <td>
+                                            <%=coupons[i].isActive%>
+                                        </td>
+                                        <td>
+                                            <% if(coupons[i].isActive){ %>
+                                                <a
+                                                    href="/admin/coupon/active?id=<%= coupons[i]._id%>&value=0">Disable</a>
+                                                <% }else{ %>
+                                                    <a
+                                                        href="/admin/coupon/active?id=<%= coupons[i]._id%>&value=1">Activate</a>
+                                                    <% } %>
+                                                        <a href="/admin/coupon/delete?id=<%= coupons[i]._id%>"
+                                                            class="material-symbols-outlined icon-btn bg-red">delete</a>
+                                        </td>
+                                    </tr>
+                                    <%} %>
+
+                            </table>
+                            <div class="pagination">
+                                <% for (let j=1; j <=totalPages; j++) {%>
+                                    <a href="?page=<%= j %>&search=<%= search %>" <% if(j==currentPage) {%>
+                                        class="active"
+                                        <% } %>
+                                            ><%= j %>
+                                    </a>
+                                    <%} %>
+                            </div>
+                        </div>
+                        <div class="vertical-division"></div>
+                        <div class="form-container">
+                            <h3 class="bg-blue">Add Coupon</h3>
+                            <form action="" method="post" enctype="application/x-www-form-urlencoded">
+                                <div class="input-group-2">
+                                    <label for="cname">Coupon Name</label>
+                                    <input type="text" id="cname" name="name" class="form-control" required>
+                                </div>
+                                <div class="input-group-2">
+                                    <label for="coffer">Offer</label>
+                                    <input type="number" id="coffer" name="offer" class="form-control" required>
+                                </div>
+                                <div class="input-group-2">
+                                    <label for="max">max dicount</label>
+                                    <input type="number" id="max" name="max" class="form-control" required>
+                                </div>
+                                <div class="input-group-2">
+                                    <label for="coffer">min amount</label>
+                                    <input type="number" id="min" name="min" class="form-control" required>
+                                </div>
+                                <div class="input-group-2">
+                                    <label for="exp">Expiry Date</label>
+                                    <input type="date" id="exp" name="expiry" class="form-control" required>
+                                </div>
+                                <input type="submit" value="Add New" class="loginButton">
+
+                            </form>
+                            <% if(typeof couponAddMessage !=="undefined" ){ %>
+                                <p>
+                                    <%=couponAddMessage%>
+                                </p>
+                                <% } %>
+                        </div>
+                    </div>
+                </div>
         </div>
-    </div>
-    <div class="vertical-division"></div>
-    <div class="form-container">
-        <h3 class="bg-blue">Add Coupon</h3>
-        <form action="" method="post" enctype="application/x-www-form-urlencoded">
-            <div class="input-group-2">
-                <label for="cname">Coupon Name</label>
-                <input type="text" id="cname" name="name" class="form-control" required>
-            </div>
-            <div class="input-group-2">
-                <label for="coffer">Offer</label>
-                <input type="number" id="coffer" name="offer" class="form-control" required>
-            </div>
-            <input type="submit" value="Add New" class="loginButton">
-
-        </form>
-        <% if(typeof couponAddMessage !== "undefined"){ %>
-        <p><%=couponAddMessage%></p>
-        <% } %>
-    </div>
-</div>
-</div>
-</div>
-<!-- <div class="modal-container" id="categoryModal" onclick="closeModal(event)">
+        <!-- <div class="modal-container" id="categoryModal" onclick="closeModal(event)">
     <div class="cat-container">
         <h3 >Edit Category</h3>
         <form action="/admin/edit-category" method="post" enctype="application/x-www-form-urlencoded">
@@ -94,4 +132,4 @@
         </form>
     </div>
 </div> -->
-<%- include("../partials/footer.ejs") %>
+        <%- include("../partials/footer.ejs") %>

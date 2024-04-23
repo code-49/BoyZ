@@ -50,6 +50,7 @@ app.use("/cart", cartRoutes);
 app.use("/account", accountRoutes);
 app.use("/coupon", couponRoutes);
 app.use("/order-history", orderHistory);
+app.use("/return", orderHistory);
 
 //if no other route doesnt exist
 app.all("*", (req, res, next) => {

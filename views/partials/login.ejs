@@ -1,7 +1,7 @@
 <div id="loginContainer" class="formContainer">
     <p class="welcome-message">WELCOME BACK</p>
     <h4 class="login-title">Log In to your Account</h4>
-    <form id="loginForm" >
+    <form id="loginForm">
         <div class="input-group">
             <label for="login-email">email</label>
             <input type="email" id="login-email" name="email" class="form-control" required>
@@ -10,7 +10,7 @@
             <label for="login-password">password</label>
             <input type="password" id="login-password" name="password" class="form-control" required>
         </div>
-        <a href="/profile/changePassword" class="forgot-pass">Forgot Password?</a>
+        <a href="/profile/forgotPassword" class="forgot-pass">Forgot Password?</a>
         <input type="submit" value="Login" class="loginButton">
         <!-- <hr> -->
         <!-- <div class="gooBox">
@@ -19,7 +19,7 @@
         </div> -->
 
         New User?<button type="button" class="btn-1" onclick="openSignupModal()">SIGN UP HERE</button>
-        
+
         <p id="loginMessage" class="error-message"></p>
     </form>
 </div>

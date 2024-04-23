@@ -42,6 +42,9 @@ const add_coupon = async (req, res) => {
     name: req.body.name,
     code: code,
     offer: req.body.offer,
+    maxAmount: req.body.max,
+    minAmount: req.body.min,
+    expiry: req.body.expiry,
   });
   await coupon.save();
 
@@ -99,9 +102,8 @@ const change_status = async (req, res) => {
 };
 
 const apply_coupon = tryCatch(async (req, res) => {
-  if (!req.session.coupons) {
-    req.session.coupons = [];
-
+  req.session.coupons = req.session.coupons || [];
+  if (req.session.coupons.length == 0) {
     const couponCode = req.query.code;
     const coupon = await CouponModel.findOne({ code: couponCode });
     if (coupon) {
@@ -119,6 +121,7 @@ const apply_coupon = tryCatch(async (req, res) => {
     }
   } else {
     req.session.couponRes = "Coupon All Ready Applied!";
+    console.log(req.session.coupons);
     return res.redirect("/cart");
   }
 });

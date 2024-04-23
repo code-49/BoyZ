@@ -5,6 +5,7 @@ const UserModel = require("../../models/userModel");
 const ProductModel = require("../../models/productModel");
 const CategoryModel = require("../../models/categoryModel");
 const OrderModel = require("../../models/orderModel");
+const CouponModel = require("../../models/couponModel");
 
 const tryCatch = require("../../utils/tryCatch");
 const { generateOTP } = require("../../utils/otpGeneretor");
@@ -28,6 +29,7 @@ const load_cart = tryCatch(async (req, res) => {
   }
 
   const category = await CategoryModel.find({}, { name: 1 });
+  const couponData = await CouponModel.find({}).limit(3);
 
   if (id) {
     const user = await UserModel.findOne({ _id: id });
@@ -63,6 +65,7 @@ const load_cart = tryCatch(async (req, res) => {
         discount: discount,
         total: total,
         coupons: coupons,
+        couponData,
         couponRes: couponRes,
       });
     } else {
@@ -180,6 +183,7 @@ const place_order = tryCatch(async (req, res) => {
 
   await UserModel.updateOne({ _id: id }, { $set: { cart: [] } });
   req.session.coupons = [];
+  req.session.couponRes = "";
   res.json({
     message: "successful",
     orderNo: orderNo,
@@ -193,8 +197,13 @@ const create_order = tryCatch(async (req, res) => {
   const products = await getCartProduct(user.cart);
   await changeStock(user.cart);
   const orderNo = `#${generateOTP(4)}`;
+  const coupons = req.session.coupons ? req.session.coupons : [];
+  const couponRedux = coupons.reduce((acc, ele) => {
+    return acc + parseInt(ele.offer);
+  }, 0);
   const orderProducts = products.map((element) => {
-    const sold = element.price * (1 - element.discount / 100);
+    const sold =
+      element.price * (1 - element.discount / 100) * (1 - couponRedux / 100);
     return {
       productID: element._id,
       name: element.name,
@@ -245,13 +254,14 @@ const create_order = tryCatch(async (req, res) => {
   });
 
   const order = await paypalClient.execute(request);
-  console.log(order);
+  console.log("order-details = ", order);
 
   //end of payment
   await new_order.save();
 
   await UserModel.updateOne({ _id: id }, { $set: { cart: [] } });
   req.session.coupons = [];
+  req.session.couponRes = "";
   res.json({ id: order.result.id });
 });
 

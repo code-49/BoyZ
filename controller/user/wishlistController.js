@@ -1,6 +1,7 @@
 const UserModel = require("../../models/userModel");
 const ProductModel = require("../../models/productModel");
 const CategoryModel = require("../../models/categoryModel");
+const mongoose = require("mongoose");
 
 //utils
 const DatabaseOperation = require("../../utils/model helpers/databaseOperations");
@@ -35,22 +36,22 @@ const load_wishlist = tryCatch(async (req, res) => {
 
 //adding to wishlist
 const add_to_wishlist = tryCatch(async (req, res) => {
-  const added = await DatabaseOperation.update_one_document(
-    ProductModel,
+  const added = await UserModel.updateOne(
     { _id: req.session.userID },
-    { $addToSet: { whishlist: req.params.productId } }
+    { $addToSet: { whishlist: req.params.productID } }
   );
   return added ? res.json({ added: true }) : res.json({ added: false });
 });
 
 //deleting from wishlist
-const delete_from_wishlist = tryCatch(async () => {
-  const deleted = await DatabaseOperation.update_one_document(
-    ProductModel,
+const delete_from_wishlist = tryCatch(async (req, res) => {
+  let objectId = new mongoose.Types.ObjectId(req.params.productID);
+  const deleted = await UserModel.updateOne(
     { _id: req.session.userID },
-    { $pop: { whishlist: req.query.productId } }
+    { $pull: { whishlist: objectId } }
   );
-  return deleted ? res.json({ deleted: true }) : res.json({ deleted: false });
+  console.log(deleted);
+  return res.redirect("/wishlist");
 });
 
 module.exports = {

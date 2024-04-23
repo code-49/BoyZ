@@ -6,6 +6,7 @@ const ProductModel = require("../models/productModel");
 const CategoryModel = require("../models/categoryModel");
 const UserModel = require("../models/userModel");
 const OrderModel = require("../models/orderModel");
+const ReturnModel = require("../models/returnModel");
 
 const { productValidation } = require("../utils/validtor");
 
@@ -562,11 +563,12 @@ const changePass = async (req, res) => {
   }
 };
 
-const delete_image = async (req, res) => {
+const delete_image = async (req, res, next) => {
   let id = req.query.id;
   let image = req.query.image;
   let delete_message;
   try {
+    console.log("delete", id);
     ProductModel.updateOne({ _id: id }, { $pull: { images: image } })
       .then((result) => {
         console.log("Image removed successfully:", result);
@@ -582,8 +584,7 @@ const delete_image = async (req, res) => {
       });
     res.json(delete_message);
   } catch (error) {
-    console.log(error);
-    res.send("internal server error");
+    next(error);
   }
 };
 
@@ -620,7 +621,59 @@ const load_order_details = async (req, res) => {
   res.render("orderDetails", { user, order });
 };
 
+const load_return = async (req, res) => {
+  const id = req.params.orderId;
+  const user = await get_user(req.session.admin_id);
+  const request = await ReturnModel.find({});
+  res.render("return", {
+    user,
+    orders: request,
+  });
+};
+
+const request_response = async (req, res) => {
+  const returnDoc = await ReturnModel.findOne({ _id: req.query.id });
+  const order = await OrderModel.findOne({ _id: returnDoc.order });
+  if (req.query.accept == "true") {
+    const prod = order.products.find(
+      (productE) => productE._id.toString() === returnDoc.product.toString()
+    );
+    let total = order.totalAmount - prod.soldPrice * prod.quantity;
+    await OrderModel.updateOne(
+      { _id: returnDoc.order },
+      { $pull: { products: { _id: returnDoc.product } } }
+    );
+    await OrderModel.updateOne(
+      { _id: returnDoc.order },
+      { $set: { totalAmount: total } }
+    );
+    const neworder = await OrderModel.findOne({ _id: returnDoc.order });
+    if (neworder.products.length == 0) {
+      await OrderModel.deleteOne({ _id: returnDoc.order });
+    }
+    await ReturnModel.updateOne(
+      { _id: req.query.id },
+      {
+        $set: {
+          status: "accepted",
+        },
+      }
+    );
+  } else {
+    await ReturnModel.updateOne(
+      { _id: req.query.id },
+      {
+        $set: {
+          status: "rejected",
+        },
+      }
+    );
+  }
+  res.redirect("/admin/return");
+};
+
 module.exports = {
+  request_response,
   load_admin_login,
   load_product_list,
   load_category_list,
@@ -648,4 +701,5 @@ module.exports = {
   delete_image,
   change_status,
   load_order_details,
+  load_return,
 };

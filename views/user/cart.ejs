@@ -152,7 +152,20 @@
                   <input type="text" class="form-control" name="code">
                   <input type="submit" value="Enter" class="form-control">
                 </form>
-
+                <div>
+                  <% couponData.forEach((coup)=>{%>
+                    <div class="border-normal border-radius-5 bg-white text-left">
+                      <h4>Name: <%= coup.name %>
+                      </h4>
+                      <p>Code: <%= coup.code %>
+                      </p>
+                      <p>Min Amount: <%= coup.minAmount %>
+                      </p>
+                      <p>Max Discount: <%= coup.maxAmount %>
+                      </p>
+                    </div>
+                    <%}) %>
+                </div>
               </div>
             </div>
 
