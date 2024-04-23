@@ -1,0 +1,45 @@
+<%- include("../partials/head.ejs") %>
+    <header class="header">
+        <div class="black-box"></div>
+        <div class="menu-container">
+            <a href="/" class="icon-link">
+                <h2 class="brand-name ">BoyZ</h2>
+            </a>
+        </div>
+    </header>
+    <br>
+    <br>
+
+    <div class="loginCenter">
+        <% if(isMessage){%>
+            <div class="center-container" id="cancelResponse">
+                <div class="box">
+                    <p id="cancelMessage" class="text-success">
+                        <%= message %>
+                    </p>
+                    <a href="/order-history">return to order history</a>
+                </div>
+            </div>
+            <%}else{%>
+                <div class="formContainer">
+                    <h4 class="login-title">Reason For Return</h4>
+                    <form action="/profile/return-request" method="post" enctype="application/x-www-form-urlencoded">
+                        <input type="hidden" name="order" value="<%= order %>">
+                        <input type="hidden" name="product" value="<%= product %>">
+                        <textarea name="reason" id="reason" cols="50" rows="10"></textarea>
+                        <br>
+                        <input type="submit" value="request" class="bg-1">
+                    </form>
+
+                </div>
+                <%} %>
+
+
+    </div>
+    <script>
+        let cancelResponse = document.getElementById( "cancelResponse" );
+        cancelResponse.style.display = "grid";
+    </script>
+    </body>
+
+    </html>

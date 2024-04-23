@@ -11,7 +11,7 @@
                     </td>
                     <td>
                         <h3 id="profileName">
-                            <%= user.name %>
+                            <%= user.name %> <a href="/profile/changeName" class="material-symbols-outlined">edit</a>
                         </h3>
                         <!-- <input id="profileNameInput" type="text" value="<%= user.name %>" placeholder="name" name="name"> -->
                     </td>
@@ -23,7 +23,7 @@
                     </td>
                     <td>
                         <h3 id="profileEmail">
-                            <%= user.email %>
+                            <%= user.email %><a href="/profile/changeEmail" class="material-symbols-outlined">edit</a>
                         </h3>
                         <!-- <input id="profileEmailInput" type="email" value="<%= user.email %>" placeholder="email" name="email"> -->
                     </td>
@@ -60,12 +60,7 @@
             </div>
             <button onclick="openAddress()" class="btn-2">add address</button>
         </div>
-        <div class="border-normal border-radius-5 p-1 w-200px text-align m-20 h-content">
-            <h1>Wallet</h1>
-            <hr>
-            <h2 class="font-green"> &#8377;<%= user.wallet %>
-            </h2>
-        </div>
+
     </div>
 </div>
 <div class="newAddress temp" id="formContainer" onclick="closeAddress(event)">

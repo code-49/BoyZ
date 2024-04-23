@@ -20,17 +20,14 @@
                     </h4>
                 </div>
 
-                <% switch (element.status) { case "Delivered" :%>
-                    <h4><button type="button" class="text-red cancel-btn"
-                            onclick="returnOrder('<%=element._id%>')">return</button></h4>
-                    <% break; case "Cancelled" :%>
+                <% switch (element.status) { case "Cancelled" :%>
+                    <h4></h4>
+                    <% break; case "Returned" :%>
                         <h4></h4>
-                        <% break; case "Returned" :%>
-                            <h4></h4>
-                            <% break; default:%>
-                                <h4><button type="button" class="text-red cancel-btn"
-                                        onclick="cancelOrder('<%=element._id%>')">cancell</button></h4>
-                                <% break; } %>
+                        <% break; default:%>
+                            <h4><button type="button" class="text-red cancel-btn"
+                                    onclick="cancelOrder('<%=element._id%>')">cancell</button></h4>
+                            <% break; } %>
             </div>
             <% element.products.forEach(product=> {%>
                 <hr>
@@ -47,6 +44,7 @@
                                         <%= product.name %>
                                     </h4>
                                 </td>
+
                             </tr>
                             <tr>
                                 <td>
@@ -66,6 +64,15 @@
                                         <%= product.quantity %>
                                     </h4>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <% switch (element.status) { case "Delivered" :%>
+                                        <a href="/profile/return?order=<%= element._id %>&product=<%= product._id %>">return
+                                            product</a>
+                                        <% break; }%>
+                                </td>
+
                             </tr>
                         </table>
                     </div>

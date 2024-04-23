@@ -1,0 +1,72 @@
+<%- include("../partials/head.ejs") %>
+    <%- include("../partials/menu.ejs") %>
+
+        <div class="flex">
+            <div class="profile-contaner">
+                <div class="profile-menu">
+                    <a href="/profile">profile</a>
+                    <a href="/order-history">orders</a>
+                    <a href="/return/status">returns</a>
+                </div>
+                <div class="management-content" id="content">
+                    <table class="order-list">
+                        <colgroup>
+                            <col style="width: 15%;">
+                            <col style="width: 15%;">
+                            <col style="width: 15%;">
+                            <col style="width: 80%;">
+                            <col style="width: 30%;">
+
+                        </colgroup>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Reason for return</th>
+                            <th> Status</th>
+
+                        </tr>
+                        <% orders.forEach((element,index)=> {%>
+                            <tr>
+                                <td>
+
+                                    <%= element.name %>
+
+
+                                </td>
+                                <td>
+                                    <%= element.price %>
+                                </td>
+                                <td>
+                                    <%= element.quantity %>
+                                </td>
+                                <td>
+                                    <%= element.reason %>
+                                </td>
+                                <% if(element.status=="pending" ){%>
+                                    <td>
+                                        Pending
+                                    </td>
+                                    <%}else if(element.status=="accepted" ){%>
+                                        <td>
+                                            Accepted
+                                        </td>
+
+                                        <%} else{%>
+                                            <td>
+                                                Rejected
+                                            </td>
+
+                                            <%}%>
+
+                            </tr>
+                            <% }); %>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        </body>
+
+        </html>

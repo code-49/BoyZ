@@ -8,9 +8,10 @@
 
                     <form action="/admin/edit-product" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="user_id" id="id" value="<%= product._id %>">
-                        <div class="flex space-btw">
-                            <div class="product-details">
-                                <h3 class="product-head">Edit Product</h3>
+
+                        <div class="product-details">
+                            <h3 class="product-head">Edit Product</h3>
+                            <div class="flex ">
                                 <table>
                                     <tr>
                                         <td><label for="name">name </label></td>
@@ -78,35 +79,54 @@
                                         <% } %>
 
                                 </table>
+                                <div class="side-images">
+                                    <input type="file" name="image1" id="img1">
+                                    <input type="file" name="image2" id="img2">
+                                    <input type="file" name="image3" id="img3">
+                                    <input type="file" name="image4" id="img4">
+                                    <!-- <img src="/productImages/<%= product.images[0] %>" alt="img" class="product-img"
+                                        id="ph1"> -->
+                                    <div class="image-box-2">
+                                        <div class="side-img-box">
+                                            <img src="/productImages/<%= product.images[0] %>" alt="img"
+                                                class="extra-img" id="ph1" width="100px" height="100px">
 
-                            </div>
-                            <div class="side-images">
-                                <input type="file" name="image1" id="img1">
-                                <input type="file" name="image2" id="img2">
-                                <input type="file" name="image3" id="img3">
-                                <input type="file" name="image4" id="img4">
-                                <img src="/productImages/<%= product.images[0] %>" alt="img" class="product-img"
-                                    id="ph1">
+                                        </div>
+                                        <button onclick="deleteImage('<%= product._id %>','<%= product.images[0] %>')"
+                                            class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                    </div>
+                                    <div class="image-box-2">
+                                        <div class="side-img-box"><img src="/productImages/<%= product.images[1] %>"
+                                                alt="img" class="extra-img" id="ph3" width="100px" height="100px">
+                                        </div>
+                                        <button onclick="deleteImage('<%= product._id %>','<%= product.images[1] %>')"
+                                            class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
 
-                                <div class="image-box-2">
-                                    <div class="side-img-box"><img src="/productImages/<%= product.images[1] %>"
-                                            alt="img" class="extra-img" id="ph3" width="100px" height="100px"> </div>
-                                    <div class="side-img-box"><img src="/productImages/<%= product.images[2] %>"
-                                            alt="img" class="extra-img" id="ph2" width="100px" height="100px"></div>
+                                    </div>
+                                    <div class="image-box-2">
+                                        <div class="side-img-box"><img src="/productImages/<%= product.images[2] %>"
+                                                alt="img" class="extra-img" id="ph2" width="100px" height="100px"></div>
+                                        <button onclick="deleteImage('<%= product._id %>','<%= product.images[2] %>')"
+                                            class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                    </div>
+                                    <div class="image-box-2">
+                                        <div class="side-img-box"><img src="/productImages/<%= product.images[3] %>"
+                                                alt="img" class="extra-img" id="ph4" width="100px" height="100px"></div>
+                                        <button onclick="deleteImage('<%= product._id %>','<%= product.images[3] %>')"
+                                            class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                        <!-- <div class="side-img-box"><img src="/productImages/<%= product.images[4] %>"
+                                                alt="img" class="extra-img" id="ph5" width="100px" height="100px"></div> -->
 
-                                </div>
-                                <div class="image-box-2">
-                                    <div class="side-img-box"><img src="/productImages/<%= product.images[3] %>"
-                                            alt="img" class="extra-img" id="ph4" width="100px" height="100px"></div>
-                                    <!-- <div class="side-img-box"><img src="/productImages/<%= product.images[4] %>"
-                                            alt="img" class="extra-img" id="ph5" width="100px" height="100px"></div> -->
-
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
 
+
+
                     </form>
+
                     <div class="photo-edit" id="imageBox1">
                         <div class="photo-container">
                             <img src="" id="cropImg1">
@@ -136,6 +156,16 @@
 
 
         <script>
+            function deleteImage ( id, image )
+            {
+                fetch( `/admin/deleteImage?id=${ id }&image=${ image }` ).then( ( res ) =>
+                {
+                    return res.json();
+                } ).then( ( data ) =>
+                {
+                    console.log( data.message )
+                } )
+            }
             document.addEventListener( 'DOMContentLoaded', function ()
             {
                 const sizeSelect = document.getElementById( 'size' );
@@ -218,6 +248,19 @@
 
                             // Display the cropped image
                             ph1.src = URL.createObjectURL( croppedFile );
+
+                            //send it to server
+                            const formData = new FormData();
+                            // const fileInput = document.getElementById( "img1" );
+                            const file = croppedFile; // Assuming only one file is selected
+
+                            formData.append( "image1", file );
+                            formData.append( "imageName", file.name );
+                            formData.append( "id", document.getElementById( "id" ).value )
+                            fetch( "/admin/editImage1", {
+                                method: "POST",
+                                body: formData
+                            } );
                         } );
                         imageBox1.style.display = "none";
                     } )

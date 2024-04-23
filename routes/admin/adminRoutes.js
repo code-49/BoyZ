@@ -2,7 +2,7 @@ const express = require("express");
 
 const adminController = require("../../controller/adminController");
 const auth = require("../../middleware/adminAuth");
-
+const ProductModel = require("../../models/productModel");
 const couponRoutes = require("./couponRoutes");
 
 const route = express();
@@ -41,6 +41,8 @@ route.get(
   auth.isLogin,
   adminController.load_order_details
 );
+route.get("/return", auth.isLogin, adminController.load_return);
+route.get("/return-response", auth.isLogin, adminController.request_response);
 
 route.post("/forgot", adminController.send_otp);
 route.post("/newPass", adminController.changePass);
@@ -68,5 +70,15 @@ route.post(
   ]),
   adminController.add_product
 );
+route.post("/editImage1", upload.single("image1"), async (req, res) => {
+  const product = await ProductModel.findById(req.body.id);
+
+  // Update the image at position 0
+  product.images[0] = req.body.imageName;
+
+  // Save the updated product
+  await product.save();
+  res.json({ success: true });
+});
 
 module.exports = route;
