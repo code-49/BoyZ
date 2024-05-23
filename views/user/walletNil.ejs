@@ -1,0 +1,16 @@
+<%- include("../partials/head.ejs") %>
+    <%- include("../partials/menu.ejs") %>
+
+        <div class="grid">
+            <div class="order-success-message">
+                <h2>Failed to Make order</h2>
+                <p>
+                    <%= message %>
+                </p>
+                <a href="/cart">
+                    << go back to cart</a>
+
+            </div>
+        </div>
+
+        <%- include("../partials/footer.ejs") %>

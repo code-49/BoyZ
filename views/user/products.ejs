@@ -6,26 +6,62 @@
             <%- include("../partials/filter.ejs",{filterData}) %>
                 <div>
 
-
+                    <div class="ml-1"><label for="sort">sort by:</label>
+                        <select name="sort" id="sort">
+                            <option value="ra">Rating</option>
+                            <option value="na">New Arrivals</option>
+                            <option value="lh">Low to High</option>
+                            <option value="hl">High to Low</option>
+                            <option value="az">A to Z</option>
+                            <option value="za">Z to A</option>
+                        </select>
+                    </div>
                     <div class="top-container">
+
+
                         <% for (let i=0; i < products.length; i++) {%>
-                            <div class="product-card">
+                            <div class="m-20">
                                 <a href="/product/<%= products[i]._id %>">
                                     <div class="image-container">
-                                        <img src="/productImages/<%= products[i].images[0] %>" alt="product-img"
-                                            width="100%" height="100%">
+                                        <img src="/productImages/<%= products[i].images[0] %>" alt="product-img">
                                     </div>
                                 </a>
 
-                                <h3 class="product-name">
+                                <h3 class="product-name text-align">
                                     <%= products[i].name %>
                                 </h3>
-                                <h3 class="product-name">&#8377;<%= products[i].price %> <span class="offer-style">
-                                            <%= products[i].discount %>%
-                                        </span></h3>
-                                <p>
-                                    <%= products[i].size %>
-                                </p>
+                                <h3 class="price-listing text-align">
+                                    <span class="curr-price">&#8377;<%=
+                                            products[i].price-((products[i].price*products[i].discount)/100) %>
+                                    </span>
+                                    <span class="text-strike">&#8377;<%= products[i].price %></span>
+                                    <span class="offer-style ">
+                                        <%= products[i].discount %>%
+                                    </span>
+                                </h3>
+                                <div class="flex justify-around">
+                                    <p class="rating-products material-symbols-outlined">
+                                        <span class="num-rate">
+                                            <%= products[i].rating %>
+                                        </span>
+
+                                        star
+                                    </p>
+                                </div>
+
+                                <% if(products[i].stock<=0){%>
+                                    <p class="red-text text-align">Product is out of stock.</p>
+                                    <%}else{%>
+                                        <div class="price-listing">
+                                            <h4 class="m-0 text-align">
+                                                <%= products[i].stock %> left
+                                            </h4>
+                                        </div>
+                                        <%}%>
+
+
+
+
                             </div>
                             <%} %>
                                 <% if(products.length==0){ %>
@@ -53,6 +89,25 @@
 
 
         <script>
+            const min = document.getElementById( "min" );
+            const max = document.getElementById( "max" );
+            const minValue = document.getElementById( "minValue" );
+            const maxValue = document.getElementById( "maxValue" );
+            let sort = document.getElementById( "sort" );
+            sort.value = '<%=sort%>'
+            minValue.innerHTML = min.value;
+            maxValue.innerHTML = max.value;
+            min.oninput = function ()
+            {
+                minValue.innerHTML = this.value;
+            }
+
+            max.oninput = function ()
+            {
+                maxValue.innerHTML = this.value;
+            }
+
+            sort.addEventListener( "change", sendUrl )
 
             function sendUrl ( e, page )
             {
@@ -89,14 +144,19 @@
                 if ( page == 0 )
                 {
                     pageNum = 1;
+                } else if ( typeof page == 'undefined' )
+                {
+                    pageNum = 1;
                 } else
                 {
                     pageNum = page;
                 }
+
                 let params = {
                     max: max.value,
                     min: min.value,
                     page: pageNum,
+                    sort: sort.value
 
                 };
                 if ( selectedRadioButton )

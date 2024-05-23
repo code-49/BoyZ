@@ -1,0 +1,87 @@
+<%- include("../partials/head.ejs") %>
+    <%- include("../partials/menu.ejs") %>
+
+        <div class="container">
+            <%- include("../partials/sidebar.ejs") %>
+
+                <div class="management-content" id="content">
+                    <a href="/admin/add-offer" class="btn1">New Offer</a>
+                    <br>
+                    <br>
+                    <table class="order-list">
+                        <colgroup>
+                            <col style="width: 15%;">
+                            <col style="width: 15%;">
+                            <col style="width: 15%;">
+                            <col style="width: 15%;">
+                            <col style="width: 20%;">
+                            <col style="width: 20%;">
+                        </colgroup>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Product/Category</th>
+                            <th>Offer</th>
+                            <th>Expiry</th>
+                            <th>Active</th>
+                            <th>Action</th>
+                        </tr>
+                        <% offer.forEach((element,index)=> {%>
+                            <tr>
+                                <td>
+                                    <%= element.name %>
+                                </td>
+                                <td>
+                                    <%= element.type %>
+                                </td>
+                                <td>
+                                    <%= element.item.name %>
+                                </td>
+                                <td>
+                                    <%= element.offer %>%
+                                </td>
+                                <td>
+                                    <% var expiryDate=new Date(element.expiry); var
+                                        formattedExpiry=expiryDate.toLocaleDateString("en-US", { month: "long" ,
+                                        day: "numeric" , year: "numeric" }); %>
+
+                                        <%= formattedExpiry %>
+                                </td>
+                                <td>
+                                    <%= element.active %>
+                                </td>
+                                <td>
+                                    <a class="material-symbols-outlined icon-btn bg-green" href="#">edit</a>
+                                    <a href="#" class="material-symbols-outlined icon-btn bg-red">delete</a>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </table>
+
+                </div>
+        </div>
+
+        <script>
+            function changeStatus ( ele )
+            {
+
+                const orderId = ele.dataset.orderid;//JSON.parse( orderId )
+                let url = `/admin/changeStatus?orderId=${ orderId }&status=${ ele.value }`;
+                console.log( url )
+                fetch( url )
+                    .then( response => response.json() )
+                    .then( data =>
+                    {
+
+                        if ( data.redirectUrl )
+                        {
+                            window.location.href = data.redirectUrl;
+                        } else
+                        {
+                            console.error( 'Invalid redirect URL in server response.' );
+                        }
+                    } )
+                    .catch( error => console.error( 'Error:', error ) );
+            }
+        </script>
+        <%- include("../partials/footer.ejs") %>

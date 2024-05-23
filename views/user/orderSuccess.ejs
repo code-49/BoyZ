@@ -1,23 +1,78 @@
 <%- include("../partials/head.ejs") %>
-<%- include("../partials/menu.ejs") %>
+    <%- include("../partials/menu.ejs") %>
 
-<div class="grid">
-    <div class="order-success-message">
-        <h2>Order placed successfully</h2>
-        <!-- <div class="boder-simple">
-            <table>
-                <tr>
-                    <td><p class="label-simple">order No:</p></td>
-                    <td><h4><%= orderNo %></h4></td>
-                </tr>
-                <tr>
-                    <td><p class="label-simple">Total Amount:</p></td>
-                    <td><h4><%= totalAmount %></h4></td>
-                </tr>
-            </table>
-            
-        </div> -->
-    </div>
-</div>
+        <div class="grid">
+            <div class="order-success-message">
+                <h2>Order placed successfully</h2>
 
-<%- include("../partials/footer.ejs") %>
+            </div>
+            <div class="font-family order-container">
+                <div class="flex justify-between">
+                    <div>
+                        <h4><span class="label-simple">Order No:</span>
+                            <%=order.orderNo%>
+                        </h4>
+                        <h4><span class="label-simple">Status:</span>
+                            <%=order.status%>
+                        </h4>
+                    </div>
+                    <div>
+                        <h4><span class="label-simple">Payment Method:</span>
+                            <%=order.paymentMethode%>
+                        </h4>
+                        <h4><span class="label-simple">Total Price:</span> &#8377;<%=order.totalAmount%>
+                        </h4>
+                    </div>
+
+
+                </div>
+                <% order.products.forEach(product=> {%>
+                    <hr>
+                    <div class="flex">
+                        <div><img src="/productImages/<%= product.image  %>" alt="img" class="img-size"></div>
+                        <div>
+                            <table class="order-table">
+                                <tr>
+                                    <td>
+                                        <p class="label-simple">product:</p>
+                                    </td>
+                                    <td>
+                                        <h4>
+                                            <%= product.name %>
+                                        </h4>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="label-simple">price:</p>
+                                    </td>
+                                    <td>
+                                        <h4>&#8377;<%= product.soldPrice %>
+                                        </h4>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="label-simple">Quantity:</p>
+                                    </td>
+                                    <td>
+                                        <h4>
+                                            <%= product.quantity %>
+                                        </h4>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                    <%}); %>
+                        <div>
+                            <h4><span class="label-simple">shipping Address: </span>
+                                <%= order.shippingAddress %>
+                            </h4>
+                        </div>
+            </div>
+        </div>
+
+        <%- include("../partials/footer.ejs") %>

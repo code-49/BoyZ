@@ -1,34 +1,49 @@
 <div class="filter-table">
-    <h2>Filter</h2>
-    <hr>
-    <form>
-        <% for (let i=0; i < category.length; i++) { %>
-            <div>
-                <label><input type="radio" name="cat" value="<%= category[i].name %>" <%
-                        if(category[i].name==filterData.cat){%>checked<%} %>><%= category[i].name %></label>
-            </div>
-            <% } %>
-                <hr>
-                <p>Max</p>
-                <input type="number" id="max" name="max" value="<%= filterData.max%>">
-                <p>Min</p>
-                <input type="number" id="min" name="min" value="<%= filterData.min%>">
-                <hr>
-                <div>
-                    <label><input type="radio" name="size" value="s" <%if("s"==filterData.size){%>checked <%} %>
-                            >sm</label>
-                    <label><input type="radio" name="size" value="m" <%if("m"==filterData.size){%>checked <%} %>
-                            >m</label>
-                    <label><input type="radio" name="size" value="l" <%if("l"==filterData.size){%>checked <%} %>
-                            >l</label>
-                    <label><input type="radio" name="size" value="xl" <%if("xl"==filterData.size){%>checked <%} %>
-                            >xl</label>
-                    <label><input type="radio" name="size" value="xxl" <%if("xxl"==filterData.size){%>checked <%} %>
-                            >xxl</label>
-                    <label><input type="radio" name="size" value="">All</label>
+        <h2>Filter</h2>
+        <hr>
+        <form>
+                <% for (let i=0; i < category.length; i++) { %>
+                        <div>
+                                <label><input type="radio" name="cat" value="<%= category[i].name %>" <%
+                                                if(category[i].name==filterData.cat){%>checked<%} %>><%=
+                                                        category[i].name %></label>
+                        </div>
+                        <% } %>
+                                <hr>
+                                <p>Max <span id="maxValue"></span></p>
+                                <input id="max" name="max" value="<%= filterData.max%>" min="0" max="5000" type="range"
+                                        step="100">
+                                <p>Min <span id="minValue"></span></p>
+                                <input id="min" name="min" value="<%= filterData.min%>" min="0" max="5000" type="range"
+                                        step="100">
+                                <hr>
+                                <div>
+                                        <label><input type="radio" name="size" value="s"
+                                                        <%if("s"==filterData.size){%>checked <%} %>
+                                                        >S</label>
+                                        <label><input type="radio" name="size" value="m"
+                                                        <%if("m"==filterData.size){%>checked <%} %>
+                                                        >M</label>
+                                        <label><input type="radio" name="size" value="l"
+                                                        <%if("l"==filterData.size){%>checked <%} %>
+                                                        >L</label>
+                                        <br>
+                                        <label><input type="radio" name="size" value="xl"
+                                                        <%if("xl"==filterData.size){%>checked <%} %>
+                                                        >XL</label>
+                                        <label><input type="radio" name="size" value="xxl"
+                                                        <%if("xxl"==filterData.size){%>checked <%} %>
+                                                        >XXL</label>
+                                        <label><input type="radio" name="size" value=""
+                                                        <%if("all"==filterData.size){%>checked <%} %>>All</label>
 
-                </div>
-                <input type="submit" value="apply" onclick="sendUrl(event,0)">
-    </form>
+                                </div>
+                                <hr>
+                                <label><input type="checkbox" name="stock" id="stock"
+                                                <%if("on"==filterData.stock){%>checked <%} %>>Show out of stock</label>
+                                <br>
+                                <br>
+                                <input type="submit" value="apply">
+        </form>
 
 </div>

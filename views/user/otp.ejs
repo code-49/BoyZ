@@ -1,35 +1,62 @@
 <%- include("../partials/head.ejs") %>
-<header class="header">
-    <div class="black-box"></div>
-    <div class="menu-container">
-        <a href="/" class="icon-link"><h2 class="brand-name ">BoyZ</h2></a>
+    <header class="header">
+        <div class="black-box"></div>
+        <div class="menu-container">
+            <a href="/" class="icon-link">
+                <h2 class="brand-name ">BoyZ</h2>
+            </a>
+        </div>
+    </header>
+    <br>
+    <br>
+
+    <div class="loginCenter">
+        <div id="loginContainer" class="formContainer">
+            <h4 class="login-title">OTP verification</h4>
+            <form action="/account/otp" method="post" enctype="application/x-www-form-urlencoded">
+                <div class="input-group">
+                    <input type="number" id="otp" name="otp" class="form-control" required>
+                </div>
+
+                <input type="submit" value="Login" class="loginButton" id="submitButton">
+                <div class="flex justify-end mr-20">
+                    <a href="/account/resent-otp" id="resendLink">resend otp</a>
+                    <p id="time">180s</p>
+                </div>
+
+
+
+
+                <% if(!(typeof message=="undefined" )){ %>
+                    <p class="error-message">
+                        <%= message %>
+                    </p>
+                    <% }%>
+
+            </form>
+        </div>
+
     </div>
-</header> 
-<br>
-<br>
+    <script>
+        const time = document.getElementById( "time" );
+        const setTime = '<%=time%>';
+        document.getElementById( "resendLink" ).style.display = "none";
+        const intervalId = setInterval( () =>
+        {
+            const timeNow = new Date().getTime();
+            if ( ( timeNow - setTime ) / 1000 > 180 )
+            {
+                document.getElementById( 'submitButton' ).disabled = true;
 
-<div class="loginCenter">
-    <div id="loginContainer" class="formContainer">
-        <h4 class="login-title">OTP verification</h4>
-        <form action="/account/otp" method="post" enctype="application/x-www-form-urlencoded">
-            <div class="input-group">
-                <input type="number" id="otp" name="otp" class="form-control" required>
-            </div>
-            
-            <input type="submit" value="Login" class="loginButton">
-            
-                <a href="/account/resent-otp">resend otp</a>
-                
-         
-            
-               <% if(!(typeof message == "undefined")){ %>
-                <p><%= message %></p>
-                <% }%>
+                time.style.display = "none";
+                document.getElementById( "resendLink" ).style.display = "block";
+                clearInterval( intervalId )
+            } else
+            {
+                time.innerHTML = 180 - Math.floor( ( timeNow - setTime ) / 1000 ) + "s"
+            }
+        }, 1000 );
+    </script>
+    </body>
 
-        </form>
-    </div>
-    
-</div>
-
-</body>
-</html>
+    </html>

@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   address: [
     {
       pin: {
-        type: Number,
+        type: String,
       },
       locality: {
         type: String,
@@ -47,7 +47,6 @@ const userSchema = new mongoose.Schema({
       product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "product",
-        unique: true,
       },
       quantity: {
         type: Number,

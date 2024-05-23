@@ -53,13 +53,15 @@ nameInput.addEventListener("change", () => {
 //   genderInput.style.display = "none";
 //   gender.style.display = "block";
 // });
-const formContainer = document.getElementById("formContainer");
+
 const form = document.getElementById("addressForm");
 function openAddress() {
+  const formContainer = document.getElementById("formContainer");
   formContainer.style.display = "grid";
 }
 
 function closeAddress(event) {
+  const formContainer = document.getElementById("formContainer");
   // let target = event.target;
   // console.log("this worked", target);
   // if (target == formContainer) {

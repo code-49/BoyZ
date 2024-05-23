@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .grid {
+            display: grid;
+            place-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid">
+
+        <div class="font-family order-container">
+            <h1 class="text-align">Invoice</h1>
+            <div class="flex justify-between">
+                <div>
+                    <h4><span class="label-simple">Order No:</span>
+                        <%=order.orderNo%>
+                    </h4>
+                </div>
+                <div>
+                    <h4><span class="label-simple">Payment Method:</span>
+                        <%=order.paymentMethode%>
+                    </h4>
+                    <h4><span class="label-simple">Total Price:</span> &#8377;<%=order.totalAmount%>
+                    </h4>
+                </div>
+
+            </div>
+            <% order.products.forEach(product=> {%>
+                <hr>
+
+                <div>
+                    <table class="order-table">
+                        <tr>
+                            <td>
+                                <p class="label-simple">product:</p>
+                            </td>
+                            <td>
+                                <h4>
+                                    <%= product.name %>
+                                </h4>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="label-simple">price:</p>
+                            </td>
+                            <td>
+                                <h4>&#8377;<%= product.soldPrice %>
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="label-simple">Quantity:</p>
+                            </td>
+                            <td>
+                                <h4>
+                                    <%= product.quantity %>
+                                </h4>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                </div>
+
+                <%}); %>
+                    <div>
+                        <h4><span class="label-simple">shipping Address: </span>
+                            <%= order.shippingAddress %>
+                        </h4>
+                    </div>
+        </div>
+    </div>
+</body>
+
+</html>

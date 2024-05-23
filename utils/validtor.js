@@ -10,9 +10,9 @@ const productValidation = (product) => {
   ) {
     return "Fill all inputs";
   } else if (
-    parseInt(product.price, 10) < 1 ||
-    parseInt(product.discount, 10) < 1 ||
-    parseInt(product.stock, 10) < 1
+    parseInt(product.price, 10) < 0 ||
+    parseInt(product.discount, 10) < 0 ||
+    parseInt(product.stock, 10) < 0
   ) {
     return "price,discount or stock cannot be less than 0";
   } else if (parseInt(product.discount, 10) > 100) {

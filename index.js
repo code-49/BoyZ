@@ -18,6 +18,8 @@ const profileRoutes = require("./routes/user/profileRoutes");
 const accountRoutes = require("./routes/user/accountRoutes");
 const couponRoutes = require("./routes/user/couponRoutes");
 const orderHistory = require("./routes/user/orderHistoryRoutes");
+
+const logGoogle = require("./routes/logRoutes");
 ////utils
 const CustomError = require("./utils/customError");
 
@@ -39,6 +41,8 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+app.use("/log", logGoogle);
 
 //admin routes
 app.use("/admin", adminRoutes);

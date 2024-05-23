@@ -1,0 +1,54 @@
+<%- include("../partials/head.ejs") %>
+    <%- include("../partials/menu.ejs") %>
+
+        <div class="flex">
+            <div class="profile-contaner">
+                <div class="profile-menu">
+                    <a href="/profile">profile</a>
+                    <a href="/order-history">orders</a>
+                    <a href="/return/status">returns</a>
+                    <a class="profile-menu-active" href="/profile/wallet">wallet</a>
+                </div>
+                <div class="profile-content-2 width-100">
+                    <h1 class="styling-1">Wallet</h1>
+                    <br>
+
+                    <h1>
+                        <span class="simple-text">Total wallet balance:</span>
+                        &#8377;<%= wallet.amount %>
+                    </h1>
+                    <hr>
+                    <table class="rwd-table">
+                        <tr>
+                            <th>Type</th>
+                            <th>Amount</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <hr>
+                            </td>
+                            <td>
+                                <hr>
+                            </td>
+                        </tr>
+                        <% wallet.transaction.forEach(element=> {%>
+                            <tr>
+                                <td>
+                                    <%= element.type %>
+                                </td>
+                                <td>
+                                    &#8377;<%= element.amount %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- <script src="profile.js"></script> -->
+        <!-- <script src="script.js"></script> -->
+        </body>
+
+        </html>

@@ -2,9 +2,10 @@ const UserModel = require("../../models/userModel");
 const ProductModel = require("../../models/productModel");
 const CategoryModel = require("../../models/categoryModel");
 const mongoose = require("mongoose");
+const categoryHelper = require("../../utils/helpers/categoryHelper");
 
 //utils
-const DatabaseOperation = require("../../utils/model helpers/databaseOperations");
+const DatabaseOperation = require("../../utils/helpers/databaseOperations");
 const tryCatch = require("../../utils/tryCatch");
 
 //custom error class
@@ -12,14 +13,9 @@ const CustomError = require("../../utils/customError");
 
 //loading wishlist page
 const load_wishlist = tryCatch(async (req, res) => {
-  const user = await DatabaseOperation.get_one_document(UserModel, {
-    _id: req.session.userID,
-  });
-  const category = await DatabaseOperation.get_documents(
-    CategoryModel,
-    {},
-    { name: 1 }
-  );
+  const user = await UserModel.findOne({ _id: req.session.userID });
+  const category = await categoryHelper.activeCategoryName();
+
   let products = [];
 
   if (user)

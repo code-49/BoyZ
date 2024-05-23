@@ -23,7 +23,7 @@
                     </td>
                     <td>
                         <h3 id="profileEmail">
-                            <%= user.email %><a href="/profile/changeEmail" class="material-symbols-outlined">edit</a>
+                            <%= user.email %>
                         </h3>
                         <!-- <input id="profileEmailInput" type="email" value="<%= user.email %>" placeholder="email" name="email"> -->
                     </td>
@@ -43,7 +43,10 @@
                     user.address.forEach((element,index) => {%>
                     <div class="address-box">
                         <p>
-                            <%= element.building %>,<%= element.locality %>
+                            <%= element.building %>
+                        </p>
+                        <p>
+                            <%= element.locality %>
                         </p>
                         <p>
                             <%= element.city %>
@@ -55,6 +58,9 @@
                             <%= element.pin %>
                         </p>
                         <a href="/profile/delete-address/<%=element._id%>" class="material-symbols-outlined">delete</a>
+                        <span class="material-symbols-outlined pointer"
+                            data-address='{"building":"<%= element.building %>","locality":"<%= element.locality %>","city":"<%= element.city %>","state":"<%= element.state %>","pin":"<%= element.pin %>","id":"<%=element._id%>"}'
+                            onclick="editOpen(this)">edit</span>
                     </div>
                     <%});}%>
             </div>
@@ -63,8 +69,8 @@
 
     </div>
 </div>
-<div class="newAddress temp" id="formContainer" onclick="closeAddress(event)">
-    <form action="/profile/add-address" enctype="application/x-www-form-urlencoded" method="post">
+<div class="newAddress temp" id="formContainer">
+    <form id="addAddress">
         <div class="input-group">
             <label for="building">building</label>
             <input type="text" id="building" name="building" class="form-control" required>
@@ -87,6 +93,35 @@
         </div>
         <input type="submit" value="submit" class="btn-2 bggreen" required>
         <button type="button" onclick="closeAddress()" class="btn-2 bgred">CANCEL</button>
+        <p class="error-message" id="addressMessage"></p>
+    </form>
+</div>
 
+<div class="newAddress temp" id="editFormContainer">
+    <form id="editAddress">
+        <input type="hidden" name="addId">
+        <div class="input-group">
+            <label for="building1">building</label>
+            <input type="text" id="building1" name="building" class="form-control" required>
+        </div>
+        <div class="input-group">
+            <label for="locality1">locality</label></td>
+            <input type="text" id="locality1" name="locality" class="form-control" required>
+        </div>
+        <div class="input-group">
+            <label for="city1">city</label></td>
+            <input type="text" id="city1" name="city" class="form-control" required>
+        </div>
+        <div class="input-group">
+            <label for="state1">state</label></td>
+            <input type="text" id="state1" name="state" class="form-control" required>
+        </div>
+        <div class="input-group">
+            <label for="pin1">pin</label></td>
+            <input type="text" id="pin1" name="pin" class="form-control" required>
+        </div>
+        <input type="submit" value="submit" class="btn-2 bggreen" required>
+        <button type="button" onclick="closeEditAddress()" class="btn-2 bgred">CANCEL</button>
+        <p class="error-message" id="editAddressMessage"></p>
     </form>
 </div>

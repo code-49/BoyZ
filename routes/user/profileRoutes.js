@@ -13,11 +13,14 @@ routes.get("/return", profileController.return_order);
 routes.get("/newPass", profileController.load_new_pass);
 routes.get("/changeName", profileController.load_name);
 routes.get("/changeEmail", profileController.load_email);
+routes.get("/wallet", profileController.load_wallet);
+routes.get("/resentOtp", profileController.resentOtp);
 
 routes.post("/changeName", profileController.edit_name);
 routes.post("/changeEmail", profileController.edit_email);
 routes.post("/return-request", profileController.return_request);
 routes.post("/add-address", profileController.add_address);
+routes.post("/edit-address", profileController.edit_address);
 routes.post("/forgotPassword", profileController.send_change_pass_otp);
 routes.post("/newPass", profileController.change_password);
 routes.post("/changePassword", profileController.update_password);

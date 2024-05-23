@@ -15,7 +15,8 @@
             <form action="" method="post" enctype="application/x-www-form-urlencoded">
                 <div class="input-group">
                     <label for="login-email">name</label>
-                    <input type="text" id="login-email" name="name" class="form-control" required>
+                    <input type="text" id="login-email" name="name" class="form-control" value="<%= user.name  %>"
+                        required>
                 </div>
                 <input type="submit" value="enter" class="loginButton">
                 <% if(!(typeof message=="undefined" )){ %>
