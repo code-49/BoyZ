@@ -7,90 +7,96 @@
                 <div class="management-content" id="content">
 
                     <div class="category-lists">
-                        <table class="product-table">
-                            <form>
-                                <input type="text" placeholder="search" name="search">
-                                <input type="submit" value="search">
-                            </form>
+                        <form>
+                            <input type="text" placeholder="search" name="search">
+                            <input type="submit" value="search">
+                        </form>
+                        <table class="product-table width-100 table-11">
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                            </colgroup>
+                            <tr>
+                                <th>Img</th>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Category</th>
+                                <th>Prize</th>
+                                <th>Stock</th>
+                                <th>Active</th>
+                                <th>Actions</th>
+                            </tr>
                             <% for (let i=0; i < products.length; i++) {%>
                                 <tr>
                                     <td>
-                                        <table>
-                                            <tr>
-                                                <td><img src="/productImages/<%= products[i].images[0] %>" alt="img"
-                                                        width="100px" height="auto"></td>
-                                                <td><img src="/productImages/<%= products[i].images[1] %>" alt="img"
-                                                        width="100px" height="auto"></td>
-                                            </tr>
-                                            <tr>
-                                                <td><img src="/productImages/<%= products[i].images[2] %>" alt="img"
-                                                        width="100px" height="auto"></td>
-                                                <td><img src="/productImages/<%= products[i].images[3] %>" alt="img"
-                                                        width="100px" height="auto"></td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <tr>
-                                                <h3><span>Name: </span>
-                                                    <%= products[i].name %>
-                                                </h3>
-                                            </tr>
-                                            <tr>
-                                                <p><span>Description: </span>
-                                                    <%= products[i].description %>
-                                                </p>
-                                            </tr>
-                                            <tr>
-                                                <div class="flex">
-                                                    <span>colors: </span>
-                                                    <% for (let j=0; j < products[i].color.length; j++) {%>
-                                                        <div class="product-color"
-                                                            style="background-color:<%= products[i].color[j] %>;"></div>
-                                                        <% } %>
 
-                                                </div>
-                                            </tr>
-                                            <tr>
-                                                <p><span>size: </span>
-                                                    <%= products[i].size %>
-                                                </p>
-                                            </tr>
-                                            <tr>
-                                                <p><span>Price: </span>
-                                                    <%= products[i].price %>
-                                                </p>
-                                            </tr>
-                                            <tr>
-                                                <p><span>Discount: </span>
-                                                    <%= products[i].discount %>
-                                                </p>
-                                            </tr>
-                                            <tr>
-                                                <p><span>Stock: </span>
-                                                    <%= products[i].stock %>
-                                                </p>
-                                            </tr>
-                                            <tr>
-                                                <a class="material-symbols-outlined icon-btn bg-green"
-                                                    href="/admin/edit-product/<%= products[i]._id%>">edit</button>
-                                                    <a href="/admin/delete-product?id=<%= products[i]._id%>"
-                                                        class="material-symbols-outlined icon-btn bg-red">delete</a>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <p>categories</p>
-                                        <div class="category-box">
-                                            <% for (let j=0; j < products[i].category.length; j++) {%>
-                                                <span class="category-property">
-                                                    <%= products[i].category[j] %>
-                                                </span>
-                                                <%} %>
-                                        </div>
+                                        <img src="<% if(products[i].images[0]){%>
+                                                    /productImages/<%= products[i].images[0] %>
+                                                <%}else{%>
+                                                    http://via.placeholder.com/100x100
+                                                <%} %>" alt="img" width="100px" height="auto">
+
 
                                     </td>
+
+
+                                    <td>
+                                        <h3>
+                                            <%= products[i].name %>
+                                        </h3>
+                                    </td>
+
+
+
+
+
+                                    <td>
+                                        <p>
+                                            <%= products[i].size %>
+                                        </p>
+                                    </td>
+
+
+
+                                    <td>
+                                        <span>
+                                            <%= products[i].category[0] %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <%= products[i].price %>
+                                        </p>
+                                    </td>
+
+
+                                    <td>
+                                        <p>
+                                            <%= products[i].stock %>
+                                        </p>
+                                    </td>
+
+                                    <td>
+                                        <p>
+                                            <%= products[i].active %>
+                                        </p>
+                                    </td>
+
+                                    <td><a class="material-symbols-outlined icon-btn bg-green"
+                                            href="/admin/edit-product/<%= products[i]._id%>">edit</a>
+                                        <a href="/admin/delete-product?id=<%= products[i]._id%>"
+                                            class="material-symbols-outlined icon-btn bg-red">delete</a>
+                                    </td>
+
+
+
+
                                 </tr>
                                 <%} %>
 

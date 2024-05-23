@@ -10,6 +10,15 @@
                         <input type="hidden" name="user_id" id="id" value="<%= product._id %>">
 
                         <div class="product-details">
+                            <div class="flex">
+                                <% if(!(typeof add_product_message=="undefined" )){ %>
+
+                                    <p class="error-message">
+                                        <%= add_product_message %>
+                                    </p>
+
+                                    <% } %>
+                            </div>
                             <h3 class="product-head">Edit Product</h3>
                             <div class="flex ">
                                 <table>
@@ -17,10 +26,19 @@
                                         <td><label for="name">name </label></td>
                                         <td><input type="text" id="name" name="name" class="form-control"
                                                 value="<%= product.name %>" required></td>
+
+                                        <td><label for="colorPicker">color</label><input type="color" id="colorPicker"
+                                                name="color[]" value="<%= product.color %>" class="form-control-color"
+                                                required></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="desc">description </label></td>
+                                        <td><textarea id="desc" name="description" cols="30" rows="10"
+                                                class="form-control-textarea"
+                                                required><%= product.description %></textarea></td>
                                         <td>
-                                            <label for="size">Size</label>
-                                            <select id="size" name=" size" required class="form-control-select"
-                                                required>
+                                            <label for="size" class="mar-ad-00">Size</label>
+                                            <select id="size" name="size" required class="form-control-select" required>
                                                 <option value="s">S</option>
                                                 <option value="m">M</option>
                                                 <option value="l">L</option>
@@ -29,15 +47,7 @@
                                                 <option value="xxxl">XXXL</option>
                                             </select>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="desc">description </label></td>
-                                        <td><textarea id="desc" name="description" cols="30" rows="10"
-                                                class="form-control-textarea"
-                                                required><%= product.description %></textarea></td>
-                                        <td><label for="colorPicker">color</label><input type="color" id="colorPicker"
-                                                name="colors[]" value="<%= product.color %>" class="form-control-color"
-                                                required></td>
+
                                     </tr>
                                     <tr>
                                         <td><label for="price">price </label></td>
@@ -48,9 +58,9 @@
                                             <label for="category">category</label>
                                             <select id="category" name="category[]" required
                                                 class="form-control-select">
-                                                <% for (let i=0; i < category.length; i++) {%>
-                                                    <option value="<%= category[i].name %>">
-                                                        <%= category[i].name %>
+                                                <% for (let i=0; i < categorys.length; i++) {%>
+                                                    <option value="<%= categorys[i].name %>">
+                                                        <%= categorys[i].name %>
                                                     </option>
                                                     <%} %>
 
@@ -62,6 +72,10 @@
                                         <td><label for="disc">discount </label></td>
                                         <td><input type="number" id="disc" name="discount"
                                                 value="<%= product.discount %>" class="form-control"></td>
+                                        <td><label for="active">Active<input type="checkbox" name="active"
+                                                    id="active"></label>
+                                        </td>
+
                                     </tr>
                                     <tr>
                                         <td><label for="stock">Stock </label></td>
@@ -70,52 +84,75 @@
                                         </td>
                                         <td><input type="submit" value="Edit Product" class="loginButton"></td>
                                     </tr>
-                                    <% if(!(typeof add_product_message=="undefined" )){ %>
-                                        <tr>
-                                            <p class="error-message">
-                                                <%= add_product_message %>
-                                            </p>
-                                        </tr>
-                                        <% } %>
+
 
                                 </table>
                                 <div class="side-images">
-                                    <input type="file" name="image1" id="img1">
-                                    <input type="file" name="image2" id="img2">
-                                    <input type="file" name="image3" id="img3">
-                                    <input type="file" name="image4" id="img4">
+                                    <input type="file" name="image1" id="img1" accept="image/*">
+                                    <input type="file" name="image2" id="img2" accept="image/*">
+                                    <input type="file" name="image3" id="img3" accept="image/*">
+                                    <input type="file" name="image4" id="img4" accept="image/*">
                                     <!-- <img src="/productImages/<%= product.images[0] %>" alt="img" class="product-img"
                                         id="ph1"> -->
                                     <div class="image-box-2">
                                         <div class="side-img-box">
-                                            <img src="/productImages/<%= product.images[0] %>" alt="img"
-                                                class="extra-img" id="ph1" width="100px" height="100px">
+
+                                            <img src="<% if(product.images[0]){%>
+                                                /productImages/<%= product.images[0] %>
+                                            <%}else{%>
+                                                http://via.placeholder.com/100x100
+                                            <%} %>" alt="img" class="extra-img" id="ph1" width="100px" height="100px">
 
                                         </div>
-                                        <button onclick="deleteImage('<%= product._id %>','<%= product.images[0] %>')"
-                                            class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
-                                    </div>
-                                    <div class="image-box-2">
-                                        <div class="side-img-box"><img src="/productImages/<%= product.images[1] %>"
-                                                alt="img" class="extra-img" id="ph3" width="100px" height="100px">
-                                        </div>
-                                        <button onclick="deleteImage('<%= product._id %>','<%= product.images[1] %>')"
-                                            class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                        <% if(product.images[0]){%>
+                                            <button
+                                                onclick="deleteImage('<%= product._id %>','<%= product.images[0] %>')"
+                                                class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                            <%} %>
 
                                     </div>
                                     <div class="image-box-2">
-                                        <div class="side-img-box"><img src="/productImages/<%= product.images[2] %>"
-                                                alt="img" class="extra-img" id="ph2" width="100px" height="100px"></div>
-                                        <button onclick="deleteImage('<%= product._id %>','<%= product.images[2] %>')"
-                                            class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                        <div class="side-img-box"><img src="<% if(product.images[1]){%>
+                                            /productImages/<%= product.images[1] %>
+                                        <%}else{%>
+                                            http://via.placeholder.com/100x100
+                                        <%} %>" alt="img" class="extra-img" id="ph2" width="100px" height="100px">
+                                        </div>
+                                        <% if(product.images[1]){%>
+                                            <button
+                                                onclick="deleteImage('<%= product._id %>','<%= product.images[1] %>')"
+                                                class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                            <%} %>
                                     </div>
                                     <div class="image-box-2">
-                                        <div class="side-img-box"><img src="/productImages/<%= product.images[3] %>"
-                                                alt="img" class="extra-img" id="ph4" width="100px" height="100px"></div>
-                                        <button onclick="deleteImage('<%= product._id %>','<%= product.images[3] %>')"
-                                            class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
-                                        <!-- <div class="side-img-box"><img src="/productImages/<%= product.images[4] %>"
-                                                alt="img" class="extra-img" id="ph5" width="100px" height="100px"></div> -->
+                                        <div class="side-img-box"><img src="<% if(product.images[2]){%>
+                                            /productImages/<%= product.images[2] %>
+                                        <%}else{%>
+                                            http://via.placeholder.com/100x100
+                                        <%} %>" alt="img" class="extra-img" id="ph3" width="100px" height="100px">
+                                        </div>
+                                        <% if(product.images[2]){%>
+                                            <button
+                                                onclick="deleteImage('<%= product._id %>','<%= product.images[2] %>')"
+                                                class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                            <%} %>
+
+
+                                    </div>
+                                    <div class="image-box-2">
+                                        <div class="side-img-box"><img src="<% if(product.images[3]){%>
+                                            /productImages/<%= product.images[3] %>
+                                        <%}else{%>
+                                            http://via.placeholder.com/100x100
+                                        <%} %>" alt="img" class="extra-img" id="ph4" width="100px" height="100px">
+                                        </div>
+                                        <% if(product.images[3]){%>
+                                            <button
+                                                onclick="deleteImage('<%= product._id %>','<%= product.images[3] %>')"
+                                                class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                            <%} %>
+
+
 
                                     </div>
                                 </div>
@@ -170,8 +207,10 @@
             {
                 const sizeSelect = document.getElementById( 'size' );
                 const category = document.getElementById( 'category' );
-                const productSize = '<%= product.size %>';
+                const active = document.getElementById( "active" )
+                const productSize = '<%= product.size %>'.toLowerCase();
                 const cat = '<%= product.category[0] %>';
+                const act = '<%= product.active %>';
                 if ( productSize )
                 {
                     sizeSelect.value = productSize;
@@ -180,6 +219,14 @@
                 {
                     category.value = cat;
                 }
+                if ( act == "true" )
+                {
+                    active.checked = true;
+                } else
+                {
+                    active.checked = false
+                }
+
             } );
             // image upload
 
@@ -241,11 +288,12 @@
                         croppedCanvas.toBlob( ( blob ) =>
                         {
                             // Create a new File object from the Blob
-                            const croppedFile = new File( [ blob ], "cropped-image.png", { type: "image/png" } );
+                            const croppedFile = new File( [ blob ], "first.png", { type: "image/png" } );
 
                             // Replace the original file in the input
                             input1.files[ 0 ] = croppedFile;
-
+                            console.log( "hello ", input1.files[ 0 ].name )
+                            console.log( "crop ", croppedFile )
                             // Display the cropped image
                             ph1.src = URL.createObjectURL( croppedFile );
 
@@ -257,10 +305,10 @@
                             formData.append( "image1", file );
                             formData.append( "imageName", file.name );
                             formData.append( "id", document.getElementById( "id" ).value )
-                            fetch( "/admin/editImage1", {
-                                method: "POST",
-                                body: formData
-                            } );
+                            // fetch( "/admin/editImage1", {
+                            //     method: "POST",
+                            //     body: formData
+                            // } );
                         } );
                         imageBox1.style.display = "none";
                     } )
@@ -290,17 +338,33 @@
                         croppedCanvas.toBlob( ( blob ) =>
                         {
                             // Create a new File object from the Blob
-                            const croppedFile = new File( [ blob ], "cropped-image.png", { type: "image/png" } );
+                            const croppedFile = new File( [ blob ], "second.png", { type: "image/png" } );
 
                             // Replace the original file in the input
                             input2.files[ 0 ] = croppedFile;
-
+                            console.log( "hello ", input2.files )
+                            console.log( "crop ", croppedFile )
                             // Display the cropped image
                             ph2.src = URL.createObjectURL( croppedFile );
+
+                            //send it to server
+                            const formData = new FormData();
+                            // const fileInput = document.getElementById( "img1" );
+                            const file = croppedFile;// Assuming only one file is selected
+
+                            formData.append( "image1", file );
+                            formData.append( "imageName", file.name );
+                            formData.append( "id", document.getElementById( "id" ).value )
+                            // fetch( "/admin/editImage2", {
+                            //     method: "POST",
+                            //     body: formData
+                            // } );
                         } );
                         imageBox2.style.display = "none";
+
                     } )
                 }
+
             } );
             input3.addEventListener( "change", function ()
             {
@@ -325,13 +389,26 @@
                         croppedCanvas.toBlob( ( blob ) =>
                         {
                             // Create a new File object from the Blob
-                            const croppedFile = new File( [ blob ], "cropped-image.png", { type: "image/png" } );
+                            const croppedFile = new File( [ blob ], "third.png", { type: "image/png" } );
 
                             // Replace the original file in the input
                             input3.files[ 0 ] = croppedFile;
-
+                            console.log( "hello ", input3.files )
+                            console.log( "crop ", croppedFile )
                             // Display the cropped image
                             ph3.src = URL.createObjectURL( croppedFile );
+                            //send it to server
+                            const formData = new FormData();
+                            // const fileInput = document.getElementById( "img1" );
+                            const file = croppedFile;// Assuming only one file is selected
+
+                            formData.append( "image1", file );
+                            formData.append( "imageName", file.name );
+                            formData.append( "id", document.getElementById( "id" ).value )
+                            // fetch( "/admin/editImage3", {
+                            //     method: "POST",
+                            //     body: formData
+                            // } );
                         } );
                         imageBox3.style.display = "none";
                     } )
@@ -360,13 +437,26 @@
                         croppedCanvas.toBlob( ( blob ) =>
                         {
                             // Create a new File object from the Blob
-                            const croppedFile = new File( [ blob ], "cropped-image.png", { type: "image/png" } );
+                            const croppedFile = new File( [ blob ], "fourth.png", { type: "image/png" } );
 
                             // Replace the original file in the input
                             input4.files[ 0 ] = croppedFile;
-
+                            console.log( "hello ", input4.files )
+                            console.log( "crop ", croppedFile )
                             // Display the cropped image
                             ph4.src = URL.createObjectURL( croppedFile );
+                            //send it to server
+                            const formData = new FormData();
+                            // const fileInput = document.getElementById( "img1" );
+                            const file = croppedFile; // Assuming only one file is selected
+
+                            formData.append( "image1", file );
+                            formData.append( "imageName", file.name );
+                            formData.append( "id", document.getElementById( "id" ).value )
+                            // fetch( "/admin/editImage4", {
+                            //     method: "POST",
+                            //     body: formData
+                            // } );
                         } );
                         imageBox4.style.display = "none";
                     } )

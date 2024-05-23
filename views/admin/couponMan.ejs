@@ -45,8 +45,12 @@
                                             <%=coupons[i].minAmount%>
                                         </td>
                                         <td>
-                                            <%=coupons[i].expiry.getDate()%>- <%=coupons[i].expiry.getMonth()%>-
-                                                    <%=coupons[i].expiry.getYear()%>
+                                            <% var expiryDate=new Date(coupons[i].expiry); var
+                                                formattedExpiry=expiryDate.toLocaleDateString("en-US", { month: "long" ,
+                                                day: "numeric" , year: "numeric" }); %>
+
+                                                <%= formattedExpiry %>
+
                                         </td>
                                         <td>
                                             <%=coupons[i].isActive%>
@@ -90,11 +94,11 @@
                                 </div>
                                 <div class="input-group-2">
                                     <label for="max">max dicount</label>
-                                    <input type="number" id="max" name="max" class="form-control" required>
+                                    <input type="number" id="max" name="maxAmount" class="form-control" required>
                                 </div>
                                 <div class="input-group-2">
                                     <label for="coffer">min amount</label>
-                                    <input type="number" id="min" name="min" class="form-control" required>
+                                    <input type="number" id="min" name="minAmount" class="form-control" required>
                                 </div>
                                 <div class="input-group-2">
                                     <label for="exp">Expiry Date</label>
@@ -104,10 +108,11 @@
 
                             </form>
                             <% if(typeof couponAddMessage !=="undefined" ){ %>
-                                <p>
+                                <p class="error-message">
                                     <%=couponAddMessage%>
                                 </p>
                                 <% } %>
+
                         </div>
                     </div>
                 </div>

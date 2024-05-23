@@ -1,7 +1,17 @@
 <div class="profile-content-2">
-    <h2>Order History</h2>
-
-    <% orders.forEach((element,index)=> {%>
+    <div class="flex profile-menu">
+        <a href="/order-history?status=Pending" <% if(status=="Pending" ){%>class="status-active"<%} %>>Pending</a>
+        <a href="/order-history?status=Processing" <% if(status=="Processing" ){%>class="status-active"<%} %>
+                >Processing</a>
+        <a href="/order-history?status=Shipped" <% if(status=="Shipped" ){%>class="status-active"<%} %>>Shipped</a>
+        <a href="/order-history?status=Delivered" <% if(status=="Delivered" ){%>class="status-active"<%} %>
+                >Delivered</a>
+        <a href="/order-history?status=Cancelled" <% if(status=="Cancelled" ){%>class="status-active"<%} %>
+                >Cancelled</a>
+    </div>
+    <br>
+    <% orders.forEach((element,index)=> {
+        %>
         <div class="font-family order-container">
             <div class="flex justify-between">
                 <div>
@@ -20,14 +30,18 @@
                     </h4>
                 </div>
 
-                <% switch (element.status) { case "Cancelled" :%>
-                    <h4></h4>
-                    <% break; case "Returned" :%>
-                        <h4></h4>
-                        <% break; default:%>
-                            <h4><button type="button" class="text-red cancel-btn"
-                                    onclick="cancelOrder('<%=element._id%>')">cancell</button></h4>
-                            <% break; } %>
+                <% switch (element.status) { case "Pending" :%>
+                    <h4><button type="button" class="text-red cancel-btn"
+                            onclick="cancelOrder('<%=element._id%>')">cancell</button></h4>
+                    <% break; case "Processing" :%>
+                        <h4><button type="button" class="text-red cancel-btn"
+                                onclick="cancelOrder('<%=element._id%>')">cancell</button></h4>
+                        <% break;case "Delivered" :%>
+                            <h4><a href="/invoice?id=<%=element._id%>" class="text-red cancel-btn">Download Invoice</a>
+                            </h4>
+                            <% break; default:%>
+                                <h4></h4>
+                                <% break; } %>
             </div>
             <% element.products.forEach(product=> {%>
                 <hr>
@@ -65,15 +79,25 @@
                                     </h4>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <% switch (element.status) { case "Delivered" :%>
-                                        <a href="/profile/return?order=<%= element._id %>&product=<%= product._id %>">return
-                                            product</a>
-                                        <% break; }%>
-                                </td>
+                            <% if ( element.status=="Delivered" ) {%>
+                                <tr>
+                                    <td>
 
-                            </tr>
+                                        <%if(!product.requested){%>
+                                            <a href="/profile/return?order=<%= element._id %>&product=<%= product.productID %>"
+                                                class="btn-some">return
+                                                product</a>
+                                            <br>
+                                            <button type="button"
+                                                onclick="openReview('<%=product.name%>','<%=product.productID%>')"
+                                                class="btn-some">rate product</button>
+                                            <%} %>
+
+                                    </td>
+
+                                </tr>
+                                <% } %>
+
                         </table>
                     </div>
                 </div>
@@ -86,6 +110,33 @@
         </div>
         <% }); %>
 
+</div>
+<div class="center-container" id="reviewModal">
+    <form id="reviewForm" class="modal">
+        <input type="hidden" name="productID" id="productID">
+        <h2 class="text-align">Write review of " <span id="prona"></span> "</h2>
+        <hr>
+        <h3 class="text-align">Rate</h3>
+        <div class="flex justify-around">
+            <div class="flex">
+                <input type="range" min="0" max="5" value="5" step="1" name="rating" id="rating">
+                <p><span id="rateValue">0</span><span class="material-symbols-outlined golden">star</span></p>
+            </div>
+        </div>
+        <hr>
+
+        <h3 class="text-align">Review</h3>
+        <textarea name="review" cols="40" rows="10" required></textarea>
+        <br>
+        <div class="flex justify-around">
+            <div><input type="submit" id="submitReview" class="btn-success" value="rate">
+                <button type="button" onclick="closeReview()" class="btn-failure">cancel</button>
+            </div>
+
+        </div>
+        <p class="red-text text-align" id="feedback"></p>
+
+    </form>
 </div>
 <div class="center-container" id="cancelResponse" onclick="closeOrderResponse(event)">
     <div class="box">

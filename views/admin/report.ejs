@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .height {
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid height">
+        <table class="border-normal width-100 sales-table">
+            <tr>
+                <th colspan="4">
+                    <h2>Sales Report</h2>
+                </th>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <h3 class="r-row">Date: <% var expiryDate=new Date(salesData.date); var
+                            formattedExpiry=expiryDate.toLocaleDateString("en-US", { month: "long" , day: "numeric" ,
+                            year: "numeric" }); %>
+
+                            <%= formattedExpiry %>
+                    </h3>
+                </td>
+                <td>
+                    <h3 class="r-row">Total Amount: &#8377;<%= salesData.totalAmount %>
+                    </h3>
+                </td>
+                <td>
+                    <h3 class="r-row">Total Orders: <%= salesData.totalOrder %>
+                    </h3>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                    <hr>
+                </td>
+            </tr>
+
+
+            <tr>
+                <th>Order No</th>
+                <th>Total Amount</th>
+                <th>Payment Method</th>
+            </tr>
+            <tr>
+                <td><br>
+
+                </td>
+            </tr>
+            <% orders.forEach((element,index)=> {%>
+                <tr class="border-normal">
+
+                    <td class="border-normal text-align">
+                        <%= element.orderNo %>
+                    </td>
+                    <td class="border-normal text-align">
+                        &#8377;<%= element.totalAmount %>
+                    </td>
+                    <td class="border-normal text-align">
+                        <%= element.paymentMethode %>
+                    </td>
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+
+</body>
+
+</html>

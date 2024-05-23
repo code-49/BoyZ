@@ -1,99 +1,85 @@
 const bcrypt = require("bcrypt");
 
 const UserModel = require("../../models/userModel");
+const WalletModel = require("../../models/walletModel");
 
-const DatabaseOperation = require("../../utils/model helpers/databaseOperations");
+const DatabaseOperation = require("../../utils/helpers/databaseOperations");
 const mailSender = require("../../utils/emailSender");
 const otpGenerator = require("../../utils/otpGeneretor");
 const tryCatch = require("../../utils/tryCatch");
 
+const {
+  emailSchema,
+  passSchema,
+  nameSchema,
+} = require("../../utils/validation/userVal");
+
 //verifying login request
 const login_verification = tryCatch(async (req, res) => {
   const { email, password } = req.body;
-  if (email == "" || password == "") {
+  //validating email using joi
+  await emailSchema.validateAsync(email);
+
+  //checking if user exist
+  const user = await UserModel.findOne({ email });
+  if (!user)
     return res.json({
-      message: "Please enter all input",
+      message: "Wrong email or password",
     });
-  } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+  if (user.blocked)
     return res.json({
-      message: "Please enter a valid email",
+      message: "You are blocked from this store!",
     });
-  } else if (password.length < 8) {
+
+  //checking the password
+  await passSchema.validateAsync(password);
+  const passMatch = await bcrypt.compare(password, user.password);
+  if (!passMatch)
     return res.json({
-      message: "Enter a password 8 to 20 character",
+      message: "Wrong email or password",
     });
-  } else {
-    const user = await DatabaseOperation.get_one_document(UserModel, {
-      email: email,
-    });
-    if (user) {
-      const passMatch = await bcrypt.compare(password, user.password);
-      if (passMatch) {
-        req.session.userID = user._id; //loginID if not in dev
-        req.session.loginOtp = otpGenerator.generateOTP(4);
-        req.session.email = email;
-        // req.session.assignTime = new Date();
-        mailSender.sendEmail(
-          email,
-          "Login OTP",
-          "text",
-          `OTP for logging in is ${req.session.loginOtp}`
-        );
-        return res.json({ redirect: "/" }); //"/account/otp"
-      } else {
-        return res.json({
-          message: "Wrong email or password",
-        });
-      }
-    } else {
-      return res.json({
-        message: "Wrong email or password",
-      });
-    }
-  }
+
+  //assigning user id for session and redirecting to home
+  req.session.userID = user._id;
+  return res.json({ redirect: "/" });
 });
 
 //registering user
 const register_user = tryCatch(async (req, res) => {
   const { name, password, email } = req.body;
 
-  if (email == "" || password == "" || name == "") {
+  await nameSchema.validateAsync(name);
+  await emailSchema.validateAsync(email);
+  await passSchema.validateAsync(password);
+  const user_exist = await UserModel.findOne({ email: email });
+  if (user_exist)
     return res.json({
-      message: "Please enter all input",
+      message: "User with the email already exist",
     });
-  } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-    return res.json({
-      message: "Please enter a valid email",
-    });
-  } else if (password.length < 8) {
-    return res.json({
-      message: "Enter a password 8 to 20 character",
-    });
-  } else {
-    const user_exist = await UserModel.findOne({ email: email });
-    if (user_exist) {
-      return res.json({
-        message: "User with the email already exist",
-      });
-    } else {
-      const encrypted_password = await bcrypt.hash(password, 10);
-      const new_user = new UserModel({
-        name: name,
-        password: encrypted_password,
-        email: email,
-      });
-      const saved = await new_user.save();
-      const verifyCode = otpGenerator.generateOTP(6);
-      req.session.verifyCode = verifyCode;
-      mailSender.sendEmail(
-        email,
-        "Verification of account.",
-        "html",
-        `Please click here to verify your email.<a href='http://localhost:3000/account/verify/${verifyCode}'>verify</a>`
-      );
-      return res.json({ redirect: "/account/verify" });
-    }
-  }
+
+  const encrypted_password = await bcrypt.hash(password, 10);
+  const new_user = new UserModel({
+    name: name,
+    password: encrypted_password,
+    email: email,
+  });
+  const saved = await new_user.save();
+  const wallet = new WalletModel({
+    user: new_user._id,
+  });
+  await wallet.save();
+  const verifyCode = otpGenerator.generateOTP(6);
+  req.session.verifyCode = verifyCode;
+  req.session.verifyID = new_user._id;
+  req.session.signUpEmail = new_user.email;
+  req.session.time = new Date().getTime();
+  mailSender.sendEmail(
+    email,
+    "SignUp Verification",
+    "text",
+    `The OTP for verifying your account is ${verifyCode}.`
+  );
+  return res.json({ redirect: "/account/otp" });
 });
 
 // loading verify page
@@ -107,16 +93,31 @@ const user_verification_page = tryCatch(async (req, res) => {
 
 //loading the page for sending otp
 const load_otp_verification = tryCatch(async (req, res) => {
-  res.render("./user/otp");
+  res.render("./user/otp", { time: req.session.time });
 });
 
 //verifying otp from user
 const otp_verification = tryCatch(async (req, res) => {
-  if (req.body.otp == req.session.loginOtp) {
-    req.session.userID = req.session.loginID;
+  const dateNow = new Date().getTime();
+  const date = dateNow - req.session.time;
+  if (date / 1000 > 180) {
+    return res.render("./user/otp", {
+      message: "Time up",
+      time: req.session.time,
+    });
+  }
+  if (req.body.otp == req.session.verifyCode) {
+    req.session.userID = req.session.verifyID;
+    await UserModel.updateOne(
+      { _id: req.session.userID },
+      { $set: { is_verified: true } }
+    );
     res.redirect("/");
   } else {
-    res.render("./user/otp", { message: "Invalid Otp" });
+    res.render("./user/otp", {
+      message: "Invalid Otp",
+      time: req.session.time,
+    });
   }
 });
 
@@ -127,15 +128,15 @@ const user_logout = tryCatch(async (req, res) => {
 });
 
 const resent_otp = tryCatch(async (req, res) => {
-  req.session.loginOtp = otpGenerator.generateOTP(4);
+  req.session.verifyCode = otpGenerator.generateOTP(6);
   mailSender.sendEmail(
-    req.session.email,
-    "Login OTP",
+    req.session.signUpEmail,
+    "SignUp Verification",
     "text",
-    `OTP for logging in is ${req.session.loginOtp}`
+    `The OTP for verifying your account is ${req.session.verifyCode}.`
   );
-  req.session.loginOtp;
-  res.render("./user/otp");
+  req.session.time = new Date().getTime();
+  res.redirect("/account/otp");
 });
 
 module.exports = {

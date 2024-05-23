@@ -1,5 +1,5 @@
 function addToCart(proId) {
-  let productId = JSON.parse(proId);
+  let productId = proId;
   let quantity = document.getElementById("numOfProduct").value;
   fetch(`/cart/add-to-cart?productId=${productId}&quantity=${quantity}`).then(
     async (result) => {

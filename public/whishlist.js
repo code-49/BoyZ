@@ -1,5 +1,5 @@
 function addToWhishlist(proId) {
-  let productId = JSON.parse(proId);
+  let productId = proId;
   fetch(`/wishlist/add/${productId}`).then(async (result) => {
     result = await result.json();
     if (result.added) {

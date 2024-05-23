@@ -4,15 +4,113 @@
         <div class="flex">
             <div class="profile-contaner">
                 <div class="profile-menu">
-                    <a class="profile-menu-button" href="/profile">profile</a>
-                    <a class="profile-menu-button" href="/order-history">orders</a>
+                    <a class="profile-menu-active" href="/profile">profile</a>
+                    <a href="/order-history">orders</a>
                     <a href="/return/status">returns</a>
+                    <a href="/profile/wallet">wallet</a>
                 </div>
                 <%- include("../partials/profile.ejs") %>
             </div>
 
         </div>
+        <script>
+            const addAddress = document.getElementById( "addAddress" );
+            const addressMessage = document.getElementById( "addressMessage" );
 
+
+            addressMessage.style.display = "none";
+
+            const addAddressURL = "/profile/add-address";
+
+            addAddress.addEventListener( "submit", async ( evnt ) =>
+            {
+                console.log( "Form Submitted" )
+                evnt.preventDefault();
+
+                const formData = new FormData( addAddress );
+                const reqData = new URLSearchParams( formData );
+
+                fetch( addAddressURL, {
+                    method: "POST",
+                    body: reqData,
+                } ).then( async ( response ) =>
+                {
+                    response = await response.json();
+                    console.log( response )
+                    if ( response.success )
+                    {
+                        window.location.href = "/profile"
+                    } else
+                    {
+                        addressMessage.style.display = "block";
+                        addressMessage.innerHTML = response.message;
+                    }
+                } )
+
+            } );
+            const edit_add = document.getElementById( "edit-add" );
+            const editAddress = document.getElementById( "editAddress" );
+            const editAddressMessage = document.getElementById( "editAddressMessage" );
+
+
+            editAddressMessage.style.display = "none";
+
+            const editAddressURL = "/profile/edit-address";
+
+            editAddress.addEventListener( "submit", async ( evnt ) =>
+            {
+                console.log( "Edit Submitted" )
+                evnt.preventDefault();
+
+                const formData = new FormData( editAddress );
+                const reqData = new URLSearchParams( formData );
+
+                fetch( editAddressURL, {
+                    method: "POST",
+                    body: reqData,
+                } ).then( async ( response ) =>
+                {
+                    response = await response.json();
+                    console.log( response )
+                    if ( response.success )
+                    {
+                        window.location.href = "/profile"
+                    } else
+                    {
+                        editAddressMessage.style.display = "block";
+                        editAddressMessage.innerHTML = response.message;
+                    }
+                } )
+
+            } );
+
+            function editOpen ( ele )
+            {
+                const add = JSON.parse( ele.getAttribute( "data-address" ) )
+
+                const buildingInput = editAddress.elements[ "building" ];
+                const localityInput = editAddress.elements[ "locality" ];
+                const cityInput = editAddress.elements[ "city" ];
+                const stateInput = editAddress.elements[ "state" ];
+                const pinInput = editAddress.elements[ "pin" ];
+                const idInput = editAddress.elements[ "addId" ];
+
+                buildingInput.value = add.building;
+                localityInput.value = add.locality;
+                cityInput.value = add.city;
+                stateInput.value = add.state;
+                pinInput.value = add.pin;
+                idInput.value = add.id;
+
+                document.getElementById( "editFormContainer" ).style.display = "grid"
+            }
+
+            function closeEditAddress ()
+            {
+                document.getElementById( "editFormContainer" ).style.display = "none"
+
+            }
+        </script>
         <script src="profile.js"></script>
         <script src="script.js"></script>
         </body>

@@ -13,5 +13,7 @@ routes.use(
   productFilter.setFilterData,
   userController.load_products
 );
+routes.get("/invoice", userController.download_invoice);
+routes.post("/review", userController.post_review);
 
 module.exports = routes;

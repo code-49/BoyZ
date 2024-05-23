@@ -1,8 +1,8 @@
 <div id="signContainer" class="formContainer">
     <p class="welcome-message">LET'S GET YOU STARTED</p>
     <h4 class="login-title">Create an Account</h4>
-    <form id="signupForm" >
-        <div class="input-group" >
+    <form id="signupForm">
+        <div class="input-group">
             <label for="name">full name</label>
             <input type="text" id="name" name="name" class="form-control">
         </div>
@@ -15,9 +15,11 @@
             <input type="password" id="password" name="password" class="form-control">
         </div>
         <input type="submit" value="SIGN UP" class="loginButton">
-      
-        Already have an account?<button type="button" class="btn-1" onclick="openLoginModal()">LOGIN HERE</button>
-        <p id="signupMessage" class="error-message"></p>
-    </form>
-</div>
 
+    </form>
+    <button class="googleIn"><a href="/log/google"><img src="/icons/google.png" alt="goole" width="20px"
+                height="20px"></a></button>
+    <!-- <button class="googleIn" id="signG"><img src="/icons/google.png" alt="goole" width="20px" height="20px"></button> -->
+    Already have an account?<button type="button" class="btn-1" onclick="openLoginModal()">LOGIN HERE</button>
+    <p id="signupMessage"></p>
+</div>

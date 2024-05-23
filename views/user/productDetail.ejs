@@ -1,128 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BoyZ</title>
     <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="/cropperjs/dist/cropper.min.css">
-<script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
+    <script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
 
 </head>
+
 <body>
-<%- include("../partials/menu.ejs") %> 
-
-<div class="product-detail-container">
-    <div class="image-box">
-        <div class="side-images" id="sideImageContainer">
-            <div class="side-img-box"><img src="/productImages/<%= product.images[1] %>" alt="img" class="side-img"></div>
-            <div class="side-img-box"><img src="/productImages/<%= product.images[2] %>" alt="img" class="side-img"></div>
-            <div class="side-img-box"><img src="/productImages/<%= product.images[3] %>" alt="img" class="side-img"></div>
-        </div>
-        <div id="img-con">
-            <img src="/productImages/<%= product.images[0] %>" alt="img"  id="mainImg" width="490px" height="490px">
-        </div>
-        
-    </div>
-    
-    <div class="product-detail">
-        <p class="product-title"><%= product.name %></p>
-        <p class="product-desc"><%= product.description %></p>
-        <h2>
-            <span>&#8377;<%= product.price-((product.price*product.discount)/100) %></span>
-            <span class="text-strike">&#8377;<%= product.price %></span> 
-            <span class="offer-style"><%= product.discount %>%</span>
-        </h2>
-        <br>
-        <br>
-        <hr>
-        <p class="property-title">Color</p>
-        <div class="product-color-container">
-            
-            <div class="product-color" style="background-color:<%= product.color[0] %>;"></div>
-        </div>
-        <hr>
-        <p class="property-title">Size</p>
-        <div class="product-color-container">
-            
-            <button type="button" class="size-selector"><%= product.size %></button>
-    
-        </div>
-        <hr>
-        <div class="product-color-container">
-            <div class="num-box">
-                <span class="input-number-increment" onclick="numIncrement(-1,'numOfProduct')">–</span>
-                <input class="input-number" type="number" value="1" min="1" max="10" id="numOfProduct">
-                <span class="input-number-increment" onclick="numIncrement(1,'numOfProduct')">+</span>
-            </div>
-            <%if (user) {%> 
-            
-                <button type="button" onclick="addToCart(JSON.stringify(<%= JSON.stringify(product._id) %>))" class="cart-btn btn-add">Add To Cart</button>
-                
-            <%} else {%> 
-                <button type="button" class="cart-btn btn-add">Add to Cart</button>
-            <% }%>
-            
-            <%if (user) {%> 
-            
-                    <button type="button" onclick="addToWhishlist(JSON.stringify(<%= JSON.stringify(product._id) %>))" class="whish-btn material-symbols-outlined">favorite</button>
-                  
-        
-            <%} else {%>
-                <button type="button" class="btn-add material-symbols-outlined">favorite</button>
-            <% }%>
-            
-        </div>
-    </div>
-</div>
-
-<h3 class="product-title recommendation"> You might also like </h3>
-
-<div class="top-container">
-    <% for (let i = 0; i < similar.length; i++) {%>
-        <div class="product-card">
-            <a href="/product/<%= similar[i]._id %>">
-                <div class="image-container-2">
-                    <img src="/productImages/<%= similar[i].images[0] %>" alt="product-img" width="100%" height="100%">
-                </div>
+    <%- include("../partials/menu.ejs") %>
+        <p class="uppercase1 price-listing mar-ad-01"><a href="/">Home</a>/ <a href="/products?cat=<%= cat %>">
+                <%=cat %>/
             </a>
-            <h3 class="product-name"><%= similar[i].name %></h3>
-            <h3 class="product-name">$<%= similar[i].price %><span class="offer-style"><%= similar[i].discount %>%</span></h3>
+            <%= product.name %>
+        </p>
+        <div class="product-detail-container">
+
+
+            <div class="image-box">
+                <div class="side-images" id="sideImageContainer">
+                    <% if(product.images[1]){%>
+                        <div class="side-img-box">
+                            <img src="/productImages/<%= product.images[1] %>" alt="img" class="side-img">
+                        </div>
+                        <%} %>
+                            <% if(product.images[2]){%>
+                                <div class="side-img-box"><img src="/productImages/<%= product.images[2] %>" alt="img"
+                                        class="side-img"></div>
+                                <%} %>
+                                    <% if(product.images[3]){%>
+                                        <div class="side-img-box"><img src="/productImages/<%= product.images[3] %>"
+                                                alt="img" class="side-img"></div>
+                                        <%} %>
+
+                </div>
+                <div id="img-con">
+                    <img src=" <% if(product.images[0]){%>
+                        /productImages/<%= product.images[0] %>
+                        <%}else{%>
+                            http://via.placeholder.com/150x150
+                        <%} %>" alt="img" id="mainImg" width="490px" height="490px">
+                </div>
+
+            </div>
+
+            <div class="product-detail">
+
+                <p class="product-title">
+                    <%= product.name %>
+                </p>
+                <p class="product-desc">
+                    <%= product.description %>
+                </p>
+                <h2>
+                    <span>&#8377;<%= product.price-((product.price*product.discount)/100) %></span>
+                    <span class="text-strike">&#8377;<%= product.price %></span>
+                    <span class="offer-style">
+                        <%= product.discount %>%
+                    </span>
+                </h2>
+                <% if(product.stock <1){%>
+                    <p class="error-message">Product is out of stock.</p>
+                    <%}else{%>
+                        <div class="price-listing">
+                            <h4 class="m-0 ">
+                                <%= product.stock %> left
+                            </h4>
+                        </div>
+                        <%}%>
+
+                            <hr>
+                            <p class="property-title">Color</p>
+                            <div class="product-color-container">
+
+                                <div class="product-color" style="background-color: <%= product.color[0] %> ;"></div>
+                            </div>
+                            <hr>
+                            <p class="property-title">Size</p>
+                            <div class="product-color-container">
+
+                                <button type="button" class="size-selector">
+                                    <%= product.size %>
+                                </button>
+
+                            </div>
+                            <hr>
+                            <div class="product-color-container">
+                                <div class="num-box">
+                                    <span class="input-number-increment"
+                                        onclick="numIncrement(-1,'numOfProduct')">–</span>
+                                    <input class="input-number" type="number" value="1" min="1" max="10"
+                                        id="numOfProduct">
+                                    <span class="input-number-increment"
+                                        onclick="numIncrement(1,'numOfProduct')">+</span>
+                                </div>
+                                <%if (user && product.stock>0) {%>
+
+                                    <button type="button" onclick="addToCart('<%= product._id %>')"
+                                        class="cart-btn btn-add">Add To Cart</button>
+
+                                    <%} else {%>
+                                        <button type="button" class="btn-disabled cart-btn btn-add">Add to Cart</button>
+                                        <% }%>
+
+                                            <%if (user ) {%>
+
+                                                <button type="button" onclick="addToWhishlist('<%= product._id %>')"
+                                                    class="whish-btn material-symbols-outlined">favorite</button>
+
+
+                                                <%} else {%>
+                                                    <button type="button"
+                                                        class="btn-disabled btn-add material-symbols-outlined">favorite</button>
+                                                    <% }%>
+
+                            </div>
+            </div>
         </div>
-        
-    <%} %> 
-</div>
-<script>
+        <div class="flex rating-container ">
+            <div class="grid rating">
+                <div class="box1 grid">
+                    <h2 class="mainRating">
+                        <span class="num-rate">
+                            <%= product.rating %>
+                        </span>
+                        <span class="material-symbols-outlined golden font-20">
+                            star
+                        </span>
+                        <br>
+                    </h2>
+                </div>
 
-const container = document.getElementById("img-con");
-const img = document.getElementById("mainImg")
-container.addEventListener("mousemove", onZoom);
-container.addEventListener("mouseover", onZoom);
-container.addEventListener("mouseleave", offZoom);
-function onZoom(e) {
-    const x = e.clientX - e.target.offsetLeft;
-    const y = e.clientY - e.target.offsetTop;
-    img.style.transformOrigin = `${x}px ${y}px`;
-    img.style.transform = "scale(2.5)";
-}
-function offZoom(e) {
-    img.style.transformOrigin = `center center`;
-    img.style.transform = "scale(1)";
-}
-    const sideImages = document.getElementById("sideImageContainer");
-    const mainImageElement = document.getElementById("mainImg");
+            </div>
+            <div class="reviews">
+                <h1>Review</h1>
+                <% product.reviews.forEach(review=> {%>
+                    <div class="review-container">
+                        <h3>
+                            <%=review.name%>
+                        </h3>
+                        <h2>
+                            <span class="num-rate">
+                                <%= review.rated %>
+                            </span>
+                            <span class="material-symbols-outlined golden">
+                                star
+                            </span>
+                        </h2>
+                        <p>
+                            <%= review.review %>
+                        </p>
+                    </div>
+                    <%}); %>
+            </div>
+        </div>
 
-    sideImages.addEventListener("click",(event)=>{
-        const image = event.target;
-        const mainImage = mainImageElement.src;
-        mainImageElement.src = image.src;
-        image.src = mainImage;
-    })
-    
-</script>
+        <h3 class="product-title recommendation"> You might also like </h3>
+        <div class="flex justify-around">
+            <div class="top-container">
+                <% for (let i=0; i < similar.length; i++) {%>
+                    <div class="m-20">
+                        <a href="/product/<%= similar[i]._id %>">
+                            <div class="image-container">
+                                <img src="/productImages/<%= similar[i].images[0] %>" alt="product-img">
+                            </div>
+                        </a>
 
-<script src="/whishlist.js"></script>
-<script src="/cart.js"></script>
-<%- include("../partials/footer.ejs") %>
+                        <h3 class="product-name text-align">
+                            <%= similar[i].name %>
+                        </h3>
+                        <h3 class="price-listing text-align">
+                            <span class="curr-price">&#8377;<%=
+                                    similar[i].price-((similar[i].price*similar[i].discount)/100) %>
+                            </span>
+                            <span class="text-strike">&#8377;<%= similar[i].price %></span>
+                            <span class="offer-style ">
+                                <%= similar[i].discount %>%
+                            </span>
+                        </h3>
+                        <div class="flex justify-around">
+                            <p class="rating-products material-symbols-outlined">
+                                <span class="num-rate">
+                                    <%= similar[i].rating %>
+                                </span>
+
+                                star
+                            </p>
+                        </div>
+                    </div>
+
+                    <%} %>
+            </div>
+        </div>
+
+        <script>
+
+            const container = document.getElementById( "img-con" ); // Container of the main image.
+            const img = document.getElementById( "mainImg" ); // The main image element.
+            container.addEventListener( "mousemove", onZoom ); // Changing the place that is zoomed while mouse moves.
+            container.addEventListener( "mouseover", onZoom ); // Zooming the img when mouse enter the container.
+            container.addEventListener( "mouseleave", offZoom ); // Returning to normal when mouse leaves container.
+
+            //function for zooming
+            function onZoom ( e )
+            {
+                const x = e.clientX - e.target.offsetLeft;
+                const y = e.clientY - e.target.offsetTop;
+                img.style.transformOrigin = `${ x }px ${ y }px`;
+                img.style.transform = "scale(2.5)";
+            }
+            //function for returning to normal.
+            function offZoom ( e )
+            {
+                img.style.transformOrigin = `center center`;
+                img.style.transform = "scale(1)";
+            }
+            //code for selecting side images.
+            const sideImages = document.getElementById( "sideImageContainer" );
+            sideImages.addEventListener( "click", ( event ) =>
+            {
+                if ( sideImages.length > 0 )
+                {
+                    const image = event.target;
+                    const mainImage = img.src;
+                    img.src = image.src;
+                    image.src = mainImage;
+                }
+
+            } )
+
+        </script>
+
+        <script src="/whishlist.js"></script>
+        <script src="/cart.js"></script>
+        <%- include("../partials/footer.ejs") %>

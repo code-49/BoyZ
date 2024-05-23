@@ -14,75 +14,93 @@
               <div id="addressList">
                 <h2 class="text-poppins">Delivery Address</h2>
                 <div class="flex align-center">
-                  <div class="address-box m-20"
-                    data-shipping="<%= user.address[0].building %>,<%= user.address[0].locality %>,<%= user.address[0].city %>,<%= user.address[0].state %>,<%= user.address[0].pin %>"
-                    id="address">
-                    <h4>
-                      <%= user.name %>
-                    </h4>
-                    <p id="addressContent">
-                      <%= user.address[0].building %><br>
-                        <%= user.address[0].locality %><br>
-                          <%= user.address[0].city %><br>
-                            <%= user.address[0].state %><br>
-                              <%= user.address[0].pin %>
-                    </p>
-                  </div>
-                </div>
-                <button type="button" onclick="changeAddress()" class="m-20 btn-2">Change address</button>
-                <button type="button" onclick="addAddress()" class="btn-2 ">New Address</button>
-                <div id="addressBox">
-                  <div class="flex">
-                    <% for(let i=0;i<user.address.length;i++){ %>
-                      <div class="address-box m-20 " data-shipping="
-                         <%= user.address[i].building %>,
-                         <%= user.address[i].locality %>,
-                         <%= user.address[i].city %>,
-                         <%= user.address[i].state %>,
-                         <%= user.address[i].pin %>" onclick="swapAddress(this)">
+                  <% if(user.address && user.address.length>0){%>
+                    <div class="address-box m-20"
+                      data-shipping="<%= user.address[0].building %>,<%= user.address[0].locality %>,<%= user.address[0].city %>,<%= user.address[0].state %>,<%= user.address[0].pin %>"
+                      id="address">
+                      <h4>
+                        <%= user.name %>
+                      </h4>
+                      <p id="addressContent">
+                        <%= user.address[0].building %><br>
+                          <%= user.address[0].locality %><br>
+                            <%= user.address[0].city %><br>
+                              <%= user.address[0].state %><br>
+                                <%= user.address[0].pin %>
+                      </p>
+                    </div>
+                    <%}else{%>
+                      <div class="address-box m-20" data-shipping="" id="address">
                         <h4>
                           <%= user.name %>
                         </h4>
-                        <p>
-                          <%= user.address[i].building %><br>
-                            <%= user.address[i].locality %><br>
-                              <%= user.address[i].city %><br>
-                                <%= user.address[i].state %><br>
-                                  <%= user.address[i].pin %>
+                        <p id="addressContent">
+
                         </p>
                       </div>
-                      <% } %>
-                  </div>
-                </div>
-                <div class="newAddress" id="addressForm">
-                  <h2>Enter New Address</h2>
-                  <form class="m-20" id="cartAddress">
+                      <%} %>
 
-                    <div class="input-group">
-                      <label for="building">building</label>
-                      <input type="text" id="building" name="building" class="form-control" required>
-                    </div>
-                    <div class="input-group">
-                      <label for="locality">locality</label></td>
-                      <input type="text" id="locality" name="locality" class="form-control" required>
-                    </div>
-                    <div class="input-group">
-                      <label for="city">city</label></td>
-                      <input type="text" id="city" name="city" class="form-control" required>
-                    </div>
-                    <div class="input-group">
-                      <label for="state">state</label></td>
-                      <input type="text" id="state" name="state" class="form-control" required>
-                    </div>
-                    <div class="input-group">
-                      <label for="pin">pin</label></td>
-                      <input type="text" id="pin" name="pin" class="form-control" required>
-                    </div>
-                    <input type="submit" class="btn-2 bggreen" value="ENTER">
-                    <button type="button" onclick="closeAddAddress()" class="btn-2 bgred">CANCEL</button>
-
-                  </form>
                 </div>
+                <% if (user.address && user.address.length>0) {%>
+                  <button type="button" onclick="changeAddress()" class="m-20 btn-2">Change address</button>
+
+                  <%} %>
+                    <button type="button" onclick="addAddress()" class="btn-2 ">New Address</button>
+                    <% if (user.address&& user.address.length>0) {%>
+                      <div id="addressBox">
+                        <div class="flex">
+                          <% for(let i=0;i<user.address.length;i++){ %>
+                            <div class="address-box m-20 " data-shipping="
+                           <%= user.address[i].building %>,
+                           <%= user.address[i].locality %>,
+                           <%= user.address[i].city %>,
+                           <%= user.address[i].state %>,
+                           <%= user.address[i].pin %>" onclick="swapAddress(this)">
+                              <h4>
+                                <%= user.name %>
+                              </h4>
+                              <p>
+                                <%= user.address[i].building %><br>
+                                  <%= user.address[i].locality %><br>
+                                    <%= user.address[i].city %><br>
+                                      <%= user.address[i].state %><br>
+                                        <%= user.address[i].pin %>
+                              </p>
+                            </div>
+                            <% } %>
+                        </div>
+                      </div>
+                      <%} %>
+
+                        <div class="newAddress" id="addressForm">
+                          <h2>Enter New Address</h2>
+                          <form class="m-20" id="cartAddress">
+
+                            <div class="input-group">
+                              <label for="building">building</label>
+                              <input type="text" id="building" name="building" class="form-control" required>
+                            </div>
+                            <div class="input-group">
+                              <label for="locality">locality</label></td>
+                              <input type="text" id="locality" name="locality" class="form-control" required>
+                            </div>
+                            <div class="input-group">
+                              <label for="city">city</label></td>
+                              <input type="text" id="city" name="city" class="form-control" required>
+                            </div>
+                            <div class="input-group">
+                              <label for="state">state</label></td>
+                              <input type="text" id="state" name="state" class="form-control" required>
+                            </div>
+                            <div class="input-group">
+                              <label for="pin">pin</label></td>
+                              <input type="text" id="pin" name="pin" class="form-control" required>
+                            </div>
+                            <input type="submit" class="btn-2 bggreen" value="ENTER">
+                            <button type="button" onclick="closeAddAddress()" class="btn-2 bgred">CANCEL</button>
+
+                          </form>
+                        </div>
               </div>
 
               <div id="checkout">
@@ -90,7 +108,7 @@
                   <div class="tab">
                     <button class="tablinks" onclick="openCity(event, 'cash')">cash on delivery</button>
                     <button class="tablinks" onclick="openCity(event, 'credit')">online</button>
-                    <!-- <button class="tablinks" onclick="openCity(event, 'upi')">UPI</button> -->
+                    <button class="tablinks" onclick="openCity(event, 'wallet')">Wallet</button>
                   </div>
 
                   <div id="cash" class="tabcontent">
@@ -104,10 +122,11 @@
                     <div id="paypal"></div>
                   </div>
 
-                  <!-- <div id="upi" class="tabcontent" style="display: none;">
-                      
-                      <p>Currently unavailable</p>
-                    </div> -->
+                  <div id="wallet" class="tabcontent" style="display: none;">
+                    <h3>Pay using Wallet</h3>
+                    <br>
+                    <button type="button" class="cart-btn btn-add" onclick="walletOrder()">Place Order</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -138,11 +157,19 @@
                       <p id="total" data-total="<%= total %>">&#8377;<%=parseInt(total) %>
                       </p>
                     </div>
-                    <button type="button" class="cart-btn btn-add" onclick="goToAddress()" id="addressBtn">proceed to
-                      Shipping</button>
-                    <button type="button" class="cart-btn btn-add" onclick="goToCheckout()" id="checkoutBtn">proceed to
-                      Payment</button>
+                    <button type="button" class="cart-btn btn-add" onclick="goToAddress()" id="addressBtn" <%for (const
+                      product of products) { if(product.message=="Product stock limit!" ){ %> disabled <% }} %> >proceed
+                        to
+                        Shipping</button>
+                    <button type="button" class="cart-btn btn-add" onclick="goToCheckout()" id="checkoutBtn" <%for
+                      (const product of products) { if(product.message=="Product stock limit!" ){ %> disabled <% }} %>
+                        >proceed to
+                        Payment</button>
               </div>
+
+
+
+
               <div class="coupon" id="coupon">
                 <p class="text-red">
                   <%= couponRes %>
@@ -154,7 +181,7 @@
                 </form>
                 <div>
                   <% couponData.forEach((coup)=>{%>
-                    <div class="border-normal border-radius-5 bg-white text-left">
+                    <div class="border-normal border-radius-5 bg-white text-left coupon1">
                       <h4>Name: <%= coup.name %>
                       </h4>
                       <p>Code: <%= coup.code %>
@@ -237,9 +264,11 @@
                             if ( res.ok ) return res.json()
                             return res.json().then( json => Promise.reject( json ) )
                           } )
-                          .then( ( { id } ) =>
+                          .then( ( result ) =>
                           {
-                            return id
+                            if ( result.stock == "ok" )
+                              return result.id
+                            window.location.href = `/cart/wallet-fail?stock=1`;
                           } )
                           .catch( e =>
                           {
@@ -251,7 +280,30 @@
 
                         return actions.order.capture().then( () =>
                         {
-                          window.location.href = "/cart/success";
+                          let address = document.getElementById( "address" );
+                          let total = document.getElementById( "total" );
+                          const reqData = new URLSearchParams( {
+                            paymentMethode: "paypal",
+                            address: address.dataset.shipping,
+                            total: total.dataset.total
+                          } );
+                          fetch( "/cart/save-order", {
+                            method: "POST",
+                            body: reqData,
+                          } ).then( async ( result ) =>
+                          {
+                            result = await result.json();
+                            if ( result.message == "successful" )
+                            {
+
+                              const encodedOrderNo = encodeURIComponent( result.orderNo );
+                              window.location.href = `/cart/success?orderNo=${ encodedOrderNo }`;
+                            } else
+                            {
+                              window.location.href = `/cart/wallet-fail?stock=1`;
+                            }
+                          } )
+
                         } )
                       },
                     } )
@@ -301,8 +353,42 @@
                         result = await result.json();
                         if ( result.message == "successful" )
                         {
-                          console.log( result.orderNo )
-                          window.location.href = `/cart/success?orderNo=${ result.orderNo }&total=${ result.totalAmount }`;
+
+                          const encodedOrderNo = encodeURIComponent( result.orderNo );
+                          window.location.href = `/cart/success?orderNo=${ encodedOrderNo }`;
+                        } else
+                        {
+                          window.location.href = `/cart/wallet-fail?stock=1`;
+                        }
+                      } );
+                  }
+                  function walletOrder ()
+                  {
+                    let address = document.getElementById( "address" );
+                    let total = document.getElementById( "total" );
+                    const reqData = new URLSearchParams( {
+                      paymentMethode: "wallet",
+                      address: address.dataset.shipping,
+                      total: total.dataset.total
+                    } );
+                    fetch( `/cart/wallet-order`, {
+                      method: "POST",
+                      body: reqData
+                    } )
+                      .then( async ( result ) =>
+                      {
+                        result = await result.json();
+                        if ( result.message == "successful" )
+                        {
+
+                          const encodedOrderNo = encodeURIComponent( result.orderNo );
+                          window.location.href = `/cart/success?orderNo=${ encodedOrderNo }`;
+                        } else if ( result.message == "nomo" )
+                        {
+                          window.location.href = '/cart/wallet-fail';
+                        } else
+                        {
+                          window.location.href = `/cart/wallet-fail?stock=1`;
                         }
                       } );
                   }

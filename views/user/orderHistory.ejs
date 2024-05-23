@@ -1,68 +1,116 @@
 <%- include("../partials/head.ejs") %>
     <%- include("../partials/menu.ejs") %>
-
-        <div class="flex">
-            <div class="profile-contaner">
-                <div class="profile-menu">
-                    <a href="/profile">profile</a>
-                    <a href="/order-history">orders</a>
-                    <a href="/return/status">returns</a>
+        <%- include("../partials/toast.ejs") %>
+            <div class="flex">
+                <div class="profile-contaner">
+                    <div class="profile-menu">
+                        <a href="/profile">profile</a>
+                        <a class="profile-menu-active" href="/order-history">orders</a>
+                        <a href="/return/status">returns</a>
+                        <a href="/profile/wallet">wallet</a>
+                    </div>
+                    <%- include("../partials/order.ejs") %>
                 </div>
-                <%- include("../partials/order.ejs") %>
+
             </div>
-
-        </div>
-        <script>
-            let cancelResponse = document.getElementById( "cancelResponse" );
-            let cancelMessage = document.getElementById( "cancelMessage" );
-
-            function cancelOrder ( id )
-            {
-                fetch( `/profile/cancellOrder/${ id }` )
-                    .then( async ( result ) =>
-                    {
-                        result = await result.json();
-                        if ( result.success )
-                        {
-                            cancelResponse.style.display = "grid";
-                            cancelMessage.innerHTML = result.message;
-                        } else
-                        {
-                            cancelResponse.style.display = "grid";
-                            cancelMessage.innerHTML = "Unable to cancel order!";
-                        }
-                    } )
-            }
-
-            function returnOrder ( id )
-            {
-                fetch( `/profile/returnOrder/${ id }` )
-                    .then( async ( result ) =>
-                    {
-                        result = await result.json();
-                        if ( result.success )
-                        {
-                            cancelResponse.style.display = "grid";
-                            cancelMessage.innerHTML = result.message;
-                        } else
-                        {
-                            cancelResponse.style.display = "grid";
-                            cancelMessage.innerHTML = "Unable to cancel order!";
-                        }
-                    } )
-            }
-
-            function closeOrderResponse ( event )
-            {
-                let target = event.target;
-                if ( target == cancelResponse )
+            <script src="/scripts/toasting.js"></script>
+            <script>
+                let reviewModal = document.getElementById( "reviewModal" );
+                let reviewForm = document.getElementById( "reviewForm" );
+                function openReview ( name, productID )
                 {
-                    cancelResponse.style.display = "none";
+                    document.getElementById( 'productID' ).value = productID;
+                    document.getElementById( "prona" ).innerHTML = name
+                    reviewModal.style.display = 'grid';
                 }
-            }
-        </script>
-        <script src="profile.js"></script>
-        <script src="script.js"></script>
-        </body>
+                reviewForm.addEventListener( "submit", async ( e ) =>
+                {
+                    e.preventDefault();
+                    const formData = new FormData( reviewForm );
+                    const reqData = new URLSearchParams( formData );
 
-        </html>
+                    console.log( formData );
+                    console.log( reqData );
+                    const response = await fetch( "/review", {
+                        method: "POST",
+                        body: reqData,
+                    } );
+                    const data = await response.json();
+                    if ( data.success )
+                    {
+                        closeReview();
+                        toasting( "toast-box", data.message, true )
+                        console.log( data.message )
+                    } else
+                    {
+                        document.getElementById( "feedback" ).innerHTML = data.message;
+                    }
+                } )
+                function closeReview ()
+                {
+                    reviewModal.style.display = 'none';
+                }
+
+                const rateValue = document.getElementById( "rateValue" );
+                const rating = document.getElementById( "rating" );
+                rateValue.innerHTML = rating.value;
+                rating.oninput = function ()
+                {
+                    rateValue.innerHTML = this.value;
+                }
+            </script>
+            <script>
+                let cancelResponse = document.getElementById( "cancelResponse" );
+                let cancelMessage = document.getElementById( "cancelMessage" );
+
+                function cancelOrder ( id )
+                {
+                    fetch( `/profile/cancellOrder/${ id }` )
+                        .then( async ( result ) =>
+                        {
+                            result = await result.json();
+                            if ( result.success )
+                            {
+                                cancelResponse.style.display = "grid";
+                                cancelMessage.innerHTML = result.message;
+                            } else
+                            {
+                                cancelResponse.style.display = "grid";
+                                cancelMessage.innerHTML = "Unable to cancel order!";
+                            }
+                        } )
+                }
+
+                function returnOrder ( id )
+                {
+                    fetch( `/profile/returnOrder/${ id }` )
+                        .then( async ( result ) =>
+                        {
+                            result = await result.json();
+                            if ( result.success )
+                            {
+                                cancelResponse.style.display = "grid";
+                                cancelMessage.innerHTML = result.message;
+                            } else
+                            {
+                                cancelResponse.style.display = "grid";
+                                cancelMessage.innerHTML = "Unable to cancel order!";
+                            }
+                        } )
+                }
+
+                function closeOrderResponse ( event )
+                {
+                    let target = event.target;
+                    if ( target == cancelResponse )
+                    {
+                        cancelResponse.style.display = "none";
+                        window.location.href = '/order-history'
+                    }
+                }
+            </script>
+            <!-- <script src="profile.js"></script> -->
+            <script src="script.js"></script>
+            </body>
+
+            </html>
