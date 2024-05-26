@@ -26,7 +26,7 @@ a {
     position: sticky;
     top: 0;
     background-color: #fafafa;
-    z-index: 1000;
+    z-index: 800;
 }
 
 /* menu */
@@ -124,7 +124,7 @@ a {
     width: 100%;
     height: 100%;
     background-color: rgba(107, 107, 107, 0.418);
-    z-index: 100;
+    z-index: 900;
     position: fixed;
     top: 0;
     display: none;
@@ -138,6 +138,7 @@ a {
     padding-top: 20px;
     border: 2px solid rgb(82, 82, 82);
     border-radius: 10px;
+
 }
 
 .welcome-message {
@@ -1859,4 +1860,16 @@ td {
 
 .sales-table {
     border-collapse: collapse;
+}
+
+.otpInput {
+    width: 40px;
+    height: 50px;
+    margin: auto;
+    text-align: center;
+    font-size: large;
+}
+
+.hidden {
+    display: none;
 }

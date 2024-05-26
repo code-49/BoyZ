@@ -12,26 +12,32 @@
 
     <div class="loginCenter">
         <div id="loginContainer" class="formContainer">
+            <!-- action="/account/otp" method="post" enctype="application/x-www-form-urlencoded" -->
             <h4 class="login-title">OTP verification</h4>
-            <form action="/account/otp" method="post" enctype="application/x-www-form-urlencoded">
-                <div class="input-group">
-                    <input type="number" id="otp" name="otp" class="form-control" required>
+            <form id="otpForm">
+                <div class="flex">
+                    <input type="number" name="otp1" class="otpInput">
+                    <input type="number" name="otp2" class="otpInput">
+                    <input type="number" name="otp3" class="otpInput">
+                    <input type="number" name="otp4" class="otpInput">
+                    <input type="number" name="otp5" class="otpInput">
+                    <input type="number" name="otp6" class="otpInput">
                 </div>
 
-                <input type="submit" value="Login" class="loginButton" id="submitButton">
+                <input type="submit" value="Send Otp" class="loginButton" id="submitButton">
                 <div class="flex justify-end mr-20">
                     <a href="/account/resent-otp" id="resendLink">resend otp</a>
-                    <p id="time">180s</p>
+                    <p id="time" class="m-0">180s</p>
                 </div>
 
 
 
 
-                <% if(!(typeof message=="undefined" )){ %>
-                    <p class="error-message">
-                        <%= message %>
-                    </p>
-                    <% }%>
+
+                <p class="error-message hidden" id="otpMessage">
+
+                </p>
+
 
             </form>
         </div>
@@ -41,22 +47,98 @@
         const time = document.getElementById( "time" );
         const setTime = '<%=time%>';
         document.getElementById( "resendLink" ).style.display = "none";
+        time.style.display = "none";
         const intervalId = setInterval( () =>
         {
             const timeNow = new Date().getTime();
             if ( ( timeNow - setTime ) / 1000 > 180 )
             {
                 document.getElementById( 'submitButton' ).disabled = true;
+                document.getElementById( 'submitButton' ).style.cursor = 'not-allowed'
 
                 time.style.display = "none";
                 document.getElementById( "resendLink" ).style.display = "block";
                 clearInterval( intervalId )
             } else
             {
+                time.style.display = "block";
                 time.innerHTML = 180 - Math.floor( ( timeNow - setTime ) / 1000 ) + "s"
             }
         }, 1000 );
     </script>
+    <script>
+        const inputs = document.querySelectorAll( 'input.otpInput' );
+        const form = document.getElementById( "otpForm" );
+        inputs.forEach( ( element, index ) =>
+        {
+
+            element.addEventListener( 'keydown', ( event ) =>
+            {
+                const char = event.key;
+                // Prevent the 'e', 'E', '-', and '+' characters from being entered
+                if ( char === 'e' || char === 'E' || char === '-' || char === '+' )
+                {
+                    event.preventDefault();
+                }
+            } );
+            element.addEventListener( "input", ( e ) =>
+            {
+                element.style.border = '1px solid black';
+                //preventing more than one digit
+                if ( element.value.length > 1 )
+                    element.value = element.value.slice( 1 );//keep the second
+
+                if ( index < 5 )
+                    inputs[ index + 1 ].focus();
+            } )
+        } )
+        form.addEventListener( 'submit', ( e ) =>
+        {
+            e.preventDefault();
+            let isValidated = true, otp = '';
+            inputs.forEach( ( element ) =>
+            {
+                if ( element.value == '' )
+                {
+                    element.style.border = '2px solid red'
+                    isValidated = false;
+                } else
+                {
+                    otp += element.value;
+                    element.style.border = '1px solid black'
+
+                }
+
+            } )
+            if ( isValidated == true )
+            {
+                console.log( otp )
+                fetch( '/account/otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify( {
+                        otp: otp
+                    } )
+                } ).then( async ( result ) =>
+                {
+                    let data = await result.json();
+                    if ( data.success )
+                    {
+                        window.location.href = data.redirect;
+                    } else
+                    {
+                        document.getElementById( "otpMessage" ).innerText = data.message;
+                        document.getElementById( "otpMessage" ).style.display = "block";
+
+                    }
+
+                } )
+            }
+        } )
+    </script>
+
     </body>
 
     </html>

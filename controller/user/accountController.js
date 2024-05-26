@@ -98,12 +98,13 @@ const load_otp_verification = tryCatch(async (req, res) => {
 
 //verifying otp from user
 const otp_verification = tryCatch(async (req, res) => {
+  console.log(req.body.otp);
   const dateNow = new Date().getTime();
   const date = dateNow - req.session.time;
   if (date / 1000 > 180) {
-    return res.render("./user/otp", {
-      message: "Time up",
-      time: req.session.time,
+    return res.json({
+      success: true,
+      redirect: "/account/otp",
     });
   }
   if (req.body.otp == req.session.verifyCode) {
@@ -112,11 +113,14 @@ const otp_verification = tryCatch(async (req, res) => {
       { _id: req.session.userID },
       { $set: { is_verified: true } }
     );
-    res.redirect("/");
+    return res.json({
+      success: true,
+      redirect: "/",
+    });
   } else {
-    res.render("./user/otp", {
-      message: "Invalid Otp",
-      time: req.session.time,
+    return res.json({
+      success: false,
+      message: "Wrong otp",
     });
   }
 });
