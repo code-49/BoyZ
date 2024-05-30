@@ -162,6 +162,11 @@ const load_checkout = tryCatch(async (req, res) => {
 
 //place order
 const place_order = tryCatch(async (req, res) => {
+  if (req.body.total > 1000) {
+    return res.json({
+      message: "Cannot purchase more than 1000 with Cash on Delivery",
+    });
+  }
   const id = req.session.userID;
   const user = await UserModel.findOne({ _id: id });
   const products = await getCartProduct(user.cart);
@@ -276,9 +281,12 @@ const create_order = tryCatch(async (req, res) => {
   const couponRedux = coupons.reduce((acc, ele) => {
     return acc + parseInt(ele.offer);
   }, 0);
+  let total = 0;
   const orderProducts = products.map((element) => {
-    const sold =
-      element.price * (1 - element.discount / 100) * (1 - couponRedux / 100);
+    const sold = parseInt(
+      element.price * (1 - element.discount / 100) * (1 - couponRedux / 100)
+    );
+    total += sold * element.quantity;
     return {
       productID: element._id,
       name: element.name,
@@ -298,7 +306,7 @@ const create_order = tryCatch(async (req, res) => {
 
   //payment
   const request = new paypal.orders.OrdersCreateRequest();
-  const total = req.body.total;
+
   request.prefer("return=representation");
   request.requestBody({
     intent: "CAPTURE",
@@ -353,29 +361,40 @@ const save_order = tryCatch(async (req, res) => {
       message: "fail",
     });
   }
+  let coupon = {};
   const orderNo = `#${generateOTP(4)}`;
   const coupons = req.session.coupons ? req.session.coupons : [];
   const couponRedux = coupons.reduce((acc, ele) => {
     return acc + parseInt(ele.offer);
   }, 0);
+  if (coupons.length > 0) {
+    coupon.name = coupons[0].name;
+    coupon.discount = req.body.total - req.body.sub;
+  }
+  let total = 0;
   const orderProducts = products.map((element) => {
-    const sold =
-      element.price * (1 - element.discount / 100) * (1 - couponRedux / 100);
+    const sold = parseInt(
+      element.price * (1 - element.discount / 100) * (1 - couponRedux / 100)
+    );
+    total += sold;
     return {
       productID: element._id,
       name: element.name,
       soldPrice: sold,
       quantity: element.quantity,
       image: element.images[0],
+      discount: element.price - sold,
+      category: element.category[0],
     };
   });
   const new_order = new OrderModel({
     orderNo: orderNo,
     customer: id,
     products: orderProducts,
-    totalAmount: req.body.total,
+    totalAmount: total,
     shippingAddress: req.body.address,
     paymentMethode: "paypal",
+    coupon: coupon,
   });
 
   // //payment

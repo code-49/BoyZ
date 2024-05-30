@@ -6,80 +6,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
     <link rel="stylesheet" href="/style.css">
+
     <style>
+        body {
+            width: 1000px;
+            height: auto;
+        }
+
+        .width {
+            width: 900px;
+        }
+
+        .height {
+
+            height: auto;
+        }
+
         .grid {
             display: grid;
             place-items: center;
         }
+
+        .border-normal {
+            border: 1px solid black;
+        }
+
+        .text-align {
+            text-align: center;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .address {
+            margin-left: 15px;
+        }
+
+        .address p {
+            margin: 3px;
+        }
+
+        .sales-table .r-row {
+            margin-left: 40px;
+            border-collapse: collapse;
+        }
+
+        .sales-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .p-2 {
+            padding: 20px;
+        }
     </style>
+
 </head>
 
 <body>
     <div class="grid">
 
-        <div class="font-family order-container">
-            <h1 class="text-align">Invoice</h1>
+        <div class="font-family order-container border-normal width p-2">
             <div class="flex justify-between">
-                <div>
-                    <h4><span class="label-simple">Order No:</span>
-                        <%=order.orderNo%>
-                    </h4>
-                </div>
-                <div>
-                    <h4><span class="label-simple">Payment Method:</span>
-                        <%=order.paymentMethode%>
-                    </h4>
-                    <h4><span class="label-simple">Total Price:</span> &#8377;<%=order.totalAmount%>
-                    </h4>
-                </div>
+                <h1>BoyZ</h1>
+                <h2 class="text-align">Invoice</h2>
+            </div>
+
+            <div>
+
+
+                <h4><span class="label-simple">Order No:</span>
+                    <%=order.orderNo%>
+                </h4>
+
+
+                <h4><span class="label-simple">Payment Method:</span>
+                    <%=order.paymentMethode%>
+                </h4>
+                <h4><span class="label-simple">Total Price:</span> &#8377;<%=order.totalAmount%>
+                </h4>
+                <h4><span class="label-simple">shipping Address: </span>
+                    <%= order.shippingAddress %>
+                </h4>
 
             </div>
-            <% order.products.forEach(product=> {%>
-                <hr>
 
-                <div>
-                    <table class="order-table">
-                        <tr>
-                            <td>
-                                <p class="label-simple">product:</p>
-                            </td>
-                            <td>
-                                <h4>
-                                    <%= product.name %>
-                                </h4>
-                            </td>
+            <hr>
 
-                        </tr>
+            <div>
+                <table class="sales-table">
+                    <tr>
+                        <th>Product</th>
+                        <th>Amount</th>
+                        <th>Discount</th>
+                        <th>Quantity</th>
+                    </tr>
+                    <% order.products.forEach(product=> {%>
                         <tr>
-                            <td>
-                                <p class="label-simple">price:</p>
+                            <td class="text-align">
+                                <%= product.name %>
                             </td>
-                            <td>
-                                <h4>&#8377;<%= product.soldPrice %>
-                                </h4>
+                            <td class="text-align">
+                                <%= product.soldPrice %>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p class="label-simple">Quantity:</p>
+                            <td class="text-align">
+                                <%= product.discount %>
                             </td>
-                            <td>
-                                <h4>
-                                    <%= product.quantity %>
-                                </h4>
+                            <td class="text-align">
+                                <%= product.quantity %>
                             </td>
                         </tr>
+                        <%}); %>
+
+                </table>
+            </div>
 
 
-                    </table>
-                </div>
 
-                <%}); %>
-                    <div>
-                        <h4><span class="label-simple">shipping Address: </span>
-                            <%= order.shippingAddress %>
-                        </h4>
-                    </div>
         </div>
     </div>
 </body>

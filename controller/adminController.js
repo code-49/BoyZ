@@ -288,12 +288,68 @@ const load_user_list = async (req, res) => {
   }
 };
 
-const load_dashboard = async (req, res) => {
+const loadDashboard = async (req, res) => {
   try {
     const user = await get_user(req.session.admin_id);
-    res.render("dashboard", { user: user });
+    let revenue = await OrderModel.aggregate([
+      { $match: { status: "Delivered" } },
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: "$totalAmount" },
+        },
+      },
+    ]);
+    const userNo = (await UserModel.find()).length;
+    const productNo = (await ProductModel.find()).length;
+    if (revenue.length > 0) revenue = revenue[0].totalAmount;
+    const order = (await OrderModel.find()).length;
+    const orderP = (await OrderModel.find({ status: "Pending" })).length;
+    const orderC = (await OrderModel.find({ status: "Cancelled" })).length;
+    const orderD = (await OrderModel.find({ status: "Delivered" })).length;
+    const orderS = (await OrderModel.find({ status: "Shipped" })).length;
+
+    const mostSoldProducts = await OrderModel.aggregate([
+      { $unwind: "$products" },
+      {
+        $group: {
+          _id: "$products.productID",
+          totalSold: { $sum: "$products.quantity" },
+          productImage: { $first: "$products.image" },
+          productName: { $first: "$products.name" },
+        },
+      },
+      { $sort: { totalSold: -1 } },
+      { $limit: 10 },
+    ]);
+
+    const category = await OrderModel.aggregate([
+      { $unwind: "$products" },
+      {
+        $group: {
+          _id: "$products.category",
+          totalSold: { $sum: "$products.quantity" },
+        },
+      },
+      { $sort: { totalSold: -1 } },
+      { $limit: 10 },
+    ]);
+
+    return res.render("dashboard", {
+      user: user,
+      revenue,
+      userNo,
+      productNo,
+      order,
+      orderP,
+      orderC,
+      orderD,
+      orderS,
+      mostSoldProducts,
+      category,
+    });
   } catch (error) {
-    res.send("Server Error");
+    return res.send(error.message);
   }
 };
 
@@ -558,7 +614,7 @@ const login_admin = async (req, res) => {
     //for dev time easy login
     const user = await UserModel.findOne({ email: "aswinak1o1@gmail.com" });
     req.session.admin_id = user._id;
-    return res.redirect("/admin/product");
+    return res.redirect("/admin/dashboard");
 
     // const { email, password } = req.body;
     // let login_message = "Wrong email or password";
@@ -980,6 +1036,7 @@ const dowload_sales = async (req, res) => {
     res.send("Server Error");
   }
 };
+
 module.exports = {
   dowload_sales,
   load_sales,
@@ -991,7 +1048,7 @@ module.exports = {
   load_product_list,
   load_category_list,
   load_user_list,
-  load_dashboard,
+  loadDashboard,
   load_add_product,
   load_order_list,
   load_edit_product,

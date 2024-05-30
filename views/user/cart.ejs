@@ -1,417 +1,436 @@
 <%- include("../partials/cartHead.ejs") %>
   <%- include("../partials/menu.ejs") %>
+    <%- include("../partials/toast.ejs") %>
+      <%if (!user) {%>
+        <p class="m-20">please login to add products to cart</p>
 
-    <%if (!user) {%>
-      <p class="m-20">please login to add products to cart</p>
-
-      <%}else{%>
-        <% if(products.length !=0){ %>
-          <div class="flex">
-            <div class="product-list" id="cartContent">
-              <div id="cartlist">
-                <%- include("../partials/cartList.ejs") %>
-              </div>
-              <div id="addressList">
-                <h2 class="text-poppins">Delivery Address</h2>
-                <div class="flex align-center">
-                  <% if(user.address && user.address.length>0){%>
-                    <div class="address-box m-20"
-                      data-shipping="<%= user.address[0].building %>,<%= user.address[0].locality %>,<%= user.address[0].city %>,<%= user.address[0].state %>,<%= user.address[0].pin %>"
-                      id="address">
-                      <h4>
-                        <%= user.name %>
-                      </h4>
-                      <p id="addressContent">
-                        <%= user.address[0].building %><br>
-                          <%= user.address[0].locality %><br>
-                            <%= user.address[0].city %><br>
-                              <%= user.address[0].state %><br>
-                                <%= user.address[0].pin %>
-                      </p>
-                    </div>
-                    <%}else{%>
-                      <div class="address-box m-20" data-shipping="" id="address">
+        <%}else{%>
+          <% if(products.length !=0){ %>
+            <div class="flex">
+              <div class="product-list" id="cartContent">
+                <div id="cartlist">
+                  <%- include("../partials/cartList.ejs") %>
+                </div>
+                <div id="addressList">
+                  <h2 class="text-poppins">Delivery Address</h2>
+                  <div class="flex align-center">
+                    <% if(user.address && user.address.length>0){%>
+                      <div class="address-box m-20"
+                        data-shipping="<%= user.address[0].building %>,<%= user.address[0].locality %>,<%= user.address[0].city %>,<%= user.address[0].state %>,<%= user.address[0].pin %>"
+                        id="address">
                         <h4>
                           <%= user.name %>
                         </h4>
                         <p id="addressContent">
-
+                          <%= user.address[0].building %><br>
+                            <%= user.address[0].locality %><br>
+                              <%= user.address[0].city %><br>
+                                <%= user.address[0].state %><br>
+                                  <%= user.address[0].pin %>
                         </p>
                       </div>
-                      <%} %>
+                      <%}else{%>
+                        <div class="address-box m-20" data-shipping="" id="address">
+                          <h4>
+                            <%= user.name %>
+                          </h4>
+                          <p id="addressContent">
 
-                </div>
-                <% if (user.address && user.address.length>0) {%>
-                  <button type="button" onclick="changeAddress()" class="m-20 btn-2">Change address</button>
+                          </p>
+                        </div>
+                        <%} %>
 
-                  <%} %>
-                    <button type="button" onclick="addAddress()" class="btn-2 ">New Address</button>
-                    <% if (user.address&& user.address.length>0) {%>
-                      <div id="addressBox">
-                        <div class="flex">
-                          <% for(let i=0;i<user.address.length;i++){ %>
-                            <div class="address-box m-20 " data-shipping="
+                  </div>
+                  <% if (user.address && user.address.length>0) {%>
+                    <button type="button" onclick="changeAddress()" class="m-20 btn-2">Change address</button>
+
+                    <%} %>
+                      <button type="button" onclick="addAddress()" class="btn-2 ">New Address</button>
+                      <% if (user.address&& user.address.length>0) {%>
+                        <div id="addressBox">
+                          <div class="flex">
+                            <% for(let i=0;i<user.address.length;i++){ %>
+                              <div class="address-box m-20 " data-shipping="
                            <%= user.address[i].building %>,
                            <%= user.address[i].locality %>,
                            <%= user.address[i].city %>,
                            <%= user.address[i].state %>,
                            <%= user.address[i].pin %>" onclick="swapAddress(this)">
-                              <h4>
-                                <%= user.name %>
-                              </h4>
-                              <p>
-                                <%= user.address[i].building %><br>
-                                  <%= user.address[i].locality %><br>
-                                    <%= user.address[i].city %><br>
-                                      <%= user.address[i].state %><br>
-                                        <%= user.address[i].pin %>
-                              </p>
-                            </div>
-                            <% } %>
+                                <h4>
+                                  <%= user.name %>
+                                </h4>
+                                <p>
+                                  <%= user.address[i].building %><br>
+                                    <%= user.address[i].locality %><br>
+                                      <%= user.address[i].city %><br>
+                                        <%= user.address[i].state %><br>
+                                          <%= user.address[i].pin %>
+                                </p>
+                              </div>
+                              <% } %>
+                          </div>
                         </div>
-                      </div>
-                      <%} %>
+                        <%} %>
 
-                        <div class="newAddress" id="addressForm">
-                          <h2>Enter New Address</h2>
-                          <form class="m-20" id="cartAddress">
+                          <div class="newAddress" id="addressForm">
+                            <h2>Enter New Address</h2>
+                            <form class="m-20" id="cartAddress">
 
-                            <div class="input-group">
-                              <label for="building">building</label>
-                              <input type="text" id="building" name="building" class="form-control" required>
-                            </div>
-                            <div class="input-group">
-                              <label for="locality">locality</label></td>
-                              <input type="text" id="locality" name="locality" class="form-control" required>
-                            </div>
-                            <div class="input-group">
-                              <label for="city">city</label></td>
-                              <input type="text" id="city" name="city" class="form-control" required>
-                            </div>
-                            <div class="input-group">
-                              <label for="state">state</label></td>
-                              <input type="text" id="state" name="state" class="form-control" required>
-                            </div>
-                            <div class="input-group">
-                              <label for="pin">pin</label></td>
-                              <input type="text" id="pin" name="pin" class="form-control" required>
-                            </div>
-                            <input type="submit" class="btn-2 bggreen" value="ENTER">
-                            <button type="button" onclick="closeAddAddress()" class="btn-2 bgred">CANCEL</button>
+                              <div class="input-group">
+                                <label for="building">building</label>
+                                <input type="text" id="building" name="building" class="form-control" required>
+                              </div>
+                              <div class="input-group">
+                                <label for="locality">locality</label></td>
+                                <input type="text" id="locality" name="locality" class="form-control" required>
+                              </div>
+                              <div class="input-group">
+                                <label for="city">city</label></td>
+                                <input type="text" id="city" name="city" class="form-control" required>
+                              </div>
+                              <div class="input-group">
+                                <label for="state">state</label></td>
+                                <input type="text" id="state" name="state" class="form-control" required>
+                              </div>
+                              <div class="input-group">
+                                <label for="pin">pin</label></td>
+                                <input type="text" id="pin" name="pin" class="form-control" required>
+                              </div>
+                              <input type="submit" class="btn-2 bggreen" value="ENTER">
+                              <button type="button" onclick="closeAddAddress()" class="btn-2 bgred">CANCEL</button>
 
-                          </form>
-                        </div>
-              </div>
+                            </form>
+                          </div>
+                </div>
 
-              <div id="checkout">
-                <div class="m-20">
-                  <div class="tab">
-                    <button class="tablinks" onclick="openCity(event, 'cash')">cash on delivery</button>
-                    <button class="tablinks" onclick="openCity(event, 'credit')">online</button>
-                    <button class="tablinks" onclick="openCity(event, 'wallet')">Wallet</button>
-                  </div>
+                <div id="checkout">
+                  <div class="m-20">
+                    <div class="tab">
+                      <button class="tablinks" onclick="openCity(event, 'cash')">cash on delivery</button>
+                      <button class="tablinks" onclick="openCity(event, 'credit')">online</button>
+                      <button class="tablinks" onclick="openCity(event, 'wallet')">Wallet</button>
+                    </div>
 
-                  <div id="cash" class="tabcontent">
-                    <h3>Cash On Delivery</h3>
-                    <p>For safe, contactless and hassle free delivery, pay using card/wallet/netbanking</p>
-                    <button type="button" class="cart-btn btn-add" onclick="placeOrder()">Place Order</button>
-                  </div>
+                    <div id="cash" class="tabcontent">
+                      <h3>Cash On Delivery</h3>
+                      <p>For safe, contactless and hassle free delivery, pay using card/wallet/netbanking</p>
+                      <% if(total>1000){%>
+                        <p class="text-red"> Cannot purchase product worth more than 1000 using Cash on Delivery</p>
+                        <%}else{%>
+                          <button type="button" class="cart-btn btn-add" onclick="placeOrder()">Place Order</button>
+                          <%} %>
 
-                  <div id="credit" class="tabcontent" style="display: none;">
-                    <h3>Pay using paypal</h3>
-                    <div id="paypal"></div>
-                  </div>
+                    </div>
 
-                  <div id="wallet" class="tabcontent" style="display: none;">
-                    <h3>Pay using Wallet</h3>
-                    <br>
-                    <button type="button" class="cart-btn btn-add" onclick="walletOrder()">Place Order</button>
+                    <div id="credit" class="tabcontent" style="display: none;">
+                      <h3>Pay using paypal</h3>
+                      <div id="paypal"></div>
+                    </div>
+
+                    <div id="wallet" class="tabcontent" style="display: none;">
+                      <h3>Pay using Wallet</h3>
+                      <br>
+                      <button type="button" class="cart-btn btn-add" onclick="walletOrder()">Place Order</button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div>
-              <div class="order-summary">
-                <h2>Order Summary</h2>
-                <div class="flex justify-between">
-                  <p>subtotal</p>
-                  <p>&#8377;<%= subtotal %>
-                  </p>
-                </div>
-                <div class="flex justify-between">
-                  <p>discount</p>
-                  <p class="text-red">- &#8377;<%=parseInt(discount) %>
-                  </p>
-                </div>
-                <% coupons.forEach(element=> {%>
+              <div>
+                <div class="order-summary">
+                  <h2>Order Summary</h2>
                   <div class="flex justify-between">
-                    <p>
-                      <%= element.name%>
+                    <p>subtotal</p>
+                    <p id="subTotal" data-total="<%= subtotal %>">&#8377;<%= subtotal %>
                     </p>
-                    <p class="text-red">-<%= element.offer %>%</p>
                   </div>
-                  <% }); %>
-                    <hr>
+                  <div class="flex justify-between">
+                    <p>discount</p>
+                    <p class="text-red">- &#8377;<%=parseInt(discount) %>
+                    </p>
+                  </div>
+                  <% coupons.forEach(element=> {%>
                     <div class="flex justify-between">
-                      <p>total</p>
-                      <p id="total" data-total="<%= total %>">&#8377;<%=parseInt(total) %>
+                      <p>
+                        <%= element.name%>
                       </p>
+                      <p class="text-red">-<%= element.offer %>%</p>
                     </div>
-                    <button type="button" class="cart-btn btn-add" onclick="goToAddress()" id="addressBtn" <%for (const
-                      product of products) { if(product.message=="Product stock limit!" ){ %> disabled <% }} %> >proceed
-                        to
-                        Shipping</button>
-                    <button type="button" class="cart-btn btn-add" onclick="goToCheckout()" id="checkoutBtn" <%for
-                      (const product of products) { if(product.message=="Product stock limit!" ){ %> disabled <% }} %>
-                        >proceed to
-                        Payment</button>
-              </div>
+                    <% }); %>
+                      <hr>
+                      <div class="flex justify-between">
+                        <p>total</p>
+                        <p id="total" data-total="<%= total %>">&#8377;<%=parseInt(total) %>
+                        </p>
+                      </div>
+                      <button type="button" class="cart-btn btn-add" onclick="goToAddress()" id="addressBtn" <%for
+                        (const product of products) { if(product.message=="Product stock limit!" ){ %> disabled <% }} %>
+                          >proceed
+                          to
+                          Shipping</button>
+                      <button type="button" class="cart-btn btn-add" onclick="goToCheckout()" id="checkoutBtn" <%for
+                        (const product of products) { if(product.message=="Product stock limit!" ){ %> disabled <% }} %>
+                          >proceed to
+                          Payment</button>
+                </div>
 
 
 
 
-              <div class="coupon" id="coupon">
-                <p class="text-red">
-                  <%= couponRes %>
-                </p>
-                <h2>Enter Coupon Code</h2>
-                <form action="/coupon">
-                  <input type="text" class="form-control" name="code">
-                  <input type="submit" value="Enter" class="form-control">
-                </form>
-                <div>
-                  <% couponData.forEach((coup)=>{%>
-                    <div class="border-normal border-radius-5 bg-white text-left coupon1">
-                      <h4>Name: <%= coup.name %>
-                      </h4>
-                      <p>Code: <%= coup.code %>
-                      </p>
-                      <p>Min Amount: <%= coup.minAmount %>
-                      </p>
-                      <p>Max Discount: <%= coup.maxAmount %>
-                      </p>
-                    </div>
-                    <%}) %>
+                <div class="coupon" id="coupon">
+                  <p class="text-red">
+                    <%= couponRes %>
+                  </p>
+                  <h2>Enter Coupon Code</h2>
+                  <form action="/coupon">
+                    <input type="text" class="form-control" name="code">
+                    <input type="submit" value="Enter" class="form-control">
+                  </form>
+                  <div>
+                    <% couponData.forEach((coup)=>{%>
+                      <div class="border-normal border-radius-5 bg-white text-left coupon1">
+                        <h4>Name: <%= coup.name %>
+                        </h4>
+                        <p>Code: <%= coup.code %>
+                        </p>
+                        <p>Min Amount: <%= coup.minAmount %>
+                        </p>
+                        <p>Max Discount: <%= coup.maxAmount %>
+                        </p>
+                      </div>
+                      <%}) %>
+                  </div>
                 </div>
               </div>
-            </div>
 
-          </div>
-          <%}else{%>
-            <p>No products</p>
-            <%}%>
+            </div>
+            <%}else{%>
+              <p>No products</p>
               <%}%>
-                <form action="" enctype="multipart/form-data"></form>
-                <!---------script---------->
-                <script>
-                  document.getElementById( "cartAddress" ).addEventListener( "submit", ( e ) =>
-                  {
-                    e.preventDefault();
-                    const form = e.target;
-                    document.getElementById( "addressContent" ).innerHTML = `${ form.building.value }<br>
+                <%}%>
+                  <form action="" enctype="multipart/form-data"></form>
+                  <!---------script---------->
+                  <script src="/scripts/toasting.js"></script>
+                  <script>
+                    document.getElementById( "cartAddress" ).addEventListener( "submit", ( e ) =>
+                    {
+                      e.preventDefault();
+                      const form = e.target;
+                      document.getElementById( "addressContent" ).innerHTML = `${ form.building.value }<br>
                                                            ${ form.locality.value }<br>
                                                            ${ form.city.value }<br>
                                                            ${ form.state.value }<br>
                                                            ${ form.pin.value }<br>`
-                    document.getElementById( "address" ).dataset.shipping = `${ form.building.value },
+                      document.getElementById( "address" ).dataset.shipping = `${ form.building.value },
                                                            ${ form.locality.value },
                                                            ${ form.city.value },
                                                            ${ form.state.value },
                                                            ${ form.pin.value },`
-                    form.reset();
-                    closeAddAddress();
-                  } )
-                  function addAddress ()
-                  {
-                    document.getElementById( "addressForm" ).style.display = "block";
-                  }
-                  function closeAddAddress ()
-                  {
-                    document.getElementById( "addressForm" ).style.display = "none";
-                  }
-                  function changeAddress ()
-                  {
-                    document.getElementById( "addressBox" ).style.display = "block";
-                  }
-                  function swapAddress ( element )
-                  {
-                    let address = document.getElementById( "address" );
-                    let inStackP = element.querySelector( 'P' );
-                    let originalP = document.getElementById( "addressContent" );
+                      form.reset();
+                      closeAddAddress();
+                    } )
+                    function addAddress ()
+                    {
+                      document.getElementById( "addressForm" ).style.display = "block";
+                    }
+                    function closeAddAddress ()
+                    {
+                      document.getElementById( "addressForm" ).style.display = "none";
+                    }
+                    function changeAddress ()
+                    {
+                      document.getElementById( "addressBox" ).style.display = "block";
+                    }
+                    function swapAddress ( element )
+                    {
+                      let address = document.getElementById( "address" );
+                      let inStackP = element.querySelector( 'P' );
+                      let originalP = document.getElementById( "addressContent" );
 
-                    originalP.innerHTML = inStackP.innerHTML;
-                    address.dataset.shipping = element.dataset.shipping;
+                      originalP.innerHTML = inStackP.innerHTML;
+                      address.dataset.shipping = element.dataset.shipping;
 
-                    document.getElementById( "addressBox" ).style.display = "none";
-                  }
-                  paypal
-                    .Buttons( {
-                      createOrder: function ()
-                      {
-                        let address = document.getElementById( "address" );
-                        let total = document.getElementById( "total" );
-                        const reqData = new URLSearchParams( {
-                          paymentMethode: "paypal",
-                          address: address.dataset.shipping,
-                          total: total.dataset.total
-                        } );
-                        return fetch( "/cart/create-order", {
-                          method: "POST",
-                          body: reqData,
-                        } )
-                          .then( res =>
-                          {
-                            if ( res.ok ) return res.json()
-                            return res.json().then( json => Promise.reject( json ) )
-                          } )
-                          .then( ( result ) =>
-                          {
-                            if ( result.stock == "ok" )
-                              return result.id
-                            window.location.href = `/cart/wallet-fail?stock=1`;
-                          } )
-                          .catch( e =>
-                          {
-                            console.error( e.error )
-                          } )
-                      },
-                      onApprove: function ( data, actions )
-                      {
-
-                        return actions.order.capture().then( () =>
+                      document.getElementById( "addressBox" ).style.display = "none";
+                    }
+                    paypal
+                      .Buttons( {
+                        createOrder: function ()
                         {
                           let address = document.getElementById( "address" );
                           let total = document.getElementById( "total" );
+                          let sub = document.getElementById( "subTotal" );
                           const reqData = new URLSearchParams( {
                             paymentMethode: "paypal",
                             address: address.dataset.shipping,
-                            total: total.dataset.total
+                            total: total.dataset.total,
+                            sub: sub.dataset.total
                           } );
-                          fetch( "/cart/save-order", {
+                          return fetch( "/cart/create-order", {
                             method: "POST",
                             body: reqData,
-                          } ).then( async ( result ) =>
-                          {
-                            result = await result.json();
-                            if ( result.message == "successful" )
-                            {
-
-                              const encodedOrderNo = encodeURIComponent( result.orderNo );
-                              window.location.href = `/cart/success?orderNo=${ encodedOrderNo }`;
-                            } else
-                            {
-                              window.location.href = `/cart/wallet-fail?stock=1`;
-                            }
                           } )
+                            .then( res =>
+                            {
+                              if ( res.ok ) return res.json()
+                              return res.json().then( json => Promise.reject( json ) )
+                            } )
+                            .then( ( result ) =>
+                            {
+                              if ( result.stock == "ok" )
+                                return result.id
+                              window.location.href = `/cart/wallet-fail?stock=1`;
+                            } )
+                            .catch( e =>
+                            {
+                              console.error( e.error )
+                            } )
+                        },
+                        onApprove: function ( data, actions )
+                        {
 
-                        } )
-                      },
-                    } )
-                    .render( "#paypal" )
+                          return actions.order.capture().then( () =>
+                          {
+                            let address = document.getElementById( "address" );
+                            let total = document.getElementById( "total" );
+                            let sub = document.getElementById( "subTotal" );
+                            const reqData = new URLSearchParams( {
+                              paymentMethode: "paypal",
+                              address: address.dataset.shipping,
+                              total: total.dataset.total,
+                              sub: sub.dataset.total
+                            } );
+                            fetch( "/cart/save-order", {
+                              method: "POST",
+                              body: reqData,
+                            } ).then( async ( result ) =>
+                            {
+                              result = await result.json();
+                              if ( result.message == "successful" )
+                              {
 
-                  const content = document.getElementById( "cartContent" );
-                  const address = document.getElementById( "addressList" )
-                  const checkout = document.getElementById( "checkout" );
-                  const cartlist = document.getElementById( "cartlist" );
-                  const shipping = document.getElementById( "addressBtn" )
-                  const payment = document.getElementById( "checkoutBtn" );
-                  const coupon = document.getElementById( "coupon" )
-                  checkout.style.display = "none";
-                  address.style.display = "none";
+                                const encodedOrderNo = encodeURIComponent( result.orderNo );
+                                window.location.href = `/cart/success?orderNo=${ encodedOrderNo }`;
+                              } else
+                              {
+                                window.location.href = `/cart/wallet-fail?stock=1`;
+                              }
+                            } )
 
-                  payment.style.display = "none";
+                          } )
+                        },
+                      } )
+                      .render( "#paypal" )
 
-                  function goToAddress ()
-                  {
-                    cartlist.style.display = "none";
-                    address.style.display = "block";
-                    shipping.style.display = "none";
-                    payment.style.display = "block";
-                    coupon.style.display = "none"
-                  }
-                  function goToCheckout ()
-                  {
+                    const content = document.getElementById( "cartContent" );
+                    const address = document.getElementById( "addressList" )
+                    const checkout = document.getElementById( "checkout" );
+                    const cartlist = document.getElementById( "cartlist" );
+                    const shipping = document.getElementById( "addressBtn" )
+                    const payment = document.getElementById( "checkoutBtn" );
+                    const coupon = document.getElementById( "coupon" )
+                    checkout.style.display = "none";
                     address.style.display = "none";
-                    checkout.style.display = "block";
+
                     payment.style.display = "none";
-                  }
-                  function placeOrder ()
-                  {
-                    let address = document.getElementById( "address" );
-                    let total = document.getElementById( "total" );
-                    const reqData = new URLSearchParams( {
-                      paymentMethode: "cash on delivery",
-                      address: address.dataset.shipping,
-                      total: total.dataset.total
-                    } );
-                    fetch( `/cart/place-order`, {
-                      method: "POST",
-                      body: reqData
-                    } )
-                      .then( async ( result ) =>
-                      {
-                        result = await result.json();
-                        if ( result.message == "successful" )
-                        {
 
-                          const encodedOrderNo = encodeURIComponent( result.orderNo );
-                          window.location.href = `/cart/success?orderNo=${ encodedOrderNo }`;
-                        } else
-                        {
-                          window.location.href = `/cart/wallet-fail?stock=1`;
-                        }
-                      } );
-                  }
-                  function walletOrder ()
-                  {
-                    let address = document.getElementById( "address" );
-                    let total = document.getElementById( "total" );
-                    const reqData = new URLSearchParams( {
-                      paymentMethode: "wallet",
-                      address: address.dataset.shipping,
-                      total: total.dataset.total
-                    } );
-                    fetch( `/cart/wallet-order`, {
-                      method: "POST",
-                      body: reqData
-                    } )
-                      .then( async ( result ) =>
-                      {
-                        result = await result.json();
-                        if ( result.message == "successful" )
-                        {
-
-                          const encodedOrderNo = encodeURIComponent( result.orderNo );
-                          window.location.href = `/cart/success?orderNo=${ encodedOrderNo }`;
-                        } else if ( result.message == "nomo" )
-                        {
-                          window.location.href = '/cart/wallet-fail';
-                        } else
-                        {
-                          window.location.href = `/cart/wallet-fail?stock=1`;
-                        }
-                      } );
-                  }
-
-
-                  function openCity ( evt, cityName )
-                  {
-                    var i, tabcontent, tablinks;
-
-                    tabcontent = document.getElementsByClassName( "tabcontent" );
-                    for ( i = 0; i < tabcontent.length; i++ )
+                    function goToAddress ()
                     {
-                      tabcontent[ i ].style.display = "none";
+                      cartlist.style.display = "none";
+                      address.style.display = "block";
+                      shipping.style.display = "none";
+                      payment.style.display = "block";
+                      coupon.style.display = "none"
+                    }
+                    function goToCheckout ()
+                    {
+                      address.style.display = "none";
+                      checkout.style.display = "block";
+                      payment.style.display = "none";
+                    }
+                    function placeOrder ()
+                    {
+                      // if ( req.body.total > 1000 )
+                      // {
+                      //   toasting( "toast-box", "Cannot purchase product worth more than 1000 with COD", false )
+                      // }
+                      let address = document.getElementById( "address" );
+                      let total = document.getElementById( "total" );
+                      let sub = document.getElementById( "subTotal" );
+                      const reqData = new URLSearchParams( {
+                        paymentMethode: "cash on delivery",
+                        address: address.dataset.shipping,
+                        total: total.dataset.total,
+                        sub: sub.dataset.total
+                      } );
+                      fetch( `/cart/place-order`, {
+                        method: "POST",
+                        body: reqData
+                      } )
+                        .then( async ( result ) =>
+                        {
+                          result = await result.json();
+                          if ( result.message == "successful" )
+                          {
+
+                            const encodedOrderNo = encodeURIComponent( result.orderNo );
+                            window.location.href = `/cart/success?orderNo=${ encodedOrderNo }`;
+                          } else
+                          {
+                            window.location.href = `/cart/wallet-fail?stock=1`;
+                          }
+                        } );
+                    }
+                    function walletOrder ()
+                    {
+                      let address = document.getElementById( "address" );
+                      let total = document.getElementById( "total" );
+                      let sub = document.getElementById( "subTotal" );
+                      const reqData = new URLSearchParams( {
+                        paymentMethode: "wallet",
+                        address: address.dataset.shipping,
+                        total: total.dataset.total,
+                        sub: sub.dataset.total
+                      } );
+                      fetch( `/cart/wallet-order`, {
+                        method: "POST",
+                        body: reqData
+                      } )
+                        .then( async ( result ) =>
+                        {
+                          result = await result.json();
+                          if ( result.message == "successful" )
+                          {
+
+                            const encodedOrderNo = encodeURIComponent( result.orderNo );
+                            window.location.href = `/cart/success?orderNo=${ encodedOrderNo }`;
+                          } else if ( result.message == "nomo" )
+                          {
+                            window.location.href = '/cart/wallet-fail';
+                          } else
+                          {
+                            window.location.href = `/cart/wallet-fail?stock=1`;
+                          }
+                        } );
                     }
 
-                    tablinks = document.getElementsByClassName( "tablinks" );
-                    for ( i = 0; i < tablinks.length; i++ )
-                    {
-                      tablinks[ i ].className = tablinks[ i ].className.replace( " active", "" );
-                    }
 
-                    document.getElementById( cityName ).style.display = "block";
-                    evt.currentTarget.className += " active";
-                  }
-                </script>
-                <%- include("../partials/footer.ejs") %>
+                    function openCity ( evt, cityName )
+                    {
+                      var i, tabcontent, tablinks;
+
+                      tabcontent = document.getElementsByClassName( "tabcontent" );
+                      for ( i = 0; i < tabcontent.length; i++ )
+                      {
+                        tabcontent[ i ].style.display = "none";
+                      }
+
+                      tablinks = document.getElementsByClassName( "tablinks" );
+                      for ( i = 0; i < tablinks.length; i++ )
+                      {
+                        tablinks[ i ].className = tablinks[ i ].className.replace( " active", "" );
+                      }
+
+                      document.getElementById( cityName ).style.display = "block";
+                      evt.currentTarget.className += " active";
+                    }
+                  </script>
+                  <%- include("../partials/footer.ejs") %>

@@ -1,17 +1,129 @@
 <%- include("../partials/head.ejs") %>
-<%- include("../partials/menu.ejs") %>
-    
-<div class="container">
-<%- include("../partials/sidebar.ejs") %>
+    <%- include("../partials/menu.ejs") %>
 
-<div class="management-content" id="content">
-    
+        <div class="container">
+            <%- include("../partials/sidebar.ejs") %>
 
-    <div class="dashboard-content">
-        <h1>This is dashboard</h1>
-</div>
-</div>
-</div>
- 
-<%- include("../partials/footer.ejs") %>
+                <div class="management-content" id="content">
 
+
+                    <div class="dashboard-content">
+                        <div class="flex justify-around">
+                            <div class="card-1 text-align">
+                                <h4>Total Revenue</h4>
+                                <h2>&#8377;<%= revenue %>
+                                </h2>
+                            </div>
+                            <div class="card-1 text-align">
+                                <h4>Total Users</h4>
+                                <h2>
+                                    <%= userNo %>
+                                </h2>
+                            </div>
+                            <div class="card-1 text-align">
+                                <h4>Total Products</h4>
+                                <h2>
+                                    <%= productNo %>
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="card-2">
+                            <h2 class="text-align">Orders</h2>
+                            <table class="w-100">
+                                <tr>
+                                    <th>Total</th>
+                                    <th>Pending</th>
+                                    <th>Shipped</th>
+                                    <th>Delivered</th>
+                                    <th>Cancelled</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="5">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-align">
+                                        <%= order %>
+                                    </td>
+                                    <td class="text-align">
+                                        <%= orderP %>
+                                    </td>
+                                    <td class="text-align">
+                                        <%= orderS %>
+                                    </td>
+                                    <td class="text-align">
+                                        <%= orderD %>
+                                    </td>
+                                    <td class="text-align">
+                                        <%= orderC %>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="flex">
+                            <div class="card-3">
+                                <h4 class="text-align">Top selling product</h4>
+                                <table>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Sold</th>
+                                    </tr>
+                                    <% mostSoldProducts.forEach(element=> {%>
+                                        <tr>
+                                            <td><img src="<% if(element.productImage){%>
+                                        /productImages/<%= element.productImage %>
+                                    <%}else{%>
+                                        /productImages/placeholder.jpg
+                                    <%} %>" alt="img" width="50px" height="auto"> </td>
+                                            <td class="text-align">
+                                                <%= element.productName %>
+                                            </td>
+                                            <td class="text-align">
+                                                <%= element.totalSold %>
+                                            </td>
+                                        </tr>
+                                        <%}); %>
+                                </table>
+
+                            </div>
+                            <div class="card-3">
+                                <h4 class="text-align">Top selling category</h4>
+                                <table>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Sold</th>
+                                    </tr>
+                                    <% category.forEach((element,i)=> {%>
+                                        <tr class="m-20">
+                                            <td class="text-align">
+                                                <p>
+                                                    <%= i+1 %>
+                                                </p>
+
+                                            </td>
+                                            <td class="text-align">
+                                                <p>
+                                                    <%= element._id %>
+                                                </p>
+
+                                            </td>
+                                            <td class="text-align">
+                                                <p>
+                                                    <%= element.totalSold %>
+                                                </p>
+
+                                            </td>
+                                        </tr>
+                                        <%}); %>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <%- include("../partials/footer.ejs") %>

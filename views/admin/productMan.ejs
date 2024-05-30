@@ -39,31 +39,21 @@
                                         <img src="<% if(products[i].images[0]){%>
                                                     /productImages/<%= products[i].images[0] %>
                                                 <%}else{%>
-                                                    http://via.placeholder.com/100x100
+                                                    /productImages/placeholder.jpg
                                                 <%} %>" alt="img" width="100px" height="auto">
 
 
                                     </td>
-
-
                                     <td>
                                         <h3>
                                             <%= products[i].name %>
                                         </h3>
                                     </td>
-
-
-
-
-
                                     <td>
                                         <p>
                                             <%= products[i].size %>
                                         </p>
                                     </td>
-
-
-
                                     <td>
                                         <span>
                                             <%= products[i].category[0] %>
@@ -74,29 +64,21 @@
                                             <%= products[i].price %>
                                         </p>
                                     </td>
-
-
                                     <td>
                                         <p>
                                             <%= products[i].stock %>
                                         </p>
                                     </td>
-
                                     <td>
                                         <p>
                                             <%= products[i].active %>
                                         </p>
                                     </td>
-
                                     <td><a class="material-symbols-outlined icon-btn bg-green"
                                             href="/admin/edit-product/<%= products[i]._id%>">edit</a>
                                         <a href="/admin/delete-product?id=<%= products[i]._id%>"
                                             class="material-symbols-outlined icon-btn bg-red">delete</a>
                                     </td>
-
-
-
-
                                 </tr>
                                 <%} %>
 
@@ -110,6 +92,7 @@
                                 </a>
                                 <%} %>
                         </div>
+
                     </div>
 
 

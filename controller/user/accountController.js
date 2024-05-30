@@ -26,6 +26,7 @@ const login_verification = tryCatch(async (req, res) => {
     return res.json({
       message: "Wrong email or password",
     });
+  //checking if user is blocked
   if (user.blocked)
     return res.json({
       message: "You are blocked from this store!",
@@ -98,7 +99,6 @@ const load_otp_verification = tryCatch(async (req, res) => {
 
 //verifying otp from user
 const otp_verification = tryCatch(async (req, res) => {
-  console.log(req.body.otp);
   const dateNow = new Date().getTime();
   const date = dateNow - req.session.time;
   if (date / 1000 > 180) {
@@ -120,7 +120,7 @@ const otp_verification = tryCatch(async (req, res) => {
   } else {
     return res.json({
       success: false,
-      message: "Wrong otp",
+      message: "Otp is incorrect!",
     });
   }
 });

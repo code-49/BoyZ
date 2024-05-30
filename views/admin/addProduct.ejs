@@ -212,8 +212,18 @@
 
         input1.addEventListener( "change", function ()
         {
-          imageBox1.style.display = "block";
           const file = input1.files[ 0 ];
+          const allowedMimeTypes = [ 'image/jpeg', 'image/png' ];
+
+          // Validate file type
+          if ( !allowedMimeTypes.includes( file.type ) )
+          {
+            toasting( "toast-box", 'Invalid file type. Only JPEG, PNG,  files are allowed.', false );
+            event.preventDefault();
+            return;
+          }
+          imageBox1.style.display = "block";
+
 
           if ( file )
           {
@@ -252,8 +262,18 @@
         } );
         input2.addEventListener( "change", function ()
         {
-          imageBox2.style.display = "block";
           const file = input2.files[ 0 ];
+          const allowedMimeTypes = [ 'image/jpeg', 'image/png' ];
+
+          // Validate file type
+          if ( !allowedMimeTypes.includes( file.type ) )
+          {
+            toasting( "toast-box", 'Invalid file type. Only JPEG, PNG,  files are allowed.', false );
+            event.preventDefault();
+            return;
+          }
+          imageBox2.style.display = "block";
+
 
           if ( file )
           {
@@ -291,8 +311,18 @@
         } );
         input3.addEventListener( "change", function ()
         {
-          imageBox3.style.display = "block";
           const file = input3.files[ 0 ];
+          const allowedMimeTypes = [ 'image/jpeg', 'image/png' ];
+
+          // Validate file type
+          if ( !allowedMimeTypes.includes( file.type ) )
+          {
+            toasting( "toast-box", 'Invalid file type. Only JPEG, PNG,  files are allowed.', false );
+            event.preventDefault();
+            return;
+          }
+          imageBox3.style.display = "block";
+
 
           if ( file )
           {
@@ -330,8 +360,18 @@
         } );
         input4.addEventListener( "change", function ()
         {
-          imageBox4.style.display = "block";
           const file = input4.files[ 0 ];
+          const allowedMimeTypes = [ 'image/jpeg', 'image/png' ];
+
+          // Validate file type
+          if ( !allowedMimeTypes.includes( file.type ) )
+          {
+            toasting( "toast-box", 'Invalid file type. Only JPEG, PNG,  files are allowed.', false );
+            event.preventDefault();
+            return;
+          }
+          imageBox4.style.display = "block";
+
 
           if ( file )
           {

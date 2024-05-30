@@ -1,486 +1,527 @@
 <%- include("../partials/head.ejs") %>
     <%- include("../partials/menu.ejs") %>
+        <%- include("../partials/toast.ejs") %>
+            <div class="container">
+                <%- include("../partials/sidebar.ejs") %>
 
-        <div class="container">
-            <%- include("../partials/sidebar.ejs") %>
+                    <div class="management-content" id="content">
 
-                <div class="management-content" id="content">
+                        <form action="/admin/edit-product" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="user_id" id="id" value="<%= product._id %>">
 
-                    <form action="/admin/edit-product" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="user_id" id="id" value="<%= product._id %>">
+                            <div class="product-details">
+                                <div class="flex">
+                                    <% if(!(typeof add_product_message=="undefined" )){ %>
 
-                        <div class="product-details">
-                            <div class="flex">
-                                <% if(!(typeof add_product_message=="undefined" )){ %>
+                                        <p class="error-message">
+                                            <%= add_product_message %>
+                                        </p>
 
-                                    <p class="error-message">
-                                        <%= add_product_message %>
-                                    </p>
+                                        <% } %>
+                                </div>
+                                <h3 class="product-head">Edit Product</h3>
+                                <div class="flex ">
+                                    <table>
+                                        <tr>
+                                            <td><label for="name">name </label></td>
+                                            <td><input type="text" id="name" name="name" class="form-control"
+                                                    value="<%= product.name %>" required></td>
 
-                                    <% } %>
-                            </div>
-                            <h3 class="product-head">Edit Product</h3>
-                            <div class="flex ">
-                                <table>
-                                    <tr>
-                                        <td><label for="name">name </label></td>
-                                        <td><input type="text" id="name" name="name" class="form-control"
-                                                value="<%= product.name %>" required></td>
+                                            <td><label for="colorPicker">color</label><input type="color"
+                                                    id="colorPicker" name="color[]" value="<%= product.color %>"
+                                                    class="form-control-color" required></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="desc">description </label></td>
+                                            <td><textarea id="desc" name="description" cols="30" rows="10"
+                                                    class="form-control-textarea"
+                                                    required><%= product.description %></textarea></td>
+                                            <td>
+                                                <label for="size" class="mar-ad-00">Size</label>
+                                                <select id="size" name="size" required class="form-control-select"
+                                                    required>
+                                                    <option value="s">S</option>
+                                                    <option value="m">M</option>
+                                                    <option value="l">L</option>
+                                                    <option value="xl">XL</option>
+                                                    <option value="xxl">XXL</option>
+                                                    <option value="xxxl">XXXL</option>
+                                                </select>
+                                            </td>
 
-                                        <td><label for="colorPicker">color</label><input type="color" id="colorPicker"
-                                                name="color[]" value="<%= product.color %>" class="form-control-color"
-                                                required></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="desc">description </label></td>
-                                        <td><textarea id="desc" name="description" cols="30" rows="10"
-                                                class="form-control-textarea"
-                                                required><%= product.description %></textarea></td>
-                                        <td>
-                                            <label for="size" class="mar-ad-00">Size</label>
-                                            <select id="size" name="size" required class="form-control-select" required>
-                                                <option value="s">S</option>
-                                                <option value="m">M</option>
-                                                <option value="l">L</option>
-                                                <option value="xl">XL</option>
-                                                <option value="xxl">XXL</option>
-                                                <option value="xxxl">XXXL</option>
-                                            </select>
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td><label for="price">price </label></td>
-                                        <td><input type="number" id="price" name="price" class="form-control"
-                                                value="<%= product.price %>" required>
-                                        </td>
-                                        <td>
-                                            <label for="category">category</label>
-                                            <select id="category" name="category[]" required
-                                                class="form-control-select">
-                                                <% for (let i=0; i < categorys.length; i++) {%>
-                                                    <option value="<%= categorys[i].name %>">
-                                                        <%= categorys[i].name %>
-                                                    </option>
-                                                    <%} %>
-
-
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><label for="disc">discount </label></td>
-                                        <td><input type="number" id="disc" name="discount"
-                                                value="<%= product.discount %>" class="form-control"></td>
-                                        <td><label for="active">Active<input type="checkbox" name="active"
-                                                    id="active"></label>
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td><label for="stock">Stock </label></td>
-                                        <td><input type="number" id="stock" name="stock" class="form-control"
-                                                value="<%= product.stock %>" required>
-                                        </td>
-                                        <td><input type="submit" value="Edit Product" class="loginButton"></td>
-                                    </tr>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="price">price </label></td>
+                                            <td><input type="number" id="price" name="price" class="form-control"
+                                                    value="<%= product.price %>" required>
+                                            </td>
+                                            <td>
+                                                <label for="category">category</label>
+                                                <select id="category" name="category[]" required
+                                                    class="form-control-select">
+                                                    <% for (let i=0; i < categorys.length; i++) {%>
+                                                        <option value="<%= categorys[i].name %>">
+                                                            <%= categorys[i].name %>
+                                                        </option>
+                                                        <%} %>
 
 
-                                </table>
-                                <div class="side-images">
-                                    <input type="file" name="image1" id="img1" accept="image/*">
-                                    <input type="file" name="image2" id="img2" accept="image/*">
-                                    <input type="file" name="image3" id="img3" accept="image/*">
-                                    <input type="file" name="image4" id="img4" accept="image/*">
-                                    <!-- <img src="/productImages/<%= product.images[0] %>" alt="img" class="product-img"
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="disc">discount </label></td>
+                                            <td><input type="number" id="disc" name="discount"
+                                                    value="<%= product.discount %>" class="form-control"></td>
+                                            <td><label for="active">Active<input type="checkbox" name="active"
+                                                        id="active"></label>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><label for="stock">Stock </label></td>
+                                            <td><input type="number" id="stock" name="stock" class="form-control"
+                                                    value="<%= product.stock %>" required>
+                                            </td>
+                                            <td><input type="submit" value="Edit Product" class="loginButton"></td>
+                                        </tr>
+
+
+                                    </table>
+                                    <div class="side-images">
+                                        <input type="file" name="image1" id="img1" accept="image/*">
+                                        <input type="file" name="image2" id="img2" accept="image/*">
+                                        <input type="file" name="image3" id="img3" accept="image/*">
+                                        <input type="file" name="image4" id="img4" accept="image/*">
+                                        <!-- <img src="/productImages/<%= product.images[0] %>" alt="img" class="product-img"
                                         id="ph1"> -->
-                                    <div class="image-box-2">
-                                        <div class="side-img-box">
+                                        <div class="image-box-2">
+                                            <div class="side-img-box">
 
-                                            <img src="<% if(product.images[0]){%>
+                                                <img src="<% if(product.images[0]){%>
                                                 /productImages/<%= product.images[0] %>
                                             <%}else{%>
                                                 http://via.placeholder.com/100x100
                                             <%} %>" alt="img" class="extra-img" id="ph1" width="100px" height="100px">
 
-                                        </div>
-                                        <% if(product.images[0]){%>
-                                            <button
-                                                onclick="deleteImage('<%= product._id %>','<%= product.images[0] %>')"
-                                                class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
-                                            <%} %>
+                                            </div>
+                                            <% if(product.images[0]){%>
+                                                <button
+                                                    onclick="deleteImage('<%= product._id %>','<%= product.images[0] %>')"
+                                                    class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                                <%} %>
 
-                                    </div>
-                                    <div class="image-box-2">
-                                        <div class="side-img-box"><img src="<% if(product.images[1]){%>
+                                        </div>
+                                        <div class="image-box-2">
+                                            <div class="side-img-box"><img src="<% if(product.images[1]){%>
                                             /productImages/<%= product.images[1] %>
                                         <%}else{%>
                                             http://via.placeholder.com/100x100
                                         <%} %>" alt="img" class="extra-img" id="ph2" width="100px" height="100px">
+                                            </div>
+                                            <% if(product.images[1]){%>
+                                                <button
+                                                    onclick="deleteImage('<%= product._id %>','<%= product.images[1] %>')"
+                                                    class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                                <%} %>
                                         </div>
-                                        <% if(product.images[1]){%>
-                                            <button
-                                                onclick="deleteImage('<%= product._id %>','<%= product.images[1] %>')"
-                                                class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
-                                            <%} %>
-                                    </div>
-                                    <div class="image-box-2">
-                                        <div class="side-img-box"><img src="<% if(product.images[2]){%>
+                                        <div class="image-box-2">
+                                            <div class="side-img-box"><img src="<% if(product.images[2]){%>
                                             /productImages/<%= product.images[2] %>
                                         <%}else{%>
                                             http://via.placeholder.com/100x100
                                         <%} %>" alt="img" class="extra-img" id="ph3" width="100px" height="100px">
+                                            </div>
+                                            <% if(product.images[2]){%>
+                                                <button
+                                                    onclick="deleteImage('<%= product._id %>','<%= product.images[2] %>')"
+                                                    class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                                <%} %>
+
+
                                         </div>
-                                        <% if(product.images[2]){%>
-                                            <button
-                                                onclick="deleteImage('<%= product._id %>','<%= product.images[2] %>')"
-                                                class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
-                                            <%} %>
-
-
-                                    </div>
-                                    <div class="image-box-2">
-                                        <div class="side-img-box"><img src="<% if(product.images[3]){%>
+                                        <div class="image-box-2">
+                                            <div class="side-img-box"><img src="<% if(product.images[3]){%>
                                             /productImages/<%= product.images[3] %>
                                         <%}else{%>
                                             http://via.placeholder.com/100x100
                                         <%} %>" alt="img" class="extra-img" id="ph4" width="100px" height="100px">
+                                            </div>
+                                            <% if(product.images[3]){%>
+                                                <button
+                                                    onclick="deleteImage('<%= product._id %>','<%= product.images[3] %>')"
+                                                    class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
+                                                <%} %>
+
+
+
                                         </div>
-                                        <% if(product.images[3]){%>
-                                            <button
-                                                onclick="deleteImage('<%= product._id %>','<%= product.images[3] %>')"
-                                                class="material-symbols-outlined icon-btn bg-red img-cut">delete</button>
-                                            <%} %>
-
-
-
                                     </div>
                                 </div>
                             </div>
+
+
+
+
+                        </form>
+
+                        <div class="photo-edit" id="imageBox1">
+                            <div class="photo-container">
+                                <img src="" id="cropImg1">
+                            </div>
+                            <button type="button" id="cropit1">Crop</button>
                         </div>
-
-
-
-
-                    </form>
-
-                    <div class="photo-edit" id="imageBox1">
-                        <div class="photo-container">
-                            <img src="" id="cropImg1">
+                        <div class="photo-edit" id="imageBox2">
+                            <div class="photo-container">
+                                <img src="" id="cropImg2">
+                            </div>
+                            <button type="button" id="cropit2">Crop</button>
                         </div>
-                        <button type="button" id="cropit1">Crop</button>
+                        <div class="photo-edit" id="imageBox3">
+                            <div class="photo-container">
+                                <img src="" id="cropImg3">
+                            </div>
+                            <button type="button" id="cropit3">Crop</button>
+                        </div>
+                        <div class="photo-edit" id="imageBox4">
+                            <div class="photo-container">
+                                <img src="" id="cropImg4">
+                            </div>
+                            <button type="button" id="cropit4">Crop</button>
+                        </div>
                     </div>
-                    <div class="photo-edit" id="imageBox2">
-                        <div class="photo-container">
-                            <img src="" id="cropImg2">
-                        </div>
-                        <button type="button" id="cropit2">Crop</button>
-                    </div>
-                    <div class="photo-edit" id="imageBox3">
-                        <div class="photo-container">
-                            <img src="" id="cropImg3">
-                        </div>
-                        <button type="button" id="cropit3">Crop</button>
-                    </div>
-                    <div class="photo-edit" id="imageBox4">
-                        <div class="photo-container">
-                            <img src="" id="cropImg4">
-                        </div>
-                        <button type="button" id="cropit4">Crop</button>
-                    </div>
-                </div>
-        </div>
+            </div>
 
-
-        <script>
-            function deleteImage ( id, image )
-            {
-                fetch( `/admin/deleteImage?id=${ id }&image=${ image }` ).then( ( res ) =>
+            <script src="/scripts/toasting.js"></script>
+            <script>
+                function deleteImage ( id, image )
                 {
-                    return res.json();
-                } ).then( ( data ) =>
-                {
-                    console.log( data.message )
-                } )
-            }
-            document.addEventListener( 'DOMContentLoaded', function ()
-            {
-                const sizeSelect = document.getElementById( 'size' );
-                const category = document.getElementById( 'category' );
-                const active = document.getElementById( "active" )
-                const productSize = '<%= product.size %>'.toLowerCase();
-                const cat = '<%= product.category[0] %>';
-                const act = '<%= product.active %>';
-                if ( productSize )
-                {
-                    sizeSelect.value = productSize;
-                }
-                if ( cat )
-                {
-                    category.value = cat;
-                }
-                if ( act == "true" )
-                {
-                    active.checked = true;
-                } else
-                {
-                    active.checked = false
-                }
-
-            } );
-            // image upload
-
-            let input1 = document.getElementById( "img1" );
-            let input2 = document.getElementById( "img2" );
-            let input3 = document.getElementById( "img3" );
-            let input4 = document.getElementById( "img4" );
-
-            let ph1 = document.getElementById( "ph1" );
-            let ph2 = document.getElementById( "ph2" );
-            let ph3 = document.getElementById( "ph3" );
-            let ph4 = document.getElementById( "ph4" );
-
-            let crop1 = document.getElementById( "cropImg1" );
-            let crop2 = document.getElementById( "cropImg2" );
-            let crop3 = document.getElementById( "cropImg3" );
-            let crop4 = document.getElementById( "cropImg4" );
-
-            let croppButton1 = document.getElementById( "cropit1" );
-            let croppButton2 = document.getElementById( "cropit2" )
-            let croppButton3 = document.getElementById( "cropit3" )
-            let croppButton4 = document.getElementById( "cropit4" )
-
-            let imageBox1 = document.getElementById( "imageBox1" );
-            let imageBox2 = document.getElementById( "imageBox2" )
-            let imageBox3 = document.getElementById( "imageBox3" )
-            let imageBox4 = document.getElementById( "imageBox4" )
-
-            imageBox1.style.display = "none";
-            imageBox2.style.display = "none";
-            imageBox3.style.display = "none";
-            imageBox4.style.display = "none";
-
-            input1.style.display = "none";
-            input2.style.display = "none";
-            input3.style.display = "none";
-            input4.style.display = "none";
-
-            input1.addEventListener( "change", function ()
-            {
-                imageBox1.style.display = "block";
-                const file = input1.files[ 0 ];
-
-                if ( file )
-                {
-                    const imageURL = URL.createObjectURL( file );
-                    crop1.src = imageURL;
-
-                    const cropper = new Cropper( crop1, {
-                        aspectRatio: 1,
-                        viewMode: 0
-                    } )
-                    croppButton1.addEventListener( "click", () =>
+                    fetch( `/admin/deleteImage?id=${ id }&image=${ image }` ).then( ( res ) =>
                     {
-
-                        const croppedCanvas = cropper.getCroppedCanvas();
-
-                        // Convert the canvas to a Blob (file)
-                        croppedCanvas.toBlob( ( blob ) =>
-                        {
-                            // Create a new File object from the Blob
-                            const croppedFile = new File( [ blob ], "first.png", { type: "image/png" } );
-
-                            // Replace the original file in the input
-                            input1.files[ 0 ] = croppedFile;
-                            console.log( "hello ", input1.files[ 0 ].name )
-                            console.log( "crop ", croppedFile )
-                            // Display the cropped image
-                            ph1.src = URL.createObjectURL( croppedFile );
-
-                            //send it to server
-                            const formData = new FormData();
-                            // const fileInput = document.getElementById( "img1" );
-                            const file = croppedFile; // Assuming only one file is selected
-
-                            formData.append( "image1", file );
-                            formData.append( "imageName", file.name );
-                            formData.append( "id", document.getElementById( "id" ).value )
-                            // fetch( "/admin/editImage1", {
-                            //     method: "POST",
-                            //     body: formData
-                            // } );
-                        } );
-                        imageBox1.style.display = "none";
-                    } )
-
-                }
-            } );
-            input2.addEventListener( "change", function ()
-            {
-                imageBox2.style.display = "block";
-                const file = input2.files[ 0 ];
-
-                if ( file )
-                {
-                    const imageURL = URL.createObjectURL( file );
-                    crop2.src = imageURL;
-
-                    const cropper = new Cropper( crop2, {
-                        aspectRatio: 1,
-                        viewMode: 0
-                    } )
-                    croppButton2.addEventListener( "click", () =>
+                        return res.json();
+                    } ).then( ( data ) =>
                     {
-
-                        const croppedCanvas = cropper.getCroppedCanvas();
-
-                        // Convert the canvas to a Blob (file)
-                        croppedCanvas.toBlob( ( blob ) =>
-                        {
-                            // Create a new File object from the Blob
-                            const croppedFile = new File( [ blob ], "second.png", { type: "image/png" } );
-
-                            // Replace the original file in the input
-                            input2.files[ 0 ] = croppedFile;
-                            console.log( "hello ", input2.files )
-                            console.log( "crop ", croppedFile )
-                            // Display the cropped image
-                            ph2.src = URL.createObjectURL( croppedFile );
-
-                            //send it to server
-                            const formData = new FormData();
-                            // const fileInput = document.getElementById( "img1" );
-                            const file = croppedFile;// Assuming only one file is selected
-
-                            formData.append( "image1", file );
-                            formData.append( "imageName", file.name );
-                            formData.append( "id", document.getElementById( "id" ).value )
-                            // fetch( "/admin/editImage2", {
-                            //     method: "POST",
-                            //     body: formData
-                            // } );
-                        } );
-                        imageBox2.style.display = "none";
-
+                        console.log( data.message )
                     } )
                 }
-
-            } );
-            input3.addEventListener( "change", function ()
-            {
-                imageBox3.style.display = "block";
-                const file = input3.files[ 0 ];
-
-                if ( file )
+                document.addEventListener( 'DOMContentLoaded', function ()
                 {
-                    const imageURL = URL.createObjectURL( file );
-                    crop3.src = imageURL;
-
-                    const cropper = new Cropper( crop3, {
-                        aspectRatio: 1,
-                        viewMode: 0
-                    } )
-                    croppButton3.addEventListener( "click", () =>
+                    const sizeSelect = document.getElementById( 'size' );
+                    const category = document.getElementById( 'category' );
+                    const active = document.getElementById( "active" )
+                    const productSize = '<%= product.size %>'.toLowerCase();
+                    const cat = '<%= product.category[0] %>';
+                    const act = '<%= product.active %>';
+                    if ( productSize )
                     {
+                        sizeSelect.value = productSize;
+                    }
+                    if ( cat )
+                    {
+                        category.value = cat;
+                    }
+                    if ( act == "true" )
+                    {
+                        active.checked = true;
+                    } else
+                    {
+                        active.checked = false
+                    }
 
-                        const croppedCanvas = cropper.getCroppedCanvas();
+                } );
+                // image upload
 
-                        // Convert the canvas to a Blob (file)
-                        croppedCanvas.toBlob( ( blob ) =>
-                        {
-                            // Create a new File object from the Blob
-                            const croppedFile = new File( [ blob ], "third.png", { type: "image/png" } );
+                let input1 = document.getElementById( "img1" );
+                let input2 = document.getElementById( "img2" );
+                let input3 = document.getElementById( "img3" );
+                let input4 = document.getElementById( "img4" );
 
-                            // Replace the original file in the input
-                            input3.files[ 0 ] = croppedFile;
-                            console.log( "hello ", input3.files )
-                            console.log( "crop ", croppedFile )
-                            // Display the cropped image
-                            ph3.src = URL.createObjectURL( croppedFile );
-                            //send it to server
-                            const formData = new FormData();
-                            // const fileInput = document.getElementById( "img1" );
-                            const file = croppedFile;// Assuming only one file is selected
+                let ph1 = document.getElementById( "ph1" );
+                let ph2 = document.getElementById( "ph2" );
+                let ph3 = document.getElementById( "ph3" );
+                let ph4 = document.getElementById( "ph4" );
 
-                            formData.append( "image1", file );
-                            formData.append( "imageName", file.name );
-                            formData.append( "id", document.getElementById( "id" ).value )
-                            // fetch( "/admin/editImage3", {
-                            //     method: "POST",
-                            //     body: formData
-                            // } );
-                        } );
-                        imageBox3.style.display = "none";
-                    } )
-                }
-            } );
-            input4.addEventListener( "change", function ()
-            {
-                imageBox4.style.display = "block";
-                const file = input4.files[ 0 ];
+                let crop1 = document.getElementById( "cropImg1" );
+                let crop2 = document.getElementById( "cropImg2" );
+                let crop3 = document.getElementById( "cropImg3" );
+                let crop4 = document.getElementById( "cropImg4" );
 
-                if ( file )
+                let croppButton1 = document.getElementById( "cropit1" );
+                let croppButton2 = document.getElementById( "cropit2" )
+                let croppButton3 = document.getElementById( "cropit3" )
+                let croppButton4 = document.getElementById( "cropit4" )
+
+                let imageBox1 = document.getElementById( "imageBox1" );
+                let imageBox2 = document.getElementById( "imageBox2" )
+                let imageBox3 = document.getElementById( "imageBox3" )
+                let imageBox4 = document.getElementById( "imageBox4" )
+
+                imageBox1.style.display = "none";
+                imageBox2.style.display = "none";
+                imageBox3.style.display = "none";
+                imageBox4.style.display = "none";
+
+                input1.style.display = "none";
+                input2.style.display = "none";
+                input3.style.display = "none";
+                input4.style.display = "none";
+
+                input1.addEventListener( "change", function ()
                 {
-                    const imageURL = URL.createObjectURL( file );
-                    crop4.src = imageURL;
+                    const file = input1.files[ 0 ];
+                    const allowedMimeTypes = [ 'image/jpeg', 'image/png' ];
 
-                    const cropper = new Cropper( crop4, {
-                        aspectRatio: 1,
-                        viewMode: 0
-                    } )
-                    croppButton4.addEventListener( "click", () =>
+                    // Validate file type
+                    if ( !allowedMimeTypes.includes( file.type ) )
                     {
+                        toasting( "toast-box", 'Invalid file type. Only JPEG, PNG,  files are allowed.', false );
+                        event.preventDefault();
+                        return;
+                    }
+                    imageBox1.style.display = "block";
 
-                        const croppedCanvas = cropper.getCroppedCanvas();
 
-                        // Convert the canvas to a Blob (file)
-                        croppedCanvas.toBlob( ( blob ) =>
+                    if ( file )
+                    {
+                        const imageURL = URL.createObjectURL( file );
+                        crop1.src = imageURL;
+
+                        const cropper = new Cropper( crop1, {
+                            aspectRatio: 5 / 6,
+                            viewMode: 0
+                        } )
+                        croppButton1.addEventListener( "click", () =>
                         {
-                            // Create a new File object from the Blob
-                            const croppedFile = new File( [ blob ], "fourth.png", { type: "image/png" } );
 
-                            // Replace the original file in the input
-                            input4.files[ 0 ] = croppedFile;
-                            console.log( "hello ", input4.files )
-                            console.log( "crop ", croppedFile )
-                            // Display the cropped image
-                            ph4.src = URL.createObjectURL( croppedFile );
-                            //send it to server
-                            const formData = new FormData();
-                            // const fileInput = document.getElementById( "img1" );
-                            const file = croppedFile; // Assuming only one file is selected
+                            const croppedCanvas = cropper.getCroppedCanvas();
 
-                            formData.append( "image1", file );
-                            formData.append( "imageName", file.name );
-                            formData.append( "id", document.getElementById( "id" ).value )
-                            // fetch( "/admin/editImage4", {
-                            //     method: "POST",
-                            //     body: formData
-                            // } );
-                        } );
-                        imageBox4.style.display = "none";
-                    } )
-                }
-            } );
+                            // Convert the canvas to a Blob (file)
+                            croppedCanvas.toBlob( ( blob ) =>
+                            {
+                                // Create a new File object from the Blob
+                                const croppedFile = new File( [ blob ], "first.png", { type: "image/png" } );
+
+                                // Replace the original file in the input
+                                input1.files[ 0 ] = croppedFile;
+                                console.log( "hello ", input1.files[ 0 ].name )
+                                console.log( "crop ", croppedFile )
+                                // Display the cropped image
+                                ph1.src = URL.createObjectURL( croppedFile );
+
+                                //send it to server
+                                const formData = new FormData();
+                                // const fileInput = document.getElementById( "img1" );
+                                const file = croppedFile; // Assuming only one file is selected
+
+                                formData.append( "image1", file );
+                                formData.append( "originalname", file.name );
+                                formData.append( "id", document.getElementById( "id" ).value )
+                                fetch( "/admin/editImage1", {
+                                    method: "POST",
+                                    body: formData
+                                } );
+                            } );
+                            imageBox1.style.display = "none";
+                        } )
+
+                    }
+                } );
+                input2.addEventListener( "change", function ()
+                {
+                    const file = input2.files[ 0 ];
+                    const allowedMimeTypes = [ 'image/jpeg', 'image/png' ];
+
+                    // Validate file type
+                    if ( !allowedMimeTypes.includes( file.type ) )
+                    {
+                        toasting( "toast-box", 'Invalid file type. Only JPEG, PNG,  files are allowed.', false );
+                        event.preventDefault();
+                        return;
+                    }
+                    imageBox2.style.display = "block";
+
+
+                    if ( file )
+                    {
+                        const imageURL = URL.createObjectURL( file );
+                        crop2.src = imageURL;
+
+                        const cropper = new Cropper( crop2, {
+                            aspectRatio: 5 / 6,
+                            viewMode: 0
+                        } )
+                        croppButton2.addEventListener( "click", () =>
+                        {
+
+                            const croppedCanvas = cropper.getCroppedCanvas();
+
+                            // Convert the canvas to a Blob (file)
+                            croppedCanvas.toBlob( ( blob ) =>
+                            {
+                                // Create a new File object from the Blob
+                                const croppedFile = new File( [ blob ], "second.png", { type: "image/png" } );
+
+                                // Replace the original file in the input
+                                input2.files[ 0 ] = croppedFile;
+                                console.log( "hello ", input2.files )
+                                console.log( "crop ", croppedFile )
+                                // Display the cropped image
+                                ph2.src = URL.createObjectURL( croppedFile );
+
+                                //send it to server
+                                const formData = new FormData();
+                                // const fileInput = document.getElementById( "img1" );
+                                const file = croppedFile;// Assuming only one file is selected
+
+                                formData.append( "image1", file );
+                                formData.append( "originalname", file.name );
+                                formData.append( "id", document.getElementById( "id" ).value )
+                                fetch( "/admin/editImage2", {
+                                    method: "POST",
+                                    body: formData
+                                } );
+                            } );
+                            imageBox2.style.display = "none";
+
+                        } )
+                    }
+
+                } );
+                input3.addEventListener( "change", function ()
+                {
+                    const file = input3.files[ 0 ];
+                    const allowedMimeTypes = [ 'image/jpeg', 'image/png' ];
+
+                    // Validate file type
+                    if ( !allowedMimeTypes.includes( file.type ) )
+                    {
+                        toasting( "toast-box", 'Invalid file type. Only JPEG, PNG,  files are allowed.', false );
+                        event.preventDefault();
+                        return;
+                    }
+                    imageBox3.style.display = "block";
+
+
+                    if ( file )
+                    {
+                        const imageURL = URL.createObjectURL( file );
+                        crop3.src = imageURL;
+
+                        const cropper = new Cropper( crop3, {
+                            aspectRatio: 5 / 6,
+                            viewMode: 0
+                        } )
+                        croppButton3.addEventListener( "click", () =>
+                        {
+
+                            const croppedCanvas = cropper.getCroppedCanvas();
+
+                            // Convert the canvas to a Blob (file)
+                            croppedCanvas.toBlob( ( blob ) =>
+                            {
+                                // Create a new File object from the Blob
+                                const croppedFile = new File( [ blob ], "third.png", { type: "image/png" } );
+
+                                // Replace the original file in the input
+                                input3.files[ 0 ] = croppedFile;
+                                console.log( "hello ", input3.files )
+                                console.log( "crop ", croppedFile )
+                                // Display the cropped image
+                                ph3.src = URL.createObjectURL( croppedFile );
+                                //send it to server
+                                const formData = new FormData();
+                                // const fileInput = document.getElementById( "img1" );
+                                const file = croppedFile;// Assuming only one file is selected
+
+                                formData.append( "image1", file );
+                                formData.append( "imageName", file.name );
+                                formData.append( "id", document.getElementById( "id" ).value )
+                                // fetch( "/admin/editImage3", {
+                                //     method: "POST",
+                                //     body: formData
+                                // } );
+                            } );
+                            imageBox3.style.display = "none";
+                        } )
+                    }
+                } );
+                input4.addEventListener( "change", function ()
+                {
+                    const file = input4.files[ 0 ];
+                    const allowedMimeTypes = [ 'image/jpeg', 'image/png' ];
+
+                    // Validate file type
+                    if ( !allowedMimeTypes.includes( file.type ) )
+                    {
+                        toasting( "toast-box", 'Invalid file type. Only JPEG, PNG,  files are allowed.', false );
+                        event.preventDefault();
+                        return;
+                    }
+                    imageBox4.style.display = "block";
+
+
+                    if ( file )
+                    {
+                        const imageURL = URL.createObjectURL( file );
+                        crop4.src = imageURL;
+
+                        const cropper = new Cropper( crop4, {
+                            aspectRatio: 5 / 6,
+                            viewMode: 0
+                        } )
+                        croppButton4.addEventListener( "click", () =>
+                        {
+
+                            const croppedCanvas = cropper.getCroppedCanvas();
+
+                            // Convert the canvas to a Blob (file)
+                            croppedCanvas.toBlob( ( blob ) =>
+                            {
+                                // Create a new File object from the Blob
+                                const croppedFile = new File( [ blob ], "fourth.png", { type: "image/png" } );
+
+                                // Replace the original file in the input
+                                input4.files[ 0 ] = croppedFile;
+                                console.log( "hello ", input4.files )
+                                console.log( "crop ", croppedFile )
+                                // Display the cropped image
+                                ph4.src = URL.createObjectURL( croppedFile );
+                                //send it to server
+                                const formData = new FormData();
+                                // const fileInput = document.getElementById( "img1" );
+                                const file = croppedFile; // Assuming only one file is selected
+
+                                formData.append( "image1", file );
+                                formData.append( "imageName", file.name );
+                                formData.append( "id", document.getElementById( "id" ).value )
+                                // fetch( "/admin/editImage4", {
+                                //     method: "POST",
+                                //     body: formData
+                                // } );
+                            } );
+                            imageBox4.style.display = "none";
+                        } )
+                    }
+                } );
 
 
 
-            ph1.addEventListener( "click", function ()
-            {
-                input1.click();
+                ph1.addEventListener( "click", function ()
+                {
+                    input1.click();
 
-            } );
-            ph2.addEventListener( "click", function ()
-            {
-                input2.click();
-            } );
-            ph3.addEventListener( "click", function ()
-            {
-                input3.click();
-            } );
-            ph4.addEventListener( "click", function ()
-            {
-                input4.click();
-            } );
-        </script>
-        <%- include("../partials/footer.ejs") %>
+                } );
+                ph2.addEventListener( "click", function ()
+                {
+                    input2.click();
+                } );
+                ph3.addEventListener( "click", function ()
+                {
+                    input3.click();
+                } );
+                ph4.addEventListener( "click", function ()
+                {
+                    input4.click();
+                } );
+            </script>
+            <%- include("../partials/footer.ejs") %>

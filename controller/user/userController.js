@@ -90,7 +90,7 @@ const load_product_details = tryCatch(async (req, res, next) => {
 //loading product listing page
 const load_products = tryCatch(async (req, res) => {
   req.session.category = req.query.cat;
-  const limit = 12;
+  const limit = 8;
   const user = (await userModel.findOne({ _id: req.session.userID })) || null;
   const category = await categoryHelper.activeCategoryName();
 
