@@ -18,7 +18,7 @@ route.get("/", auth.isLogout, adminController.load_admin_login);
 route.get("/product", auth.isLogin, adminController.load_product_list);
 route.get("/category", auth.isLogin, adminController.load_category_list);
 route.get("/users", auth.isLogin, adminController.load_user_list);
-route.get("/dashboard", auth.isLogin, adminController.load_dashboard);
+route.get("/dashboard", auth.isLogin, adminController.loadDashboard);
 route.get("/add-product", auth.isLogin, adminController.load_add_product);
 route.get("/order", auth.isLogin, adminController.load_order_list);
 route.get("/delete-category", auth.isLogin, adminController.delete_category);
@@ -77,13 +77,12 @@ route.post(
 );
 route.post("/editImage1", upload.single("image1"), async (req, res) => {
   try {
-    const product = await ProductModel.findById(req.body.id);
-
-    // Update the image at position 0
-    product.images[0] = req.body.imageName;
-
-    // Save the updated product
-    await product.save();
+    console.log(req.files);
+    const edited = await ProductModel.updateOne(
+      { _id: req.body.id },
+      { $set: { "images.0": req.file.filename } }
+    );
+    console.log(edited);
     res.json({ success: true });
   } catch (error) {
     res.send(error.message);
@@ -91,13 +90,11 @@ route.post("/editImage1", upload.single("image1"), async (req, res) => {
 });
 route.post("/editImage2", upload.single("image1"), async (req, res) => {
   try {
-    const product = await ProductModel.findById(req.body.id);
-
-    // Update the image at position 0
-    product.images[1] = req.body.imageName;
-
-    // Save the updated product
-    await product.save();
+    console.log(req.file);
+    const edited = await ProductModel.updateOne(
+      { _id: req.body.id },
+      { $set: { "images.1": req.file.filename } }
+    );
     res.json({ success: true });
   } catch (error) {
     res.send(error.message);
@@ -105,13 +102,10 @@ route.post("/editImage2", upload.single("image1"), async (req, res) => {
 });
 route.post("/editImage3", upload.single("image1"), async (req, res) => {
   try {
-    const product = await ProductModel.findById(req.body.id);
-
-    // Update the image at position 0
-    product.images[2] = req.body.imageName;
-
-    // Save the updated product
-    await product.save();
+    const edited = await ProductModel.updateOne(
+      { _id: req.body.id },
+      { $set: { "images.2": req.file.filename } }
+    );
     res.json({ success: true });
   } catch (error) {
     res.send(error.message);
@@ -119,13 +113,10 @@ route.post("/editImage3", upload.single("image1"), async (req, res) => {
 });
 route.post("/editImage4", upload.single("image1"), async (req, res) => {
   try {
-    const product = await ProductModel.findById(req.body.id);
-
-    // Update the image at position 0
-    product.images[3] = req.body.imageName;
-
-    // Save the updated product
-    await product.save();
+    const edited = await ProductModel.updateOne(
+      { _id: req.body.id },
+      { $set: { "images.3": req.file.filename } }
+    );
     res.json({ success: true });
   } catch (error) {
     res.send(error.message);

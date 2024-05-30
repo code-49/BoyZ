@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { type } = require("../utils/validation/productVal");
 
 const orderSchema = new mongoose.Schema(
   {
@@ -10,6 +11,16 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,
+    },
+    coupon: {
+      name: {
+        type: String,
+        default: "none",
+      },
+      discount: {
+        type: Number,
+        defualt: 0,
+      },
     },
     products: [
       {
@@ -29,6 +40,13 @@ const orderSchema = new mongoose.Schema(
         quantity: {
           type: Number,
           default: 1,
+        },
+        discount: {
+          type: Number,
+          default: 0,
+        },
+        category: {
+          type: String,
         },
       },
     ],
