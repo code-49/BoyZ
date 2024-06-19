@@ -13,7 +13,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID, // Your Credentials here.
       clientSecret: process.env.CLIENT_SECRET, // Your Credentials here.
-      callbackURL: "http://localhost:3000/log/google/callback",
+      callbackURL: "https://shop.theboyz.xyz/log/google/callback",
       passReqToCallback: true,
     },
     function (request, accessToken, refreshToken, profile, done) {
